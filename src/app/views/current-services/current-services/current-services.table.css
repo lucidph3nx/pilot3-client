@@ -1,0 +1,60 @@
+#variancetable .datatable-header-cell{
+    text-align: center;
+    color: white;
+    padding-top: 0.9rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.9rem;
+    padding-left: 0.9rem;
+  
+  }
+  #variancetable .datatable-body-cell{
+    color: white;
+  }
+  #variancetable .ngx-datatable .variance-early {
+    color: black;
+    background-color: #3BB9FF;
+  }
+  #variancetable .ngx-datatable .variance-okay {
+    color: #97c475 !important;
+  }
+  #variancetable .ngx-datatable .variance-late {
+    color: black;  
+    background-color: #ef802f;
+  }
+  #variancetable .ngx-datatable .variance-verylate {
+    color: black;  
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .variance-delayrisk {
+    color: black;  
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .currentstation {
+    color: #f0cf7e;
+  }
+  #variancetable .ngx-datatable .status-awaitingdeparture {
+    color: #97c475;
+  }
+  #variancetable .ngx-datatable .status-linkingissue {
+    color: black;  
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .status-intunnel {
+    color: #c578dd;  
+  }
+  #variancetable .ngx-datatable .status-storageroad {
+    color: #f0cf7e;
+  }
+  #variancetable .ngx-datatable .status-nolink {
+    color: black;  
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .status-arriving {
+    color: #f0cf7e;
+  }
+  #variancetable .ngx-datatable .status-stoppedbetweenstations {
+    color: #f0cf7e;
+  }
+  #variancetable .ngx-datatable .status-prevdelayed {
+    color: #f0cf7e;
+  }
