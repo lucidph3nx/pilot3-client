@@ -42,7 +42,7 @@ export class LayoutService {
     //******** SET YOUR LAYOUT OPTIONS HERE *********
     this.layoutConf = {
       "navigationPos": "side",    // side, top
-      "sidebarStyle": "full",     // full, compact, closed
+      "sidebarStyle": "compact",     // full, compact, closed
       "dir": "ltr",               // ltr, rtl
       "useBreadcrumb": true,
       "topbarFixed": false,

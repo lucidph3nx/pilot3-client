@@ -1,14 +1,11 @@
 #variancetable .datatable-header-cell{
     text-align: center;
-    color: white;
+    /* color: white; */
     padding-top: 0.9rem;
     padding-right: 0.9rem;
     padding-bottom: 0.9rem;
     padding-left: 0.9rem;
   
-  }
-  #variancetable .datatable-body-cell{
-    color: white;
   }
   #variancetable .ngx-datatable .variance-early {
     color: black;

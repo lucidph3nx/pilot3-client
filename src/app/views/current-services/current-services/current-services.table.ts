@@ -1,14 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
+import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment-timezone';
+import { serviceViewComponent } from './service-view/service-view.component';
 
 @Component({
   selector: 'current-services',
   templateUrl: './current-services.table.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./current-services.table.css'],
   providers: [CurrentServicesService],
 })
 export class CurrentServicesTableComponent implements OnInit {
+  constructor(
+    private service: CurrentServicesService,
+    public dialog: MatDialog,
+  ) {}
+
   uprows = [];
   downrows = [];
   currentServices = [];
@@ -61,11 +69,20 @@ export class CurrentServicesTableComponent implements OnInit {
     };
   }
 
-  constructor(private service: CurrentServicesService) {}
 
   updateTable(){
     this.uprows = this.currentServices.filter(service => service.direction === 'UP')
     this.downrows = this.currentServices.filter(service => service.direction === 'DOWN')
+  }
+
+  openServiceView(e){
+    if ( e.type == "click" ) {
+      const dialogRef: MatDialogRef<any> = this.dialog.open(serviceViewComponent, {
+        width: '720px',
+        //disableClose: true,
+        data: e.row
+      })
+    }
   }
 
   ngOnInit() {

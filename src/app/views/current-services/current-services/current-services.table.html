@@ -1,16 +1,17 @@
 <mat-card-content>
     <div fxLayout="row" fxLayoutWrap="wrap">
         <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
-            <mat-card style="padding:10px; text-align:center">UP Trains</mat-card>
+            <mat-card style="padding:10px; text-align:center"><h2>UP Trains</h2></mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
-                <ngx-datatable class="material" 
-                [columnMode]="'force'"  
+                <ngx-datatable class="material"
+                [columnMode]="'force'"
                 [headerHeight]="50"
                 [footerHeight]="0" 
                 [rowHeight]="50"
                 [scrollbarV]="false"
                 [rows]="uprows"
-                [sorts]="[{prop: 'kiwirail', dir: 'asc'},{prop: 'departs', dir: 'asc'}]">
+                [sorts]="[{prop: 'kiwirail', dir: 'asc'},{prop: 'departs', dir: 'asc'}]"
+                (activate)="openServiceView($event)">
                 <ngx-datatable-column name="Train" prop="serviceId" [cellClass]="getVarClass"></ngx-datatable-column>
 
                 <ngx-datatable-column name="Cars" prop="cars" maxWidth=90></ngx-datatable-column>
@@ -28,7 +29,7 @@
             </div>
         </div>
         <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
-            <mat-card style="padding:10px; text-align:center">DOWN Trains</mat-card>
+            <mat-card style="padding:10px; text-align:center"><h2>DOWN Trains</h2></mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
                 <ngx-datatable class="material" 
                 [columnMode]="'force'"  
@@ -37,7 +38,8 @@
                 [rowHeight]="50"
                 [scrollbarV]="false"
                 [rows]="downrows"
-                [sorts]="[{prop: 'kiwirail', dir: 'asc'},{prop: 'arrives', dir: 'asc'}]">
+                [sorts]="[{prop: 'kiwirail', dir: 'asc'},{prop: 'arrives', dir: 'asc'}]"
+                (activate)="openServiceView($event)">
                 <ngx-datatable-column name="Train" prop="serviceId" [cellClass]="getVarClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Cars" prop="cars" maxWidth=90></ngx-datatable-column>
                 <ngx-datatable-column name="Start" prop="departs"></ngx-datatable-column>

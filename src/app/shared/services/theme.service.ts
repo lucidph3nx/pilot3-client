@@ -11,20 +11,12 @@ interface ITheme {
 @Injectable()
 export class ThemeService {
   public egretThemes :ITheme[]  = [{
-    "name": "egret-dark-purple",
-    "baseColor": "#9c27b0",
-    "isActive": false
+    "name": "pilot-light",
+    "baseColor": "#fafafa",
+    "isActive": false 
   }, {
-    "name": "egret-dark-pink",
-    "baseColor": "#e91e63",
-    "isActive": false
-  }, {
-    "name": "egret-blue",
-    "baseColor": "#247ba0",
-    "isActive": false
-  }, {
-    "name": "egret-indigo",
-    "baseColor": "#3f51b5",
+    "name": "pilot-dark",
+    "baseColor": "#303030",
     "isActive": true 
   }];
   public activatedTheme: ITheme;
@@ -42,7 +34,7 @@ export class ThemeService {
     // this.activatedTheme = this.egretThemes[0]; 
     // this.activatedTheme = this.egretThemes[1]; 
     // this.activatedTheme = this.egretThemes[2]; 
-    this.activatedTheme = this.egretThemes[3];
+    this.activatedTheme = this.egretThemes[1];
 
     // *********** ONLY FOR DEMO **********
     this.setThemeFromQuery();

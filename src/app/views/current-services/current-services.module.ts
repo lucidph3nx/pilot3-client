@@ -26,6 +26,7 @@ import { SharedModule } from './../../shared/shared.module';
 
 import { CurrentServicesTableComponent } from './current-services/current-services.table';
 import { CurrentServicesRoutes } from "./current-services.routing";
+import { serviceViewComponent } from "./current-services/service-view/service-view.component"
 
 
 @NgModule({
@@ -53,7 +54,9 @@ import { CurrentServicesRoutes } from "./current-services.routing";
     RouterModule.forChild(CurrentServicesRoutes)
   ],
   declarations: [
-    CurrentServicesTableComponent
-  ]
+    CurrentServicesTableComponent,
+    serviceViewComponent
+  ],
+  entryComponents: [serviceViewComponent]
 })
 export class CurrentServicesModule { }
