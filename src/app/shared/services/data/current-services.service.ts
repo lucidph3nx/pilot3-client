@@ -8,11 +8,6 @@ import 'rxjs/add/operator/switchMap';
 @Injectable()
 export class CurrentServicesService {
 
-    private currentServices;
-    private statusTime;
-    private currentServerTime;
-    private currentServerStatus;
-
     constructor(private http: Http) {}
   
 
