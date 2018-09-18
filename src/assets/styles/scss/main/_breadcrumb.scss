@@ -33,7 +33,9 @@
 .breadcrumb-title {
   display: flex;
   align-items: center;
-  padding: 0.5rem .333rem;
+  //padding: 0.5rem .333rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
   line-height: 40px;
   .bc-title {
     font-size: $font-size-h5;

@@ -8,6 +8,7 @@ import * as moment from 'moment-timezone';
 @Component({
   selector: 'app-header-side',
   templateUrl: './header-side.template.html',
+  styleUrls: ['./header-side.template.scss'],
   providers: [CurrentServicesService],
 })
 export class HeaderSideComponent implements OnInit {

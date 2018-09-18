@@ -1,18 +1,39 @@
 #variancetable .datatable-header-cell{
     text-align: center;
-    /* color: white; */
+    font-size: 1.1rem;
     padding-top: 0.9rem;
     padding-right: 0.9rem;
     padding-bottom: 0.9rem;
     padding-left: 0.9rem;
-  
   }
+  .pilot-dark #variancetable .datatable-body-cell{
+    border-top: 1px solid white;
+    text-align: center;
+    font-size: 1.1rem;
+    padding-top: 0.9rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.9rem;
+    padding-left: 0.9rem;
+  }
+  .pilot-light #variancetable .datatable-body-cell{
+    border-top: 1px solid black;
+    text-align: center;
+    font-size: 1.1rem;
+    padding-top: 0.9rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.9rem;
+    padding-left: 0.9rem;
+  }
+
   #variancetable .ngx-datatable .variance-early {
     color: black;
     background-color: #3BB9FF;
   }
-  #variancetable .ngx-datatable .variance-okay {
+  .pilot-dark #variancetable .ngx-datatable .variance-okay {
     color: #97c475 !important;
+  }
+  .pilot-light #variancetable .ngx-datatable .variance-okay {
+    color: #566e43 !important;
   }
   #variancetable .ngx-datatable .variance-late {
     color: black;  
@@ -26,11 +47,39 @@
     color: black;  
     background-color: #be5046;
   }
-  #variancetable .ngx-datatable .currentstation {
+  #variancetable .ngx-datatable .status-early {
+    color: black;
+    background-color: #3BB9FF;
+  }
+  .pilot-dark #variancetable .ngx-datatable .status-okay {
+    color: #97c475 !important;
+  }
+  .pilot-light #variancetable .ngx-datatable .status-okay {
+    color: #566e43 !important;
+  }
+  #variancetable .ngx-datatable .status-late {
+    color: black;  
+    background-color: #ef802f;
+  }
+  #variancetable .ngx-datatable .status-verylate {
+    color: black;  
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .status-delayrisk {
+    color: black;  
+    background-color: #be5046;
+  }
+  .pilot-dark #variancetable .ngx-datatable .currentstation {
     color: #f0cf7e;
   }
-  #variancetable .ngx-datatable .status-awaitingdeparture {
+  .pilot-light #variancetable .ngx-datatable .currentstation {
+    color: #a88d48;
+  }
+  .pilot-dark #variancetable .ngx-datatable .status-awaitingdeparture {
     color: #97c475;
+  }
+  .pilot-light #variancetable .ngx-datatable .status-awaitingdeparture {
+    color: #566e43;
   }
   #variancetable .ngx-datatable .status-linkingissue {
     color: black;  

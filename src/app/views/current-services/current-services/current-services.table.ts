@@ -25,11 +25,20 @@ export class CurrentServicesTableComponent implements OnInit {
 
   getVarClass({ row, column, value }): any {
     return {
-      'variance-early': row.statusMessage === 'Running Early',
-      'variance-okay': row.statusMessage === 'Running Ok',
-      'variance-late': row.statusMessage === 'Running Late',
-      'variance-verylate': row.statusMessage === 'Running Very Late',
-      'variance-delayrisk': row.statusMessage.substring(0, 10) === 'Delay Risk',
+      'variance-early': row.statusArray[0] === 'Running Early',
+      'variance-okay': row.statusArray[0] === 'Running Ok',
+      'variance-late': row.statusArray[0] === 'Running Late',
+      'variance-verylate': row.statusArray[0] === 'Running Very Late',
+      'variance-delayrisk': row.statusArray[0].substring(0, 10) === 'Delay Risk',
+    };
+  }
+  getStatusClass({ row, column, value }): any {
+    return {
+      'status-early': row.statusMessage === 'Running Early',
+      'status-okay': row.statusMessage === 'Running Ok',
+      'status-late': row.statusMessage === 'Running Late',
+      'status-verylate': row.statusMessage === 'Running Very Late',
+      'status-delayrisk': row.statusMessage.substring(0, 10) === 'Delay Risk',
       'status-awaitingdeparture': row.statusMessage === 'Awaiting Departure',
       'status-linkingissue' : row.statusMessage == 'Check OMS Linking' || row.statusMessage === 'GPS Fault',
       'status-intunnel' : row.statusMessage === 'In Rimutaka Tunnel' ||
@@ -46,7 +55,7 @@ export class CurrentServicesTableComponent implements OnInit {
   }
   getStnClass({ row, column, value }): any {
     return {
-      'currentstation' : row.laststationcurrent == true,
+      'currentstation' : row.lastStationCurrent == true,
     };
   }
   getSpeedClass({ row, column, value }): any {
@@ -68,7 +77,6 @@ export class CurrentServicesTableComponent implements OnInit {
                           row.statusArray[1] === 'In Tunnel 2',
     };
   }
-
 
   updateTable(){
     this.uprows = this.currentServices.filter(service => service.direction === 'UP')
@@ -95,11 +103,14 @@ export class CurrentServicesTableComponent implements OnInit {
       for(let service of this.currentServices) {
          if(service.statusMessage !== 'No Linked Unit'){
           service.locationAgeSeconds = service.locationAgeSeconds + 1
-          service.locationAge = moment().hour(0).minute(0).seconds(service.locationAgeSeconds).format('mm:ss')
-         }
+          service.locationAge = String(Math.floor(service.locationAgeSeconds / 60)).padStart(2, '0') + ':' + String(service.locationAgeSeconds % 60).padStart(2, '0')
+          }
+         
       }
       this.updateTable()
-    },1000)
+    },1000);
   }
+
+
 
 }

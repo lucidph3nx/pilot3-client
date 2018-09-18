@@ -1,5 +1,5 @@
 <mat-card-content>
-    <div fxLayout="row" fxLayoutWrap="wrap">
+    <div fxLayout="row" fxLayout.sm="column">
         <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
             <mat-card style="padding:10px; text-align:center"><h2>UP Trains</h2></mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
@@ -12,19 +12,15 @@
                 [rows]="uprows"
                 [sorts]="[{prop: 'kiwirail', dir: 'asc'},{prop: 'departs', dir: 'asc'}]"
                 (activate)="openServiceView($event)">
-                <ngx-datatable-column name="Train" prop="serviceId" [cellClass]="getVarClass"></ngx-datatable-column>
-
+                <ngx-datatable-column name="Train" prop="serviceId" [cellClass]="getStatusClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Cars" prop="cars" maxWidth=90></ngx-datatable-column>
                 <ngx-datatable-column name="Start" prop="departs"></ngx-datatable-column>
-
-                <ngx-datatable-column name="Var" prop="varianceFriendly" maxWidth=100 [cellClass]="getVarClass"></ngx-datatable-column>
+                <ngx-datatable-column name="Var" prop="varianceFriendly" maxWidth=80 [cellClass]="getVarClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Last Stn" prop="laststation" [cellClass]="getStnClass"></ngx-datatable-column>
-
                 <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
                 <ngx-datatable-column name="Age" prop="locationAge"></ngx-datatable-column>
                 <ngx-datatable-column name="End" prop="arrives"></ngx-datatable-column>
-
-                <ngx-datatable-column name="Status" prop="statusMessage" minWidth=200 [cellClass]="getVarClass"></ngx-datatable-column>
+                <ngx-datatable-column name="Status" prop="statusMessage" minWidth=200 [cellClass]="getStatusClass"></ngx-datatable-column>
                 </ngx-datatable>
             </div>
         </div>
@@ -40,15 +36,15 @@
                 [rows]="downrows"
                 [sorts]="[{prop: 'kiwirail', dir: 'asc'},{prop: 'arrives', dir: 'asc'}]"
                 (activate)="openServiceView($event)">
-                <ngx-datatable-column name="Train" prop="serviceId" [cellClass]="getVarClass"></ngx-datatable-column>
+                <ngx-datatable-column name="Train" prop="serviceId" [cellClass]="getStatusClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Cars" prop="cars" maxWidth=90></ngx-datatable-column>
                 <ngx-datatable-column name="Start" prop="departs"></ngx-datatable-column>
-                <ngx-datatable-column name="Var" prop="varianceFriendly" maxWidth=100 [cellClass]="getVarClass"></ngx-datatable-column>
+                <ngx-datatable-column name="Var" prop="varianceFriendly" maxWidth=80 [cellClass]="getVarClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Last Stn" prop="laststation" [cellClass]="getStnClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
                 <ngx-datatable-column name="Age" prop="locationAge"></ngx-datatable-column>
                 <ngx-datatable-column name="End" prop="arrives"></ngx-datatable-column>
-                <ngx-datatable-column name="Status" prop="statusMessage" minWidth=200 [cellClass]="getVarClass"></ngx-datatable-column>
+                <ngx-datatable-column name="Status" prop="statusMessage" minWidth=200 [cellClass]="getStatusClass"></ngx-datatable-column>
                 </ngx-datatable>
             </div>
         </div>
