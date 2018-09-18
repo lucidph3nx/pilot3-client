@@ -3,7 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'service-view',
-  templateUrl: './service-view.component.html'
+  templateUrl: './service-view.component.html',
+  styleUrls: ['./service-view.component.css']
 })
 export class serviceViewComponent implements OnInit {
   constructor(

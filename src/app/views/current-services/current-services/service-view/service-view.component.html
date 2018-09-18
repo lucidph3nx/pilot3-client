@@ -31,29 +31,53 @@
     <div [hidden]="!service.LEExists">
     <mat-grid-tile colspan="1" rowspan="1">
         <mat-grid-tile-header>Locomotive Engineer</mat-grid-tile-header>
-        <button mat-button class="mat-raised-button" (click)="showDayRoster($event, service.LEShift)">{{ service.LE }} ({{ service.LEShift }})</button>
-        <p><strong>Next Service:</strong>
-            {{ service.LENextService }}</p>
-            <p><strong>Next Time:</strong>
-            {{ service.LENextServiceTime }}</p>
+        <mat-list>
+            <button mat-button class="mat-raised-button" (click)="showDayRoster($event, service.LEShift)">{{ service.LE }} ({{ service.LEShift }})</button>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <strong>Next Service:</strong>
+            <mat-list-item>
+            </mat-list-item>
+                {{ service.LENextService }}
+            </mat-list-item>
+            <mat-list-item>
+                <strong>Next Time:</strong>
+            <mat-list-item>
+            </mat-list-item>
+                {{ service.LENextServiceTime }}
+            </mat-list-item>
+        </mat-list>
     </mat-grid-tile>
     </div>
     <div [hidden]="!service.TMExists">
     <mat-grid-tile colspan="1" rowspan="1">
         <mat-grid-tile-header>Train Manager</mat-grid-tile-header>
-        <button mat-button class="mat-raised-button" (click)="showDayRoster($event, service.TMShift)">{{ service.TM }} ({{ service.TMShift }})</button>
-        <p><strong>Next Service:</strong>
-            {{ service.TMNextService }}</p>
-            <p><strong>Next Time:</strong>
-            {{ service.TMNextServiceTime }}</p>
+        <mat-list>
+            <button mat-button class="mat-raised-button" (click)="showDayRoster($event, service.TMShift)">{{ service.TM }} ({{ service.TMShift }})</button>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <strong>Next Service:</strong>
+            <mat-list-item>
+            </mat-list-item>
+                {{ service.TMNextService }}
+            </mat-list-item>
+            <mat-list-item>
+                <strong>Next Time:</strong>
+            <mat-list-item>
+            </mat-list-item>
+                {{ service.TMNextServiceTime }}
+            </mat-list-item>
+        </mat-list>
     </mat-grid-tile>
     </div> 
     <div [hidden]="!service.POExists">
     <mat-grid-tile colspan="1" rowspan="1">
         <mat-grid-tile-header>Passenger Operators</mat-grid-tile-header>
-            <div *ngFor="let PO of service.passengerOperatorList">
-            <button mat-button class="mat-raised-button" (click)="showDayRoster($event, PO.shiftId)">{{ PO.staffName }} ({{ PO.shiftId }})</button>
-        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let PO of service.passengerOperatorList">
+                <button mat-button class="mat-raised-button" (click)="showDayRoster($event, PO.shiftId)">{{ PO.staffName }} ({{ PO.shiftId }})</button>
+            </mat-list-item>
+        </mat-list>
     </mat-grid-tile>
     </div>
 </mat-grid-list>
