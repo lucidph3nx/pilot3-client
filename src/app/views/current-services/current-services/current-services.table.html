@@ -1,7 +1,7 @@
 <mat-card-content>
     <div fxLayout="row" fxLayout.sm="column">
         <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
-            <mat-card style="padding:10px; text-align:center"><h2>UP Trains</h2></mat-card>
+            <mat-card style="padding:10px; text-align:center"><h3>UP Trains</h3></mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
                 <ngx-datatable class="material"
                 [columnMode]="'force'"
@@ -17,7 +17,7 @@
                 <ngx-datatable-column name="Start" prop="departs"></ngx-datatable-column>
                 <ngx-datatable-column name="Var" prop="varianceFriendly" maxWidth=80 [cellClass]="getVarClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Last Stn" prop="lastStation" [cellClass]="getStnClass"></ngx-datatable-column>
-                <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                <ngx-datatable-column name="Speed" prop="speed" fxShow fxHide.sm="true"></ngx-datatable-column>
                 <ngx-datatable-column name="Age" prop="locationAge"></ngx-datatable-column>
                 <ngx-datatable-column name="End" prop="arrives"></ngx-datatable-column>
                 <ngx-datatable-column name="Status" prop="statusMessage" minWidth=200 [cellClass]="getStatusClass"></ngx-datatable-column>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
-            <mat-card style="padding:10px; text-align:center"><h2>DOWN Trains</h2></mat-card>
+            <mat-card style="padding:10px; text-align:center"><h3>DOWN Trains</h3></mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
                 <ngx-datatable class="material" 
                 [columnMode]="'force'"  
@@ -41,7 +41,7 @@
                 <ngx-datatable-column name="Start" prop="departs"></ngx-datatable-column>
                 <ngx-datatable-column name="Var" prop="varianceFriendly" maxWidth=80 [cellClass]="getVarClass"></ngx-datatable-column>
                 <ngx-datatable-column name="Last Stn" prop="lastStation" [cellClass]="getStnClass"></ngx-datatable-column>
-                <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                <ngx-datatable-column name="Speed" prop="speed" fxShow fxHide.sm="true"></ngx-datatable-column>
                 <ngx-datatable-column name="Age" prop="locationAge"></ngx-datatable-column>
                 <ngx-datatable-column name="End" prop="arrives"></ngx-datatable-column>
                 <ngx-datatable-column name="Status" prop="statusMessage" minWidth=200 [cellClass]="getStatusClass"></ngx-datatable-column>

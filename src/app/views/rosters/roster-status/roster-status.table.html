@@ -1,4 +1,14 @@
 <mat-card-content>
+    <form [formGroup]="daySelect">
+        <div fxLayout="row wrap">
+            <mat-form-field>
+                <input matInput name="date" formControlName="date" placeholder="Date" [matDatepicker]="appDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+            </mat-form-field>
+            <mat-datepicker #appDatepicker></mat-datepicker>
+            <button mat-raised-button color="primary" style="max-height: 40px;" [disabled]="daySelect.invalid">Search</button>
+        </div>
+    </form>
     <div fxLayout="row" fxLayout.sm="column">
         <div fxFlex="100" fxFlex.sm="100">
             <mat-card id="rosterChart" fxFlex="50">

@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RosterStatusService } from '../../../shared/services/data/roster-status.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment-timezone';
 
@@ -9,9 +12,15 @@ import * as moment from 'moment-timezone';
   templateUrl: './roster-status.table.html',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./roster-status.table.css'],
-  providers: [RosterStatusService],
+  providers: [RosterStatusService,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class RosterStatusTableComponent implements OnInit {
+  formData = {};
+  daySelect: FormGroup;
   constructor(
     private service: RosterStatusService,
   ) {}
@@ -80,9 +89,13 @@ export class RosterStatusTableComponent implements OnInit {
       this.currentRosterDayStatus = response.currentRosterDayStatus
       this.updateTables()
     });
+
+    this.daySelect = new FormGroup({
+      date: new FormControl('', [Validators.required])
+    })
+
   }
   updateTables(){
-    console.log('updated chart')
     // reset values
     this.rosterChart = {
       LE: {

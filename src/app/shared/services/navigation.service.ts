@@ -34,9 +34,8 @@ export class NavigationService {
       name: 'Current Services',
       type: 'link',
       tooltip: 'current services',
-      icon: 'view_stream',
+      icon: 'dashboard',
       state: 'current-services/variance',
-      
     },
     {
       name: 'Rosters',
@@ -44,8 +43,14 @@ export class NavigationService {
       tooltip: 'rosters',
       icon: 'group',
       state: 'rosters/roster-status',
-      
     },
+    // {
+    //   name: 'Running Sheet',
+    //   type: 'link',
+    //   tooltip: 'running sheet',
+    //   icon: 'view_stream',
+    //   state: 'rosters/running-sheet',
+    // },
     {
       name: 'OTHERS',
       type: 'link',
