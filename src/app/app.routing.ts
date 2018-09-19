@@ -10,6 +10,11 @@ export const rootRouterConfig: Routes = [
     pathMatch: 'full' 
   },
   {
+    path: 'pilot', 
+    redirectTo: 'current-services/variance', 
+    pathMatch: 'full' 
+  },
+  {
     path: '', 
     component: AuthLayoutComponent,
     children: [
