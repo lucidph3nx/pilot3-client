@@ -3,7 +3,7 @@
   "version": "3.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "ng serve --host 0.0.0.0",
     "serveProd": "ng serve --environment=prod",
     "build": "ng build",
     "test": "ng test",
