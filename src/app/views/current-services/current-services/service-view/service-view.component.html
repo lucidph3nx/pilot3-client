@@ -22,10 +22,20 @@
     <div [hidden]="!service.hasNextService">
     <mat-grid-tile colspan="1" rowspan="1">
         <mat-grid-tile-header>Unit</mat-grid-tile-header>
-            <p><strong>Next Service:</strong>
-            {{ service.nextService }}</p>
-            <p><strong>Next Time:</strong>
-            {{ service.nextTime }}</p>
+            <mat-list>
+                <mat-list-item>
+                    <strong>Next Service:</strong>
+                <mat-list-item>
+                </mat-list-item>
+                    {{ service.nextService }}
+                </mat-list-item>
+                <mat-list-item>
+                    <strong>Next Time:</strong>
+                <mat-list-item>
+                </mat-list-item>
+                    {{ service.nextTime }}
+                </mat-list-item>
+            </mat-list>
     </mat-grid-tile>
     </div>
     <div [hidden]="!service.LEExists">

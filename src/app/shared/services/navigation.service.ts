@@ -39,6 +39,14 @@ export class NavigationService {
       
     },
     {
+      name: 'Rosters',
+      type: 'link',
+      tooltip: 'rosters',
+      icon: 'group',
+      state: 'rosters/roster-status',
+      
+    },
+    {
       name: 'OTHERS',
       type: 'link',
       tooltip: 'Others',

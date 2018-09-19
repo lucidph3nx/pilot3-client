@@ -25,7 +25,7 @@ import { SharedModule } from './../../shared/shared.module';
 
 
 import { RosterStatusTableComponent } from './roster-status/roster-status.table';
-import { RosterStatusRoutes } from "./roster-status.routing";
+import { RostersRoutes } from "./rosters.routing";
 
 
 @NgModule({
@@ -50,10 +50,10 @@ import { RosterStatusRoutes } from "./roster-status.routing";
     ChartsModule,
     FileUploadModule,
     SharedModule,
-    RouterModule.forChild(RosterStatusRoutes)
+    RouterModule.forChild(RostersRoutes)
   ],
   declarations: [
-    RosterStatusTableComponent
+    RosterStatusTableComponent,
   ],
 })
-export class RosterStatusModule { }
+export class RostersModule { }

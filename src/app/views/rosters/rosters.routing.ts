@@ -3,13 +3,13 @@ import { Routes } from '@angular/router';
 import { RosterStatusTableComponent } from './roster-status/roster-status.table';
 
 
-export const RosterStatusRoutes: Routes = [
+export const RostersRoutes: Routes = [
   {
     path: '',
     children: [{
-      path: 'rosterStatus',
+      path: 'roster-status',
       component: RosterStatusTableComponent,
-      data: { title: 'Rosters', breadcrumb: 'Rosters' }
+      data: { title: 'Roster Status', breadcrumb: 'Roster Status' }
     }]
   }
 ];

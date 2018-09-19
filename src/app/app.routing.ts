@@ -38,6 +38,18 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'rosters', 
+        loadChildren: './views/rosters/rosters.module#RostersModule', 
+        data: { title: 'Rosters', breadcrumb: 'Rosters'}
+      }
+    ]
+  },
+  {
+    path: '', 
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
         path: 'others', 
         loadChildren: './views/others/others.module#OthersModule', 
         data: { title: 'Others', breadcrumb: 'OTHERS'}

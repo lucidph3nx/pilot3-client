@@ -1,0 +1,54 @@
+<mat-card-content>
+    <div fxLayout="row" fxLayout.sm="column">
+        <div fxFlex="100" fxFlex.sm="100">
+            <mat-card id="rosterChart" fxFlex="50">
+                <mat-card-title class="">
+                    <div class="card-title-text">Roster Availability chart</div>
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content>
+                    <canvas baseChart class="chart" [datasets]="StaffChartData" [labels]="StaffChartLabels" [options]="barChartStackedOptions"
+                        [colors]="chartColors" [legend]="StaffChartLegend" [chartType]="StaffChartType"></canvas>
+                </mat-card-content>
+            </mat-card>
+            <mat-card id="rosterChart" fxFlex="50">
+                <mat-card-title class="">
+                    <div class="card-title-text">Overall chart</div>
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content>
+                    <canvas baseChart class="chart" [data]="doughnutChartData" [labels]="doughnutChartLabels" [options]="doughnutOptions"
+                        [colors]="doughnutChartColors" [chartType]="doughnutChartType"></canvas>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayout.sm="column">
+        <div fxFlex="50">
+            <mat-card style="padding:10px; text-align:center">
+                <mat-card-title>Locomotive Engineers</mat-card-title>
+            </mat-card>
+            <div id="variancetable" class="mat-box-shadow margin-333">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0"
+                    [rowHeight]="50" [scrollbarV]="false" [rows]="LE" [sorts]="[{prop: 'location', dir: 'asc'},{prop: 'counterType', dir: 'asc'}]">
+                    <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>
+                    <ngx-datatable-column name="Counter" prop="counterType"></ngx-datatable-column>
+                    <ngx-datatable-column name="Count" prop="count"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+        <div fxFlex="50">
+            <mat-card style="padding:10px; text-align:center">
+                <mat-card-title>Train Managers</mat-card-title>
+            </mat-card>
+            <div id="variancetable" class="mat-box-shadow margin-333">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0"
+                    [rowHeight]="50" [scrollbarV]="false" [rows]="TM" [sorts]="[{prop: 'location', dir: 'asc'},{prop: 'counterType', dir: 'asc'}]">
+                    <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>
+                    <ngx-datatable-column name="Counter" prop="counterType"></ngx-datatable-column>
+                    <ngx-datatable-column name="Count" prop="count"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+    </div>
+</mat-card-content>
