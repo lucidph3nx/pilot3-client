@@ -10,10 +10,9 @@ export class RosterStatusService {
 
     constructor(private http: Http) {}
   
-    getCurrentRosterStatus = () => {
+    getCurrentRosterStatus = (date) => {
         return Observable
-        .timer(0,10000)
-        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/rosterDayStatus').map((response: Response) => response.json()))
+        .timer(0)
+        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/rosterDayStatus?date='+date.format('YYYYMMDD')).map((response: Response) => response.json()))
     }
-
 }

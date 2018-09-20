@@ -19,11 +19,20 @@ import * as moment from 'moment-timezone';
   ],
 })
 export class RosterStatusTableComponent implements OnInit {
-  formData = {};
-  daySelect: FormGroup;
+  daySelect = new FormGroup({
+    date: new FormControl()
+  })
   constructor(
     private service: RosterStatusService,
   ) {}
+
+  onSubmit() {
+    this.service.getCurrentRosterStatus(this.daySelect.value.date)
+    .subscribe((response) => {
+      this.currentRosterDayStatus = response.currentRosterDayStatus
+      this.updateTables()
+    });
+  }
 
   currentRosterDayStatus = []
   LE = []
@@ -84,7 +93,7 @@ export class RosterStatusTableComponent implements OnInit {
   unavailableTypes = ['SL', 'CC', 'SP', 'DOM', 'PLU', 'TRNG', 'AD', 'AL', 'LW', 'LD', 'LS', 'OBR']
 
   ngOnInit() {
-    this.service.getCurrentRosterStatus()
+    this.service.getCurrentRosterStatus(moment())
     .subscribe((response) => {
       this.currentRosterDayStatus = response.currentRosterDayStatus
       this.updateTables()
