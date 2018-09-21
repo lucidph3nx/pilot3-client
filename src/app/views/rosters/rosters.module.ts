@@ -17,7 +17,8 @@ import {
   MatInputModule,
   MatProgressBarModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatSelectModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -55,6 +56,7 @@ import { RostersRoutes } from "./rosters.routing";
     SharedModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSelectModule,
     RouterModule.forChild(RostersRoutes)
   ],
   declarations: [

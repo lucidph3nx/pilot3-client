@@ -3,7 +3,7 @@ import { RosterStatusService } from '../../../shared/services/data/roster-status
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSelectModule } from '@angular/material';
 import * as moment from 'moment-timezone';
 
 
@@ -18,273 +18,220 @@ import * as moment from 'moment-timezone';
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],
 })
+
 export class RosterStatusTableComponent implements OnInit {
   daySelect = new FormGroup({
     date: new FormControl()
+  })
+  staffFilter = new FormGroup({
+    staffType: new FormControl()
   })
   constructor(
     private service: RosterStatusService,
   ) {}
 
+  staffTypeList = [
+    {value:'ALL'},
+    {value:'LE'},
+    {value:'TM'},
+    {value:'PO'},
+    {value:'RCTXO'},
+    {value:'PL'},
+    {value:'SA'}
+  ];
+  filter(staffType) {
+    this.updateTables(staffType.value)
+  }
+
   onSubmit() {
     this.service.getCurrentRosterStatus(this.daySelect.value.date)
     .subscribe((response) => {
       this.currentRosterDayStatus = response.currentRosterDayStatus
-      this.updateTables()
+      this.updateTables('ALL')
+    });
+    this.service.getUncoveredShifts(this.daySelect.value.date)
+    .subscribe((response) => {
+      this.uncoveredShifts = response.uncoveredShifts
+      this.updateTables('ALL')
     });
   }
 
   currentRosterDayStatus = []
-  LE = []
-  TM = []
-  PO = []
-  RCTXO = []
-  PL = []
-  SA = []
+  filteredRosterDayStatus = []
+  uncoveredShifts = []
+  filteredUncoveredShifts = []
 
-  rosterChart = {
-    LE: {
-      working: 0,
-      available: 0,
-      rest: 0,
-      unavailable: 0
-    },
-    TM: {
-      working: 0,
-      available: 0,
-      rest: 0,
-      unavailable: 0
-    },
-    PO: {
-      working: 0,
-      available: 0,
-      rest: 0,
-      unavailable: 0
-    },
-    RCTXO: {
-      working: 0,
-      available: 0,
-      rest: 0,
-      unavailable: 0
-    },
-    PL: {
-      working: 0,
-      available: 0,
-      rest: 0,
-      unavailable: 0
-    },
-    SA: {
-      working: 0,
-      available: 0,
-      rest: 0,
-      unavailable: 0
-    },
-    ALL: {
-      working: 0,
-      available: 0,
-      rest: 0,
-      unavailable: 0
-    }
+  unavailabilityBreakdown = {
+    sickLeave: 0,
+    domesticLeave: 0,
+    specialLeave: 0,
+    acc: 0,
+    berevementLeave: 0,
+    parentalLeave: 0,
+    alternativeDuties: 0,
+    offByRequest: 0,
+    standby: 0,
+    annualLeave: 0,
+    lieuDay: 0,
+    longServiceLeave: 0,
+    leaveWithoutPay: 0,
+    training: 0,
   }
 
-  workTypes = ['WK',]
-  availableTypes = ['ASL', 'ASLE', 'ASLL', 'ESP', 'LSP']
-  restTypes = ['OFF', 'OFF1E', 'OFF2E', 'OFF1L', 'OFF2L']
-  unavailableTypes = ['SL', 'CC', 'SP', 'DOM', 'PLU', 'TRNG', 'AD', 'AL', 'LW', 'LD', 'LS', 'OBR']
+  rosterChart = {
+    LE:    [0,0,0,0,0,0],
+    TM:    [0,0,0,0,0,0],
+    PO:    [0,0,0,0,0,0],
+    RCTXO: [0,0,0,0,0,0],
+    PL:    [0,0,0,0,0,0],
+    SA:    [0,0,0,0,0,0],
+  }
+
 
   ngOnInit() {
     this.service.getCurrentRosterStatus(moment())
     .subscribe((response) => {
       this.currentRosterDayStatus = response.currentRosterDayStatus
-      this.updateTables()
+      this.updateTables('ALL')
+    });
+    this.service.getUncoveredShifts(moment())
+    .subscribe((response) => {
+      this.uncoveredShifts = response.uncoveredShifts
+      this.updateTables('ALL')
     });
 
     this.daySelect = new FormGroup({
       date: new FormControl('', [Validators.required])
     })
+    this.staffFilter = new FormGroup({
+      staffType: new FormControl()
+    })
 
   }
-  updateTables(){
+  updateTables(staffTypeFilter){
+    if (staffTypeFilter !== 'ALL'){
+      this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.staffType === staffTypeFilter)
+      this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.staffType === staffTypeFilter)
+    } else {
+      this.filteredRosterDayStatus = this.currentRosterDayStatus
+      this.filteredUncoveredShifts = this.uncoveredShifts
+    }
     // reset values
     this.rosterChart = {
-      LE: {
-        working: 0,
-        available: 0,
-        rest: 0,
-        unavailable: 0
-      },
-      TM: {
-        working: 0,
-        available: 0,
-        rest: 0,
-        unavailable: 0
-      },
-      PO: {
-        working: 0,
-        available: 0,
-        rest: 0,
-        unavailable: 0
-      },
-      RCTXO: {
-        working: 0,
-        available: 0,
-        rest: 0,
-        unavailable: 0
-      },
-      PL: {
-        working: 0,
-        available: 0,
-        rest: 0,
-        unavailable: 0
-      },
-      SA: {
-        working: 0,
-        available: 0,
-        rest: 0,
-        unavailable: 0
-      },
-      ALL: {
-        working: 0,
-        available: 0,
-        rest: 0,
-        unavailable: 0
-      }
+      LE:    [0,0,0,0,0,0],
+      TM:    [0,0,0,0,0,0],
+      PO:    [0,0,0,0,0,0],
+      RCTXO: [0,0,0,0,0,0],
+      PL:    [0,0,0,0,0,0],
+      SA:    [0,0,0,0,0,0],
+    }
+    this.unavailabilityBreakdown = {
+      sickLeave: 0,
+      domesticLeave: 0,
+      specialLeave: 0,
+      acc: 0,
+      berevementLeave: 0,
+      parentalLeave: 0,
+      alternativeDuties: 0,
+      offByRequest: 0,
+      standby: 0,
+      annualLeave: 0,
+      lieuDay: 0,
+      longServiceLeave: 0,
+      leaveWithoutPay: 0,
+      training: 0,
     }
 
-    for (let c = 0; c < this.currentRosterDayStatus.length; c++){
-      if (this.workTypes.includes(this.currentRosterDayStatus[c].counterType)){
-        this.rosterChart.ALL.working += this.currentRosterDayStatus[c].count
-      }
-      if (this.availableTypes.includes(this.currentRosterDayStatus[c].counterType)){
-        this.rosterChart.ALL.available += this.currentRosterDayStatus[c].count
-      }
-      if (this.restTypes.includes(this.currentRosterDayStatus[c].counterType)){
-        this.rosterChart.ALL.rest += this.currentRosterDayStatus[c].count
-      }
-      if (this.unavailableTypes.includes(this.currentRosterDayStatus[c].counterType)){
-        this.rosterChart.ALL.unavailable += this.currentRosterDayStatus[c].count
-      }
+    for (let c = 0; c < this.filteredRosterDayStatus.length; c++){
+        if (this.filteredRosterDayStatus[c].counterType === 'SL') {this.unavailabilityBreakdown.sickLeave += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'CC') {this.unavailabilityBreakdown.acc += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'SP') {this.unavailabilityBreakdown.specialLeave += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'DOM') {this.unavailabilityBreakdown.domesticLeave += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'PLU') {this.unavailabilityBreakdown.parentalLeave += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'TRN') {this.unavailabilityBreakdown.training += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'TRNG') {this.unavailabilityBreakdown.training += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'AD') {this.unavailabilityBreakdown.alternativeDuties += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'AL') {this.unavailabilityBreakdown.annualLeave += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'LW') {this.unavailabilityBreakdown.leaveWithoutPay += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'LD') {this.unavailabilityBreakdown.lieuDay += this.filteredRosterDayStatus[c].count};
+        if (this.filteredRosterDayStatus[c].counterType === 'LS') {this.unavailabilityBreakdown.longServiceLeave += this.filteredRosterDayStatus[c].count};
+        //if (this.filteredRosterDayStatus[c].counterType === 'OBR') {this.unavailabilityBreakdown.offByRequest += this.filteredRosterDayStatus[c].count};
     }
-    this.doughnutChartData[0] = this.rosterChart.ALL.working
-    this.doughnutChartData[1] = this.rosterChart.ALL.available
-    this.doughnutChartData[2] = this.rosterChart.ALL.rest
-    this.doughnutChartData[3] = this.rosterChart.ALL.unavailable
+    this.doughnutChartData[0] = this.unavailabilityBreakdown.sickLeave
+    this.doughnutChartData[1] = this.unavailabilityBreakdown.acc
+    this.doughnutChartData[2] = this.unavailabilityBreakdown.specialLeave
+    this.doughnutChartData[3] = this.unavailabilityBreakdown.domesticLeave
+    this.doughnutChartData[4] = this.unavailabilityBreakdown.alternativeDuties
+    this.doughnutChartData[5] = this.unavailabilityBreakdown.parentalLeave
+    this.doughnutChartData[6] = this.unavailabilityBreakdown.training
+    this.doughnutChartData[7] = this.unavailabilityBreakdown.annualLeave
+    this.doughnutChartData[8] = this.unavailabilityBreakdown.leaveWithoutPay
+    this.doughnutChartData[9] = this.unavailabilityBreakdown.lieuDay
+    this.doughnutChartData[10] = this.unavailabilityBreakdown.longServiceLeave
+    //this.doughnutChartData[11] = this.unavailabilityBreakdown.offByRequest
 
-    this.LE = this.currentRosterDayStatus.filter(area => area.staffType === 'LE')
-    this.TM = this.currentRosterDayStatus.filter(area => area.staffType === 'TM')
-    this.PO = this.currentRosterDayStatus.filter(area => area.staffType === 'PO')
-    this.RCTXO = this.currentRosterDayStatus.filter(area => area.staffType === 'RCTXO')
-    this.PL = this.currentRosterDayStatus.filter(area => area.staffType === 'PL')
-    this.SA = this.currentRosterDayStatus.filter(area => area.staffType === 'SA')
+
+    for (let st = 1; st < this.staffTypeList.length; st++){
+      let staffType = this.staffTypeList[st].value
+      let dataset = this.currentRosterDayStatus.filter(area => area.staffType === staffType)
+        for (let c = 0; c < dataset.length; c++){
+          if (['WK'].includes(dataset[c].counterType)){
+            this.rosterChart[staffType][1] += dataset[c].count
+          }
+          if (['ASL', 'ASLE', 'ASLL', 'ESP', 'LSP'].includes(dataset[c].counterType)){
+            this.rosterChart[staffType][2] += dataset[c].count
+          }
+          if (['OFF', 'OFF1E', 'OFF2E', 'OFF1L', 'OFF2L'].includes(dataset[c].counterType)){
+            this.rosterChart[staffType][3] += dataset[c].count
+          }
+          if (['OBR'].includes(dataset[c].counterType)){
+            this.rosterChart[staffType][4] += dataset[c].count
+          }
+          if (['SL', 'CC', 'SP', 'DOM', 'PLU', 'TRN', 'TRNG', 'AD', 'AL', 'LW', 'LD', 'LS'].includes(dataset[c].counterType)){
+            this.rosterChart[staffType][5] += dataset[c].count
+          }
+      }
+      //calculate the requirement
+      this.rosterChart[staffType][0] = this.rosterChart[staffType][1] + this.uncoveredShifts.filter(area => area.staffType === staffType).length
+    }
     
-    for (let c = 0; c < this.LE.length; c++){
-      if (this.workTypes.includes(this.LE[c].counterType)){
-        this.rosterChart.LE.working += this.LE[c].count
-      }
-      if (this.availableTypes.includes(this.LE[c].counterType)){
-        this.rosterChart.LE.available += this.LE[c].count
-      }
-      if (this.restTypes.includes(this.LE[c].counterType)){
-        this.rosterChart.LE.rest += this.LE[c].count
-      }
-      if (this.unavailableTypes.includes(this.LE[c].counterType)){
-        this.rosterChart.LE.unavailable += this.LE[c].count
-      }
-    }
-    for (let c = 0; c < this.TM.length; c++){
-      if (this.workTypes.includes(this.TM[c].counterType)){
-        this.rosterChart.TM.working += this.TM[c].count
-      }
-      if (this.availableTypes.includes(this.TM[c].counterType)){
-        this.rosterChart.TM.available += this.TM[c].count
-      }
-      if (this.restTypes.includes(this.TM[c].counterType)){
-        this.rosterChart.TM.rest += this.TM[c].count
-      }
-      if (this.unavailableTypes.includes(this.TM[c].counterType)){
-        this.rosterChart.TM.unavailable += this.TM[c].count
-      }
-    }
-    for (let c = 0; c < this.PO.length; c++){
-      if (this.workTypes.includes(this.PO[c].counterType)){
-        this.rosterChart.PO.working += this.PO[c].count
-      }
-      if (this.availableTypes.includes(this.PO[c].counterType)){
-        this.rosterChart.PO.available += this.PO[c].count
-      }
-      if (this.restTypes.includes(this.PO[c].counterType)){
-        this.rosterChart.PO.rest += this.PO[c].count
-      }
-      if (this.unavailableTypes.includes(this.PO[c].counterType)){
-        this.rosterChart.PO.unavailable += this.PO[c].count
-      }
-    }
-    for (let c = 0; c < this.RCTXO.length; c++){
-      if (this.workTypes.includes(this.RCTXO[c].counterType)){
-        this.rosterChart.RCTXO.working += this.RCTXO[c].count
-      }
-      if (this.availableTypes.includes(this.RCTXO[c].counterType)){
-        this.rosterChart.RCTXO.available += this.RCTXO[c].count
-      }
-      if (this.restTypes.includes(this.RCTXO[c].counterType)){
-        this.rosterChart.RCTXO.rest += this.RCTXO[c].count
-      }
-      if (this.unavailableTypes.includes(this.RCTXO[c].counterType)){
-        this.rosterChart.RCTXO.unavailable += this.RCTXO[c].count
-      }
-    }
-    for (let c = 0; c < this.PL.length; c++){
-      if (this.workTypes.includes(this.PL[c].counterType)){
-        this.rosterChart.PL.working += this.PL[c].count
-      }
-      if (this.availableTypes.includes(this.PL[c].counterType)){
-        this.rosterChart.PL.available += this.PL[c].count
-      }
-      if (this.restTypes.includes(this.PL[c].counterType)){
-        this.rosterChart.PL.rest += this.PL[c].count
-      }
-      if (this.unavailableTypes.includes(this.PL[c].counterType)){
-        this.rosterChart.PL.unavailable += this.PL[c].count
-      }
-    }
-    for (let c = 0; c < this.SA.length; c++){
-      if (this.workTypes.includes(this.SA[c].counterType)){
-        this.rosterChart.SA.working += this.SA[c].count
-      }
-      if (this.availableTypes.includes(this.SA[c].counterType)){
-        this.rosterChart.SA.available += this.SA[c].count
-      }
-      if (this.restTypes.includes(this.SA[c].counterType)){
-        this.rosterChart.SA.rest += this.SA[c].count
-      }
-      if (this.unavailableTypes.includes(this.SA[c].counterType)){
-        this.rosterChart.SA.unavailable += this.SA[c].count
-      }
-    }
-    this.StaffChartData[0].data[0] = this.rosterChart.LE.working
-    this.StaffChartData[1].data[0] = this.rosterChart.LE.available
-    this.StaffChartData[2].data[0] = this.rosterChart.LE.rest
-    this.StaffChartData[3].data[0] = this.rosterChart.LE.unavailable
-    this.StaffChartData[0].data[1] = this.rosterChart.TM.working
-    this.StaffChartData[1].data[1] = this.rosterChart.TM.available
-    this.StaffChartData[2].data[1] = this.rosterChart.TM.rest
-    this.StaffChartData[3].data[1] = this.rosterChart.TM.unavailable
-    this.StaffChartData[0].data[2] = this.rosterChart.PO.working
-    this.StaffChartData[1].data[2] = this.rosterChart.PO.available
-    this.StaffChartData[2].data[2] = this.rosterChart.PO.rest
-    this.StaffChartData[3].data[2] = this.rosterChart.PO.unavailable
-    this.StaffChartData[0].data[3] = this.rosterChart.RCTXO.working
-    this.StaffChartData[1].data[3] = this.rosterChart.RCTXO.available
-    this.StaffChartData[2].data[3] = this.rosterChart.RCTXO.rest
-    this.StaffChartData[3].data[3] = this.rosterChart.RCTXO.unavailable
-    this.StaffChartData[0].data[4] = this.rosterChart.PL.working
-    this.StaffChartData[1].data[4] = this.rosterChart.PL.available
-    this.StaffChartData[2].data[4] = this.rosterChart.PL.rest
-    this.StaffChartData[3].data[4] = this.rosterChart.PL.unavailable
-    this.StaffChartData[0].data[5] = this.rosterChart.SA.working
-    this.StaffChartData[1].data[5] = this.rosterChart.SA.available
-    this.StaffChartData[2].data[5] = this.rosterChart.SA.rest
-    this.StaffChartData[3].data[5] = this.rosterChart.SA.unavailable
+
+    this.StaffChartData[0].data[0] = this.rosterChart.LE[0]
+    this.StaffChartData[1].data[0] = this.rosterChart.LE[1]
+    this.StaffChartData[2].data[0] = this.rosterChart.LE[2]
+    this.StaffChartData[3].data[0] = this.rosterChart.LE[3]
+    this.StaffChartData[4].data[0] = this.rosterChart.LE[4]
+    this.StaffChartData[5].data[0] = this.rosterChart.LE[5]
+    this.StaffChartData[0].data[1] = this.rosterChart.TM[0]
+    this.StaffChartData[1].data[1] = this.rosterChart.TM[1]
+    this.StaffChartData[2].data[1] = this.rosterChart.TM[2]
+    this.StaffChartData[3].data[1] = this.rosterChart.TM[2]
+    this.StaffChartData[4].data[1] = this.rosterChart.TM[4]
+    this.StaffChartData[5].data[1] = this.rosterChart.TM[5]
+    this.StaffChartData[0].data[2] = this.rosterChart.PO[0]
+    this.StaffChartData[1].data[2] = this.rosterChart.PO[1]
+    this.StaffChartData[2].data[2] = this.rosterChart.PO[2]
+    this.StaffChartData[3].data[2] = this.rosterChart.PO[2]
+    this.StaffChartData[4].data[2] = this.rosterChart.PO[4]
+    this.StaffChartData[5].data[2] = this.rosterChart.PO[5]
+    this.StaffChartData[0].data[3] = this.rosterChart.RCTXO[0]
+    this.StaffChartData[1].data[3] = this.rosterChart.RCTXO[1]
+    this.StaffChartData[2].data[3] = this.rosterChart.RCTXO[2]
+    this.StaffChartData[3].data[3] = this.rosterChart.RCTXO[2]
+    this.StaffChartData[4].data[3] = this.rosterChart.RCTXO[4]
+    this.StaffChartData[5].data[3] = this.rosterChart.RCTXO[5]
+    this.StaffChartData[0].data[4] = this.rosterChart.PL[0]
+    this.StaffChartData[1].data[4] = this.rosterChart.PL[1]
+    this.StaffChartData[2].data[4] = this.rosterChart.PL[2]
+    this.StaffChartData[3].data[4] = this.rosterChart.PL[2]
+    this.StaffChartData[4].data[4] = this.rosterChart.PL[4]
+    this.StaffChartData[5].data[4] = this.rosterChart.PL[5]
+    this.StaffChartData[0].data[5] = this.rosterChart.SA[0]
+    this.StaffChartData[1].data[5] = this.rosterChart.SA[1]
+    this.StaffChartData[2].data[5] = this.rosterChart.SA[2]
+    this.StaffChartData[3].data[5] = this.rosterChart.SA[2]
+    this.StaffChartData[4].data[5] = this.rosterChart.SA[4]
+    this.StaffChartData[5].data[5] = this.rosterChart.SA[5]
     // fixes the refresh issue
     let clone1 = JSON.parse(JSON.stringify(this.StaffChartData));
     this.StaffChartData = clone1;
@@ -292,15 +239,14 @@ export class RosterStatusTableComponent implements OnInit {
     this.doughnutChartData = clone2;
   }
 
-  sharedChartOptions: any = {
-    responsive: true,
-    maintainAspectRatio: true,
-    legend: {
-      display: false,
-      position: 'bottom'
-    }
-  };
-  chartColors: Array <any> = [{
+  StaffChartColors: Array <any> = [{
+    backgroundColor: '#4363d8',
+    borderColor: '#3f51b5',
+    pointBackgroundColor: '#3f51b5',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  }, {
     backgroundColor: '#eeeeee',
     borderColor: '#3f51b5',
     pointBackgroundColor: '#3f51b5',
@@ -322,6 +268,13 @@ export class RosterStatusTableComponent implements OnInit {
     pointHoverBackgroundColor: '#fff',
     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
   }, {
+    backgroundColor: '#595959',
+    borderColor: 'rgba(148,159,177,1)',
+    pointBackgroundColor: 'rgba(148,159,177,1)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  }, {
     backgroundColor: '#ff8080',
     borderColor: '#e0e0e0',
     pointBackgroundColor: '#e0e0e0',
@@ -329,66 +282,100 @@ export class RosterStatusTableComponent implements OnInit {
     pointHoverBackgroundColor: '#fff',
     pointHoverBorderColor: 'rgba(77,83,96,1)'
   }];
-
   /*
   * Staff Chart
   */
  StaffChartLabels: string[] = ['Locomotive Engineer', 'Train Manager', 'Passenger Operator', 'RCO & TXO', 'SCC', 'Sales'];
- StaffChartType = 'bar';
+ StaffChartType = 'horizontalBar';
  StaffChartLegend = true;
  StaffChartData: any[] = [{
   data: [0,0,0,0,0,0],
+   label: 'Staffing Requirement',
+   borderWidth: 0,
+   stack: 'A',
+ },{
+  data: [0,0,0,0,0,0],
    label: 'Working',
-   borderWidth: 0
+   borderWidth: 0,
+   stack: 'B',
  }, {
   data: [0,0,0,0,0,0],
    label: 'Available',
-   borderWidth: 0
+   borderWidth: 0,
+   stack: 'B',
  }, {
   data: [0,0,0,0,0,0],
-  label: 'Rest',
-  borderWidth: 0
+  label: 'Off',
+  borderWidth: 0,
+  stack: 'C',
+}, {
+  data: [0,0,0,0,0,0],
+  label: 'Off by request',
+  borderWidth: 0,
+  stack: 'C',
 }, {
   data: [0,0,0,0,0,0],
   label: 'Unvailable',
-  borderWidth: 0
+  borderWidth: 0,
+  stack: 'D',
 }];
- barChartOptions: any = Object.assign({
+StaffChartOptions: any = Object.assign({
    scaleShowVerticalLines: true,
    scales: {
      xAxes: [{
-       gridLines: {
-         color: 'rgba(0,0,0,0.02)',
-         zeroLineColor: 'rgba(0,0,0,0.02)'
-       }
-     }],
-     yAxes: [{
+      stacked: true,
        gridLines: {
          color: 'rgba(0,0,0,0.02)',
          zeroLineColor: 'rgba(0,0,0,0.02)'
        },
-       position: 'left',
        ticks: {
-         beginAtZero: true,
-         min: 0
+        fontColor: "white",
        }
-     }]
+     }],
+     yAxes: [{
+      stacked: true,
+       gridLines: {
+         color: 'rgba(0,0,0,0.02)',
+         zeroLineColor: 'rgba(0,0,0,0.02)'
+       },
+       ticks: {
+        fontColor: "white",
+       }
+     }],
+   },
+   responsive: true,
+   maintainAspectRatio: true,
+   legend: {
+     display: true,
+     position: 'top',
+     labels: {
+      fontColor: "white",
+  }
    }
- }, this.sharedChartOptions);
+ });
   // All Staff Chart
   doughnutChartColors: any[] = [{
-    backgroundColor: ['#eeeeee', '#97c475', '#808080', '#ff8080']
+    backgroundColor: ['#e6194b', '#9A6324', '#f58231', '#ffe119', '#bfef45', '#3cb44b', '#42d4f4', '#4363d8', '#911eb4', '#000075', '#469990', '#a9a9a9']
   }];
-  doughnutChartLabels: string[] = ['Working', 'Available', 'Rest', 'unavailable'];
-  doughnutChartData: number[] = [0, 0, 0, 0];
+  doughnutChartLabels: string[] = ['Sick', 'ACC', 'Special', 'Domestic', 'Alt Duties', 'Parental Leave', 'Training', 'Annual Leave', 'Leave Without Pay', 'Lieu Day', 'Long Service'];
+  doughnutChartData: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   doughnutChartType = 'doughnut';
   doughnutOptions: any = Object.assign({
     elements: {
       arc: {
         borderWidth: 0
       }
+    },
+    responsive: true,
+    maintainAspectRatio: true,
+    legend: {
+      display: true,
+      position: 'right',
+      labels: {
+       fontColor: "white",
+   }
     }
-  }, this.sharedChartOptions);
+  });
    /*
   * Bar Chart Event Handler
   */
