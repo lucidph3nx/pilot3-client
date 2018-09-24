@@ -28,7 +28,7 @@ export class HeaderSideComponent implements OnInit {
     private layout: LayoutService,
     public translate: TranslateService,
     private renderer: Renderer2,
-    private service: CurrentServicesService
+    private service: CurrentServicesService,
   ) {}
   serverTime = moment();
   serverStatus = '';
@@ -73,7 +73,6 @@ export class HeaderSideComponent implements OnInit {
       sidebarStyle: 'closed'
     })
   }
-
   toggleCollapse() {
     // compact --> full
     if(this.layoutConf.sidebarStyle === 'compact') {
@@ -81,11 +80,9 @@ export class HeaderSideComponent implements OnInit {
         sidebarStyle: 'full'
       }, {transitionClass: true})
     }
-
     // * --> compact
     this.layout.publishLayoutChange({
       sidebarStyle: 'compact'
     }, {transitionClass: true})
-
   }
 }

@@ -39,8 +39,8 @@ export class RosterStatusTableComponent implements OnInit {
     {value:'PL'},
     {value:'SA'}
   ];
-  filter(staffType) {
-    this.updateTables(staffType.value)
+  filter($event) {
+    this.updateTables($event.value)
   }
 
   onSubmit() {

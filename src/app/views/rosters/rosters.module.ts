@@ -28,6 +28,7 @@ import { SharedModule } from './../../shared/shared.module';
 
 
 import { RosterStatusTableComponent } from './roster-status/roster-status.table';
+import { ShiftDetailPage } from './shift-detail/shift-detail.page';
 import { RostersRoutes } from "./rosters.routing";
 
 
@@ -61,6 +62,7 @@ import { RostersRoutes } from "./rosters.routing";
   ],
   declarations: [
     RosterStatusTableComponent,
+    ShiftDetailPage,
   ],
 })
 export class RostersModule { }

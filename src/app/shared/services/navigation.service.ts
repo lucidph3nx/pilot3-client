@@ -39,10 +39,14 @@ export class NavigationService {
     },
     {
       name: 'Rosters',
-      type: 'link',
-      tooltip: 'rosters',
+      type: 'dropDown',
+      tooltip: 'Rosters',
       icon: 'group',
-      state: 'rosters/roster-status',
+      state: 'rosters',
+      sub: [
+        { name: 'Status', state: 'roster-status' },
+        { name: 'Shift Detail', state: 'shift-detail' },
+      ]
     },
     // {
     //   name: 'Running Sheet',

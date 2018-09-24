@@ -1,3 +1,27 @@
 .mat-list, .mat-nav-list, .mat-selection-list {
     padding-top: 16px;
 }
+
+.service-details-title{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.service-details-table{
+    width: 100%;
+}
+
+.servicedetailgridtile{
+    width: 100%;
+    height: 95%;
+    padding: 5px;
+}
+.servicedetailgridtile .mat-card-content{
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+}
+.servicedetailgridtile .mat-card-actions{
+    width: 100%;
+    padding: 5px;
+    margin-left: 0;
+    margin-right: 0;
+}
