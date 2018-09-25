@@ -1,11 +1,23 @@
 <mat-card-content>
     <div fxLayout="row">
-        <mat-card style="padding:10px;" fxFlex="100">
+        <mat-card style="padding:10px;" fxFlex="50">
             <div class="card-title-text">Shift Lookup</div>
             <form [formGroup]="shiftSelect" (ngSubmit)="loadShift($event)">
                 <div fxLayout="row wrap">
                     <mat-form-field>
                         <input matInput name="shiftId" formControlName="shiftId" placeholder="shiftId">
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" style="max-height: 40px;"
+                        type="submit">Search</button>
+                </div>
+            </form>
+        </mat-card>
+        <mat-card style="padding:10px;" fxFlex="50">
+            <div class="card-title-text">Staff Lookup</div>
+            <form [formGroup]="staffSelect" (ngSubmit)="loadStaff($event)">
+                <div fxLayout="row wrap">
+                    <mat-form-field>
+                        <input matInput name="staffId" formControlName="staffId" placeholder="staffId">
                     </mat-form-field>
                     <button mat-raised-button color="primary" style="max-height: 40px;"
                         type="submit">Search</button>

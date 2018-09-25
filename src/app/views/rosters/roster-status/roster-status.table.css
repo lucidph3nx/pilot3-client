@@ -1,0 +1,23 @@
+#variancetable .datatable-header-cell{
+    text-align: center;
+    font-size: 1.1rem;
+    padding-top: 0.4rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.4rem;
+    padding-left: 0.9rem;
+    }
+  #variancetable .datatable-body-cell{
+    text-align: center;
+    font-size: 1.1rem;
+    padding-top: 0.4rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.4rem;
+    padding-left: 0.9rem;
+    vertical-align: middle;
+  }
+.pilot-dark #variancetable .datatable-body-cell{
+    border-top: 1px solid white;
+  }
+.pilot-light #variancetable .datatable-body-cell{
+border-top: 1px solid black;
+}

@@ -17,6 +17,9 @@ export class ShiftDetailPage implements OnInit {
   shiftSelect = new FormGroup({
     shiftId: new FormControl()
   })
+  staffSelect = new FormGroup({
+    staffId: new FormControl()
+  })
 
   constructor(
     private service: CurrentRosterService,
@@ -46,6 +49,20 @@ export class ShiftDetailPage implements OnInit {
 
   loadShift() {
     this.selectedShift = this.currentRoster.filter(area => area.shiftId === this.shiftSelect.controls.shiftId.value)
+    if (this.selectedShift.length === 0 ){
+      this.selectedShiftName = ''
+      this.selectedShiftType  = ''
+      this.selectedStaffName = ''
+      this.selectedStaffId = ''
+    } else {
+      this.selectedShiftName = this.selectedShift[0].shiftId
+      this.selectedShiftType = this.selectedShift[0].shiftType
+      this.selectedStaffName = this.selectedShift[0].staffName
+      this.selectedStaffId = this.selectedShift[0].staffId
+    }
+  }
+  loadStaff() {
+    this.selectedShift = this.currentRoster.filter(area => area.staffId === this.staffSelect.controls.staffId.value)
     if (this.selectedShift.length === 0 ){
       this.selectedShiftName = ''
       this.selectedShiftType  = ''

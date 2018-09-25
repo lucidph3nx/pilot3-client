@@ -59,8 +59,8 @@
                 <mat-card-title>Overall Counters</mat-card-title>
             </mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
-                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0"
-                    [rowHeight]="50" [scrollbarV]="false" [rows]="filteredRosterDayStatus" [sorts]="[{prop: 'staffType', dir: 'asc'}]">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredRosterDayStatus" [sorts]="[{prop: 'staffType', dir: 'asc'}]">
                     <ngx-datatable-column name="staffType" prop="staffType"></ngx-datatable-column>
                     <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>
                     <ngx-datatable-column name="Counter" prop="counterType"></ngx-datatable-column>
@@ -73,8 +73,8 @@
                 <mat-card-title>Uncovered Shifts</mat-card-title>
             </mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
-                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0"
-                    [rowHeight]="50" [scrollbarV]="false" [rows]="filteredUncoveredShifts">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredUncoveredShifts">
                     <ngx-datatable-column name="Shift Name" prop="shiftName"></ngx-datatable-column>
                     <ngx-datatable-column name="Staff Type" prop="staffType"></ngx-datatable-column>
                     <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>
