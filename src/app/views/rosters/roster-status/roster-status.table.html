@@ -74,7 +74,7 @@
             </mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
                 <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
-                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredUncoveredShifts">
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredUncoveredShifts" (activate)="showDayRoster($event)">
                     <ngx-datatable-column name="Shift Name" prop="shiftName"></ngx-datatable-column>
                     <ngx-datatable-column name="Staff Type" prop="staffType"></ngx-datatable-column>
                     <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>

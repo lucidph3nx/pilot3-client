@@ -5,7 +5,7 @@ import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-mome
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSelectModule } from '@angular/material';
 import * as moment from 'moment-timezone';
-
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'roster-status',
@@ -28,6 +28,7 @@ export class RosterStatusTableComponent implements OnInit {
   })
   constructor(
     private service: RosterStatusService,
+    private router: Router,
   ) {}
 
   staffTypeList = [
@@ -54,6 +55,14 @@ export class RosterStatusTableComponent implements OnInit {
       this.uncoveredShifts = response.uncoveredShifts
       this.updateTables('ALL')
     });
+  }
+
+  showDayRoster(event){
+    if (event.type == "click"){
+      //console.log(event.row.shiftName)
+      let shiftId = event.row.shiftName
+      this.router.navigate(['rosters/shift-detail',{shiftId: shiftId}])
+    }
   }
 
   currentRosterDayStatus = []

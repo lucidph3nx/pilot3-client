@@ -1,3 +1,7 @@
+.pilot-dark .mat-dialog-container {
+  background: #303030;
+}
+
 #variancetable .datatable-header-cell{
   text-align: center;
   font-size: 1.1rem;
