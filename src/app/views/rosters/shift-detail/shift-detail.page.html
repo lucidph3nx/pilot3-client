@@ -2,7 +2,7 @@
     <div fxLayout="row">
         <mat-card style="padding:10px;" fxFlex="50">
             <div class="card-title-text">Shift Lookup</div>
-            <form [formGroup]="shiftSelect" (ngSubmit)="loadShift($event)">
+            <form [formGroup]="shiftSelect" (ngSubmit)="loadData('shiftId')">
                 <div fxLayout="row wrap">
                     <mat-form-field>
                         <input matInput name="shiftId" formControlName="shiftId" placeholder="shiftId">
@@ -14,7 +14,7 @@
         </mat-card>
         <mat-card style="padding:10px;" fxFlex="50">
             <div class="card-title-text">Staff Lookup</div>
-            <form [formGroup]="staffSelect" (ngSubmit)="loadStaff($event)">
+            <form [formGroup]="staffSelect" (ngSubmit)="loadData('staffId')">
                 <div fxLayout="row wrap">
                     <mat-form-field>
                         <input matInput name="staffId" formControlName="staffId" placeholder="staffId">
@@ -52,6 +52,7 @@
             </mat-card>
             <mat-card style="padding:10px;" fxFlex="50">
                 <div class="card-title-text">Staff Detail</div>
+                <img mat-card-image src="{{ this.selectedStaffPhoto }}" />
                 <mat-card-content>
                     <h3>{{ this.selectedStaffId }} - {{ this.selectedStaffName }}</h3>
                 </mat-card-content>

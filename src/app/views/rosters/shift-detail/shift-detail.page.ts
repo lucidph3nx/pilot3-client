@@ -6,6 +6,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import { CurrentRosterService } from '../../../shared/services/data/current-roster.service';
 import { ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'shift-detail',
   templateUrl: './shift-detail.page.html',
@@ -32,6 +33,7 @@ export class ShiftDetailPage implements OnInit {
   
   selectedStaffName = ''
   selectedStaffId = ''
+  selectedStaffPhoto;
   sub;
 
   ngOnInit() {
@@ -39,40 +41,37 @@ export class ShiftDetailPage implements OnInit {
     .subscribe((response) => {
       this.currentRoster = response.currentRosterDuties
       this.sub=this.route.params.subscribe(params => {
-        if (params['shiftId'] !== undefined){
+        if (params['shiftId'] !== undefined && this.shiftSelect.controls.shiftId.value == null){
           this.shiftSelect.controls.shiftId.setValue(params['shiftId'])
-          this.loadShift()
+          this.loadData('shiftId')
+        }
+        if (params['staffId'] !== undefined && this.shiftSelect.controls.shiftId.value == null){
+          this.shiftSelect.controls.shiftId.setValue(params['staffId'])
+          this.loadData('staffId')
         }
         });
     });
   }
 
-  loadShift() {
-    this.selectedShift = this.currentRoster.filter(area => area.shiftId === this.shiftSelect.controls.shiftId.value)
-    if (this.selectedShift.length === 0 ){
-      this.selectedShiftName = ''
-      this.selectedShiftType  = ''
-      this.selectedStaffName = ''
-      this.selectedStaffId = ''
-    } else {
-      this.selectedShiftName = this.selectedShift[0].shiftId
-      this.selectedShiftType = this.selectedShift[0].shiftType
-      this.selectedStaffName = this.selectedShift[0].staffName
-      this.selectedStaffId = this.selectedShift[0].staffId
+  loadData(from){
+    if (from == 'staffId'){
+      this.selectedShift = this.currentRoster.filter(area => area.staffId === this.staffSelect.controls.staffId.value.padStart(3, '0'))
+    } else if (from == 'shiftId'){
+      this.selectedShift = this.currentRoster.filter(area => area.shiftId === this.shiftSelect.controls.shiftId.value)
     }
-  }
-  loadStaff() {
-    this.selectedShift = this.currentRoster.filter(area => area.staffId === this.staffSelect.controls.staffId.value)
     if (this.selectedShift.length === 0 ){
       this.selectedShiftName = ''
       this.selectedShiftType  = ''
       this.selectedStaffName = ''
       this.selectedStaffId = ''
+      this.selectedStaffPhoto = undefined;
     } else {
       this.selectedShiftName = this.selectedShift[0].shiftId
       this.selectedShiftType = this.selectedShift[0].shiftType
       this.selectedStaffName = this.selectedShift[0].staffName
+      this.shiftSelect.controls.shiftId.setValue(this.selectedShift[0].shiftId)
       this.selectedStaffId = this.selectedShift[0].staffId
+      this.selectedStaffPhoto = 'http://10.47.16.76:4000/api/staffImage?staffId='+this.selectedStaffId.padStart(3, '0')
     }
   }
 }
