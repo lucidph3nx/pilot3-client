@@ -45,8 +45,8 @@ export class ShiftDetailPage implements OnInit {
           this.shiftSelect.controls.shiftId.setValue(params['shiftId'])
           this.loadData('shiftId')
         }
-        if (params['staffId'] !== undefined && this.shiftSelect.controls.shiftId.value == null){
-          this.shiftSelect.controls.shiftId.setValue(params['staffId'])
+        if (params['staffId'] !== undefined && this.staffSelect.controls.staffId.value == null){
+          this.staffSelect.controls.staffId.setValue(params['staffId'])
           this.loadData('staffId')
         }
         });
