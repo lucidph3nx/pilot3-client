@@ -1,0 +1,14 @@
+<div fxLayout="row" fxLayout.sm="column">
+  <div fxFlex="100" fxFlex.sm="100">
+    <mat-card id="headcountChart" fxFlex="50">
+      <mat-card-title class="">
+        <div class="card-title-text">Headcount</div>
+        <mat-divider></mat-divider>
+      </mat-card-title>
+      <mat-card-content>
+        <canvas baseChart class="chart" [datasets]="HeadcountChartData" [labels]="HeadcountChartLabels" [options]="HeadcountChartOptions"
+          [colors]="HeadcountChartColors" [legend]="HeadcountChartLegend" [chartType]="HeadcountChartType"></canvas>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

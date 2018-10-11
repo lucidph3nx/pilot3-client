@@ -56,6 +56,14 @@ export class NavigationService {
     //   state: 'rosters/running-sheet',
     // },
     {
+      name: 'Resource Visboard',
+      type: 'link',
+      tooltip: 'Resource Visboard',
+      icon: 'multiline_chart',
+      state: 'resource-visboard/resource-visboard',
+      
+    },
+    {
       name: 'OTHERS',
       type: 'link',
       tooltip: 'Others',

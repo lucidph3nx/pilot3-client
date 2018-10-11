@@ -55,6 +55,18 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'resource-visboard', 
+        loadChildren: './views/resource-visboard/resource-visboard.module#ResourceVisboardModule', 
+        data: { title: 'Resource Visboard', breadcrumb: 'Resource Visboard'}
+      }
+    ]
+  },
+  {
+    path: '', 
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
         path: 'others', 
         loadChildren: './views/others/others.module#OthersModule', 
         data: { title: 'Others', breadcrumb: 'OTHERS'}

@@ -21,3 +21,8 @@
 .pilot-light #variancetable .datatable-body-cell{
 border-top: 1px solid black;
 }
+
+.mat-form-field {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}

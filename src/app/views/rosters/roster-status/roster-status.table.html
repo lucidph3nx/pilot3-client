@@ -1,6 +1,6 @@
 <mat-card-content>
     <div fxLayout="row">
-        <mat-card style="padding:10px;" fxFlex="80">
+        <mat-card style="padding:10px;" fxFlex="70">
             <div class="card-title-text">Date Lookup</div>
             <form [formGroup]="daySelect" (ngSubmit)="onSubmit()">
                 <div fxLayout="row wrap">
@@ -14,7 +14,7 @@
                 </div>
             </form>
         </mat-card>
-        <mat-card style="padding:10px;" fxFlex="20">
+        <mat-card style="padding:10px;" fxFlex="30">
             <div class="card-title-text">Filter</div>
             <form [formGroup]="staffFilter">
                 <div fxLayout="row wrap">
@@ -22,6 +22,13 @@
                         <mat-select placeholder="staffType" (selectionChange)="filter($event)">
                             <mat-option *ngFor="let staffType of staffTypeList" [value]="staffType.value">
                                 {{staffType.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="location" (selectionChange)="filter($event)">
+                            <mat-option *ngFor="let location of locationList" [value]="location.value">
+                                {{location.value}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

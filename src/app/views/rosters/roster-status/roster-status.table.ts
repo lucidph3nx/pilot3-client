@@ -40,20 +40,39 @@ export class RosterStatusTableComponent implements OnInit {
     {value:'PL'},
     {value:'SA'}
   ];
+  locationList = [
+    {value:'ALL'},
+    {value:'MAST'},
+    {value:'PK'},
+    {value:'UH'},
+    {value:'WG'},
+  ];
+  currentFilters= {
+    staffType: 'ALL',
+    location: 'ALL',
+  }
+
   filter($event) {
-    this.updateTables($event.value)
+    if ($event.source.placeholder == 'staffType'){
+      this.currentFilters.staffType = $event.value
+    }
+    if ($event.source.placeholder == 'location'){
+      this.currentFilters.location = $event.value
+    }
+    console.log(this.currentFilters)
+    this.updateTables(this.currentFilters)
   }
 
   onSubmit() {
     this.service.getCurrentRosterStatus(this.daySelect.value.date)
     .subscribe((response) => {
       this.currentRosterDayStatus = response.currentRosterDayStatus
-      this.updateTables('ALL')
+      this.updateTables(this.currentFilters)
     });
     this.service.getUncoveredShifts(this.daySelect.value.date)
     .subscribe((response) => {
       this.uncoveredShifts = response.uncoveredShifts
-      this.updateTables('ALL')
+      this.updateTables(this.currentFilters)
     });
   }
 
@@ -98,15 +117,19 @@ export class RosterStatusTableComponent implements OnInit {
 
 
   ngOnInit() {
+    this.currentFilters = {
+      staffType: 'ALL',
+      location: 'ALL',
+    }
     this.service.getCurrentRosterStatus(moment())
     .subscribe((response) => {
       this.currentRosterDayStatus = response.currentRosterDayStatus
-      this.updateTables('ALL')
+      this.updateTables(this.currentFilters)
     });
     this.service.getUncoveredShifts(moment())
     .subscribe((response) => {
       this.uncoveredShifts = response.uncoveredShifts
-      this.updateTables('ALL')
+      this.updateTables(this.currentFilters)
     });
 
     this.daySelect = new FormGroup({
@@ -117,10 +140,18 @@ export class RosterStatusTableComponent implements OnInit {
     })
 
   }
-  updateTables(staffTypeFilter){
-    if (staffTypeFilter !== 'ALL'){
-      this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.staffType === staffTypeFilter)
-      this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.staffType === staffTypeFilter)
+  updateTables(currentFilters){
+    if (currentFilters.staffType !== 'ALL' || currentFilters.location !== 'ALL'){
+      if (currentFilters.staffType == 'ALL'){
+        this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.location === currentFilters.location)
+        this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.location === currentFilters.location)
+      } else if (currentFilters.location == 'ALL'){
+        this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.staffType === currentFilters.staffType)
+        this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.staffType === currentFilters.staffType)
+      } else {
+        this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.staffType === currentFilters.staffType && area.location === currentFilters.location)
+        this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.staffType === currentFilters.staffType && area.location === currentFilters.location)
+      }
     } else {
       this.filteredRosterDayStatus = this.currentRosterDayStatus
       this.filteredUncoveredShifts = this.uncoveredShifts
