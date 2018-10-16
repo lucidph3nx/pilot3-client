@@ -42,11 +42,9 @@ export class ResourceVisboardComponent implements OnInit {
   HeadcountChartData: any[] = [{
    data: this.HeadcountChart.thisYear,
     label: '',
-    //borderWidth: 0,
   },{
    data: this.HeadcountChart.lastYear,
     label: '',
-    //borderWidth: 0,
   }];
  HeadcountChartOptions: any = Object.assign({
     scaleShowVerticalLines: true,
