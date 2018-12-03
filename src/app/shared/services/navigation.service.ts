@@ -38,16 +38,37 @@ export class NavigationService {
       state: 'current-services/variance',
     },
     {
-      name: 'Rosters',
-      type: 'dropDown',
-      tooltip: 'Rosters',
-      icon: 'group',
-      state: 'rosters',
-      sub: [
-        { name: 'Status', state: 'roster-status' },
-        { name: 'Shift Detail', state: 'shift-detail' },
-      ]
+      name: 'Matangi Tracking',
+      type: 'link',
+      tooltip: 'matangi tracking',
+      icon: 'subway',
+      state: 'current-services/matangi-units',
     },
+    {
+      name: 'Roster Status',
+      type: 'link',
+      tooltip: 'roster status',
+      icon: 'group',
+      state: 'roster-status',
+    },
+    {
+      name: 'Shift Detail',
+      type: 'link',
+      tooltip: 'shift detail',
+      icon: 'person',
+      state: 'shift-detail',
+    },
+    // {
+    //   name: 'Rosters',
+    //   type: 'dropDown',
+    //   tooltip: 'Rosters',
+    //   icon: 'group',
+    //   state: 'rosters',
+    //   sub: [
+    //     { name: 'Status', state: 'roster-status' },
+    //     { name: 'Shift Detail', state: 'shift-detail' },
+    //   ]
+    // },
     // {
     //   name: 'Running Sheet',
     //   type: 'link',
