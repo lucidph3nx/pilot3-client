@@ -6,7 +6,7 @@
   text-align: center;
   line-height: 1.325;
   font-size: 1.3rem;
-  font-weight: 500;
+  font-weight: 400;
   padding-top: 0.4rem;
   padding-right: 0.9rem;
   padding-bottom: 0.4rem;
@@ -16,7 +16,7 @@
   text-align: center;
   line-height: 1.325;
   font-size: 1.3rem;
-  font-weight: 500;
+  font-weight: 400;
   padding-top: 0.4rem;
   padding-right: 0.9rem;
   padding-bottom: 0.4rem;
@@ -31,7 +31,7 @@
   }
 
   #variancetable .ngx-datatable .variance-early {
-    color: black;
+    color: white;
     background-color: #3BB9FF;
   }
   .pilot-dark #variancetable .ngx-datatable .variance-okay {
@@ -41,19 +41,19 @@
     color: #566e43 !important;
   }
   #variancetable .ngx-datatable .variance-late {
-    color: black;
+    color: white;
     background-color: #ef802f;
   }
   #variancetable .ngx-datatable .variance-verylate {
-    color: black;
+    color: white;
     background-color: #be5046;
   }
   #variancetable .ngx-datatable .variance-delayrisk {
-    color: black;
+    color: white;
     background-color: #be5046;
   }
   #variancetable .ngx-datatable .status-early {
-    color: black;
+    color: white;
     background-color: #3BB9FF;
   }
   .pilot-dark #variancetable .ngx-datatable .status-okay {
@@ -63,15 +63,15 @@
     color: #566e43 !important;
   }
   #variancetable .ngx-datatable .status-late {
-    color: black;
+    color: white;
     background-color: #ef802f;
   }
   #variancetable .ngx-datatable .status-verylate {
-    color: black;
+    color: white;
     background-color: #be5046;
   }
   #variancetable .ngx-datatable .status-delayrisk {
-    color: black;
+    color: white;
     background-color: #be5046;
   }
   .pilot-dark #variancetable .ngx-datatable .currentstation {
@@ -87,7 +87,7 @@
     color: #566e43;
   }
   #variancetable .ngx-datatable .status-linkingissue {
-    color: black;
+    color: white;
     background-color: #be5046;
   }
   #variancetable .ngx-datatable .status-intunnel {
@@ -97,7 +97,7 @@
     color: #f0cf7e;
   }
   #variancetable .ngx-datatable .status-nolink {
-    color: black;
+    color: white;
     background-color: #be5046;
   }
   #variancetable .ngx-datatable .status-arriving {
