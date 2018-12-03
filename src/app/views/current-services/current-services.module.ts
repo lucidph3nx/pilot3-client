@@ -25,6 +25,7 @@ import { SharedModule } from './../../shared/shared.module';
 
 
 import { CurrentServicesTableComponent } from './current-services/current-services.table';
+import { MatangiUnitsTableComponent } from './matangi-units/matangi-units.table';
 import { CurrentServicesRoutes } from "./current-services.routing";
 import { serviceViewComponent } from "./current-services/service-view/service-view.component"
 
@@ -55,6 +56,7 @@ import { serviceViewComponent } from "./current-services/service-view/service-vi
   ],
   declarations: [
     CurrentServicesTableComponent,
+    MatangiUnitsTableComponent,
     serviceViewComponent
   ],
   entryComponents: [serviceViewComponent]
