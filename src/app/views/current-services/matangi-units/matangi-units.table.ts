@@ -26,6 +26,7 @@ export class MatangiUnitsTableComponent implements OnInit {
         unit.positionAgeSeconds = unit.positionAgeSeconds + 1
         unit.positionAge = String(Math.floor(unit.positionAgeSeconds / 60)).padStart(2, '0') + ':' + String(unit.positionAgeSeconds % 60).padStart(2, '0')
       }
+      this.currentUnitList = [...this.currentUnitList];
     },1000);
   }
 

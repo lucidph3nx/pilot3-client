@@ -49,14 +49,14 @@ export class NavigationService {
       type: 'link',
       tooltip: 'roster status',
       icon: 'group',
-      state: 'roster-status',
+      state: 'rosters/roster-status',
     },
     {
       name: 'Shift Detail',
       type: 'link',
       tooltip: 'shift detail',
       icon: 'person',
-      state: 'shift-detail',
+      state: 'rosters/shift-detail',
     },
     // {
     //   name: 'Rosters',
