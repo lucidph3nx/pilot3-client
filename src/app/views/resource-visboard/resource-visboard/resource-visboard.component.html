@@ -1,5 +1,28 @@
+<div fxLayout="row">
+<mat-card style="padding:10px;" fxFlex="30">
+    <div class="card-title-text">Filter</div>
+    <form [formGroup]="staffFilter">
+        <div fxLayout="row wrap">
+            <mat-form-field>
+                <mat-select placeholder="staffType" (selectionChange)="filter($event)">
+                    <mat-option *ngFor="let staffType of staffTypeList" [value]="staffType.value">
+                        {{staffType.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="location" (selectionChange)="filter($event)">
+                    <mat-option *ngFor="let location of locationList" [value]="location.value">
+                        {{location.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-card>
+</div>
 <div fxLayout="row" fxLayout.sm="column">
-  <div fxFlex="100" fxFlex.sm="100">
+  <div fxFlex="80" fxFlex.sm="100">
     <mat-card id="headcountChart" fxFlex="50">
       <mat-card-title class="">
         <div class="card-title-text">Headcount</div>
@@ -10,5 +33,40 @@
           [colors]="HeadcountChartColors" [legend]="HeadcountChartLegend" [chartType]="HeadcountChartType"></canvas>
       </mat-card-content>
     </mat-card>
+    <mat-card id="AnnualLeaveChart" fxFlex="50">
+      <mat-card-title class="">
+        <div class="card-title-text">Annual Leave</div>
+        <mat-divider></mat-divider>
+      </mat-card-title>
+      <mat-card-content>
+        <canvas baseChart class="chart" [datasets]="AnnualLeaveChartData" [labels]="AnnualLeaveChartLabels" [options]="AnnualLeaveChartOptions"
+          [colors]="AnnualLeaveChartColors" [legend]="AnnualLeaveChartLegend" [chartType]="AnnualLeaveChartType"></canvas>
+      </mat-card-content>
+    </mat-card>
+    </div>
+    </div>
+    <div fxLayout="row" fxLayout.sm="column">
+    <div fxFlex="80" fxFlex.sm="100">
+    <mat-card id="SicknessChart" fxFlex="50">
+      <mat-card-title class="">
+        <div class="card-title-text">Sickness</div>
+        <mat-divider></mat-divider>
+      </mat-card-title>
+      <mat-card-content>
+        <canvas baseChart class="chart" [datasets]="SicknessChartData" [labels]="SicknessChartLabels" [options]="SicknessChartOptions"
+          [colors]="SicknessChartColors" [legend]="SicknessChartLegend" [chartType]="SicknessChartType"></canvas>
+      </mat-card-content>
+    </mat-card>
+    <mat-card id="AltDutiesChart" fxFlex="50">
+      <mat-card-title class="">
+        <div class="card-title-text">Alt Duties</div>
+        <mat-divider></mat-divider>
+      </mat-card-title>
+      <mat-card-content>
+        <canvas baseChart class="chart" [datasets]="AltDutiesChartData" [labels]="AltDutiesChartLabels" [options]="AltDutiesChartOptions"
+          [colors]="AltDutiesChartColors" [legend]="AltDutiesChartLegend" [chartType]="AltDutiesChartType"></canvas>
+      </mat-card-content>
+    </mat-card>
+    <!-- the others will go here -->
   </div>
 </div>

@@ -1,0 +1,35 @@
+#unittable .datatable-header-cell{
+    text-align: center;
+    line-height: 1.325;
+    font-size: 1.3rem;
+    font-weight: 400;
+    padding-top: 0.4rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.4rem;
+    padding-left: 0.9rem;
+}
+#unittable .datatable-body-cell{
+    text-align: center;
+    line-height: 1.325;
+    font-size: 1.3rem;
+    font-weight: 400;
+    padding-top: 0.4rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.4rem;
+    padding-left: 0.9rem;
+    vertical-align: middle;
+}
+
+.pilot-dark #unittable .datatable-header-cell{
+    color: white;
+}
+
+.pilot-dark #unittable .datatable-body-cell{
+    color: white;
+    border-top: 1px solid white;
+}
+
+#unittable .ngx-datatable .age-warn {
+    color: white;
+    background-color: #be5046;
+}

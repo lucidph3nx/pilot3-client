@@ -16,6 +16,12 @@ export class MatangiUnitsTableComponent implements OnInit {
 
   currentUnitList = [];
 
+  getAgeClass({ row, column, value }): any {
+    return {
+      'age-warn': row.positionAgeSeconds >= 1000,
+    };
+  }
+
   ngOnInit() {
     this.service.getUnitList()
     .subscribe((response) => {

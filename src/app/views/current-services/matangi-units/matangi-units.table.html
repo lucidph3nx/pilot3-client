@@ -1,6 +1,6 @@
 <mat-card-content>
     <mat-card style="padding:10px; text-align:center"><h3>Matangi Tracking</h3></mat-card>
-    <div id="variancetable" class="mat-box-shadow margin-333">
+    <div id="unittable" class="mat-box-shadow margin-333">
         <ngx-datatable class="material"
         [columnMode]="'force'"
         [headerHeight]="40"
@@ -10,8 +10,9 @@
         [rows]="currentUnitList"
         [sorts]="[{prop: 'positionAge', dir: 'desc'}]">
         <ngx-datatable-column name="UnitId" prop="UnitId"></ngx-datatable-column>
+        <ngx-datatable-column name="CarId" prop="CarId"></ngx-datatable-column>
         <ngx-datatable-column name="location" prop="location"></ngx-datatable-column>
-        <ngx-datatable-column name="position Age" prop="positionAge"></ngx-datatable-column>
+        <ngx-datatable-column name="position Age" prop="positionAge" [cellClass]="getAgeClass"></ngx-datatable-column>
         <ngx-datatable-column name="Speed" prop="vehicleSpeed"></ngx-datatable-column>
         <ngx-datatable-column name="linked service" prop="serviceId"></ngx-datatable-column>
         </ngx-datatable>

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { 
   MatListModule,
   MatIconModule,
@@ -15,7 +15,8 @@ import {
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatSelectModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -32,6 +33,7 @@ import { ResourceVisboardRoutes } from "./resource-visboard.routing";
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
@@ -50,6 +52,7 @@ import { ResourceVisboardRoutes } from "./resource-visboard.routing";
     ChartsModule,
     FileUploadModule,
     SharedModule,
+    MatSelectModule,
     RouterModule.forChild(ResourceVisboardRoutes)
   ],
   declarations: [
