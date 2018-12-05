@@ -69,7 +69,7 @@ export class ResourceVisboardComponent implements OnInit {
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     },{
       //backgroundColor: 'rgba(77,83,96,0.2)',//'#eeeeee',
-      borderColor: '#eeeeee',
+      borderColor: '#6d6d6d',
       pointBackgroundColor: '#3f51b5',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
@@ -133,7 +133,7 @@ AnnualLeaveChartColors: Array <any> = [
     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
   },{
     //backgroundColor: 'rgba(77,83,96,0.2)',//'#eeeeee',
-    borderColor: '#eeeeee',
+    borderColor: '#6d6d6d',
     pointBackgroundColor: '#3f51b5',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
@@ -197,7 +197,7 @@ SicknessChartColors: Array <any> = [
     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
   },{
     //backgroundColor: 'rgba(77,83,96,0.2)',//'#eeeeee',
-    borderColor: '#eeeeee',
+    borderColor: '#6d6d6d',
     pointBackgroundColor: '#3f51b5',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
@@ -261,7 +261,7 @@ AltDutiesChartColors: Array <any> = [
     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
   },{
     //backgroundColor: 'rgba(77,83,96,0.2)',//'#eeeeee',
-    borderColor: '#eeeeee',
+    borderColor: '#6d6d6d',
     pointBackgroundColor: '#3f51b5',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
