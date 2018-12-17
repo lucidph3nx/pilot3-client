@@ -45,6 +45,13 @@ export class NavigationService {
       state: 'current-services/matangi-units',
     },
     {
+      name: 'RTI Boards',
+      type: 'link',
+      tooltip: 'RTI boards',
+      icon: 'toc',
+      state: 'rti-boards/rti-boards',
+    },
+    {
       name: 'Roster Status',
       type: 'link',
       tooltip: 'roster status',

@@ -43,7 +43,7 @@ export class HeaderSideComponent implements OnInit {
       this.serverStatus = response.status
     },
     (status) => {
-      if (status.status > 200){
+      if (status.status !== 200){
         this.serverStatus = "Server Connection Error"
       } else {
         this.serverStatus = ""

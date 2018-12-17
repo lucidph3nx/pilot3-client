@@ -67,6 +67,18 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'rti-boards', 
+        loadChildren: './views/rti-boards/rti-boards.module#RtiBoardsModule', 
+        data: { title: 'RTI', breadcrumb: 'RTI'}
+      }
+    ]
+  },
+  {
+    path: '', 
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
         path: 'others', 
         loadChildren: './views/others/others.module#OthersModule', 
         data: { title: 'Others', breadcrumb: 'OTHERS'}
