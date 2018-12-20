@@ -3,7 +3,7 @@
 }
 
 #variancetable .datatable-header-cell{
-  text-align: center;
+  /* text-align: center; */
   line-height: 1.325;
   font-size: 1.3rem;
   font-weight: 400;
@@ -13,7 +13,7 @@
   padding-left: 0.9rem;
   }
 #variancetable .datatable-body-cell{
-  text-align: center;
+  /* text-align: center; */
   line-height: 1.325;
   font-size: 1.3rem;
   font-weight: 400;
@@ -23,6 +23,7 @@
   padding-left: 0.9rem;
   vertical-align: middle;
 }
+
   .pilot-dark #variancetable .datatable-body-cell{
     border-top: 1px solid white;
   }
@@ -36,6 +37,7 @@
   }
   .pilot-dark #variancetable .ngx-datatable .variance-okay {
     color: #97c475 !important;
+    text-align: left !important;
   }
   .pilot-light #variancetable .ngx-datatable .variance-okay {
     color: #566e43 !important;

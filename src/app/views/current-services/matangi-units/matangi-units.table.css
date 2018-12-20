@@ -33,3 +33,30 @@
     color: white;
     background-color: #be5046;
 }
+
+
+#miniunittable .datatable-header-cell{
+    color: white;
+    text-align: center;
+    line-height: 1.325;
+    font-size: 1.0rem;
+    font-weight: 300;
+    padding-top: 0.4rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.4rem;
+    padding-left: 0.9rem;
+}
+
+#miniunittable .datatable-body-cell{
+    color: white;
+    border-top: 1px solid white;
+    text-align: center;
+    line-height: 1.325;
+    font-size: 1.0rem;
+    font-weight: 300;
+    padding-top: 0.4rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.4rem;
+    padding-left: 0.9rem;
+    vertical-align: middle;
+}

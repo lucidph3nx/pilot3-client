@@ -15,5 +15,10 @@ export class UnitListService {
         .timer(0,10000)
         .switchMap(() => this.http.get('http://10.47.16.76:4000/api/currentUnitList').map((response: Response) => response.json()))
     }
+    getCarList = () => {
+        return Observable
+        .timer(0,10000)
+        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/currentCarList').map((response: Response) => response.json()))
+    }
 
 }

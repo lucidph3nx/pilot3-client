@@ -15,6 +15,12 @@ export class MatangiUnitsTableComponent implements OnInit {
   ) {}
 
   currentUnitList = [];
+  currentCarList = [];
+  unitsUnknown = [];
+  unitsJVL = [];
+  unitsKPL = [];
+  unitsWRL = [];
+  unitsMEL = [];
 
   getAgeClass({ row, column, value }): any {
     return {
@@ -22,17 +28,30 @@ export class MatangiUnitsTableComponent implements OnInit {
     };
   }
 
+  updateLines(){
+    this.unitsUnknown = this.currentUnitList.filter(unit => unit.line === '???')
+    this.unitsJVL = this.currentUnitList.filter(unit => unit.line === 'JVL')
+    this.unitsKPL = this.currentUnitList.filter(unit => unit.line === 'NIMT')
+    this.unitsWRL = this.currentUnitList.filter(unit => unit.line === 'WRL')
+    this.unitsMEL = this.currentUnitList.filter(unit => unit.line === 'MEL')
+  }
+
   ngOnInit() {
     this.service.getUnitList()
     .subscribe((response) => {
       this.currentUnitList = response.currentUnitList
+      this.updateLines()
+    });
+    this.service.getCarList()
+    .subscribe((response) => {
+      this.currentCarList = response.currentCarList
     });
     setInterval(() => {
-      for(let unit of this.currentUnitList) {
-        unit.positionAgeSeconds = unit.positionAgeSeconds + 1
-        unit.positionAge = String(Math.floor(unit.positionAgeSeconds / 60)).padStart(2, '0') + ':' + String(unit.positionAgeSeconds % 60).padStart(2, '0')
+      for(let car of this.currentCarList) {
+        car.positionAgeSeconds = car.positionAgeSeconds + 1
+        car.positionAge = String(Math.floor(car.positionAgeSeconds / 60)).padStart(2, '0') + ':' + String(car.positionAgeSeconds % 60).padStart(2, '0')
       }
-      this.currentUnitList = [...this.currentUnitList];
+      this.currentCarList = [...this.currentCarList];
     },1000);
   }
 

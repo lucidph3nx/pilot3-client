@@ -1,19 +1,91 @@
-<mat-card-content>
-    <div id="unittable" class="mat-box-shadow margin-333">
-        <ngx-datatable class="material"
-        [columnMode]="'force'"
-        [headerHeight]="40"
-        [footerHeight]="0" 
-        [rowHeight]="40"
-        [scrollbarV]="false"
-        [rows]="currentUnitList"
-        [sorts]="[{prop: 'positionAge', dir: 'desc'}]">
-        <ngx-datatable-column name="UnitId" prop="UnitId"></ngx-datatable-column>
-        <ngx-datatable-column name="CarId" prop="CarId"></ngx-datatable-column>
-        <ngx-datatable-column name="location" prop="location"></ngx-datatable-column>
-        <ngx-datatable-column name="position Age" prop="positionAge" [cellClass]="getAgeClass"></ngx-datatable-column>
-        <ngx-datatable-column name="Speed" prop="vehicleSpeed"></ngx-datatable-column>
-        <ngx-datatable-column name="linked service" prop="serviceId"></ngx-datatable-column>
-        </ngx-datatable>
-    </div>
-</mat-card-content>
+<mat-tab-group>
+        <mat-tab label="BY LINE">
+                <mat-card-content>
+                    <div fxLayout="row">
+                        <div style="padding:5px;" fxFlex="20">
+                            <mat-card style="text-align:center">
+                                <h3>Unknown Line</h3>
+                            </mat-card>
+                            <div id="miniunittable" class="mat-box-shadow margin-333">
+                                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                                    [rowHeight]="40" [scrollbarV]="false" [rows]="unitsUnknown" [sorts]="[{prop: 'meterage', dir: 'desc'}]">
+                                    <ngx-datatable-column name="UnitId" prop="uniId"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Service" prop="linkedServiceId"></ngx-datatable-column>
+                                    <ngx-datatable-column name="Station" prop="closestStation"></ngx-datatable-column>
+                                </ngx-datatable>
+                            </div>
+                        </div>
+                        <div style="padding:5px;" fxFlex="20">
+                                <mat-card style="text-align:center">
+                                    <h3>JVL</h3>
+                                </mat-card>
+                                <div id="miniunittable" class="mat-box-shadow margin-333">
+                                    <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                                        [rowHeight]="40" [scrollbarV]="false" [rows]="unitsJVL" [sorts]="[{prop: 'meterage', dir: 'desc'}]">
+                                        <ngx-datatable-column name="UnitId" prop="uniId"></ngx-datatable-column>
+                                        <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                                        <ngx-datatable-column name="Service" prop="linkedServiceId"></ngx-datatable-column>
+                                        <ngx-datatable-column name="Station" prop="closestStation"></ngx-datatable-column>
+                                    </ngx-datatable>
+                                </div>
+                            </div>
+                            <div style="padding:5px;" fxFlex="20">
+                                    <mat-card style="text-align:center">
+                                        <h3>KPL</h3>
+                                    </mat-card>
+                                    <div id="miniunittable" class="mat-box-shadow margin-333">
+                                        <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                                            [rowHeight]="40" [scrollbarV]="false" [rows]="unitsKPL" [sorts]="[{prop: 'meterage', dir: 'desc'}]">
+                                            <ngx-datatable-column name="UnitId" prop="uniId"></ngx-datatable-column>
+                                            <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                                            <ngx-datatable-column name="Service" prop="linkedServiceId"></ngx-datatable-column>
+                                            <ngx-datatable-column name="Station" prop="closestStation"></ngx-datatable-column>
+                                        </ngx-datatable>
+                                    </div>
+                                </div>
+                                <div style="padding:5px;" fxFlex="20">
+                                        <mat-card style="text-align:center">
+                                            <h3>WRL</h3>
+                                        </mat-card>
+                                        <div id="miniunittable" class="mat-box-shadow margin-333">
+                                            <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                                                [rowHeight]="40" [scrollbarV]="false" [rows]="unitsWRL" [sorts]="[{prop: 'meterage', dir: 'desc'}]">
+                                                <ngx-datatable-column name="UnitId" prop="uniId"></ngx-datatable-column>
+                                                <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                                                <ngx-datatable-column name="Service" prop="linkedServiceId"></ngx-datatable-column>
+                                                <ngx-datatable-column name="Station" prop="closestStation"></ngx-datatable-column>
+                                            </ngx-datatable>
+                                        </div>
+                                    </div>
+                                    <div style="padding:5px;" fxFlex="20">
+                                            <mat-card style="text-align:center">
+                                                <h3>MEL</h3>
+                                            </mat-card>
+                                            <div id="miniunittable" class="mat-box-shadow margin-333">
+                                                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                                                    [rowHeight]="40" [scrollbarV]="false" [rows]="unitsMEL" [sorts]="[{prop: 'meterage', dir: 'desc'}]">
+                                                    <ngx-datatable-column name="UnitId" prop="uniId"></ngx-datatable-column>
+                                                    <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                                                    <ngx-datatable-column name="Service" prop="linkedServiceId"></ngx-datatable-column>
+                                                    <ngx-datatable-column name="Station" prop="closestStation"></ngx-datatable-column>
+                                                </ngx-datatable>
+                                            </div>
+                                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-tab>
+    <mat-tab label="ALL">
+        <mat-card-content>
+            <div id="unittable" class="mat-box-shadow margin-333">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="currentCarList" [sorts]="[{prop: 'positionAge', dir: 'desc'}]">
+                    <ngx-datatable-column name="carId" prop="carId"></ngx-datatable-column>
+                    <ngx-datatable-column name="position Age" prop="positionAge" [cellClass]="getAgeClass"></ngx-datatable-column>
+                    <ngx-datatable-column name="Speed" prop="speed"></ngx-datatable-column>
+                    <ngx-datatable-column name="linked service" prop="linkedServiceId"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </mat-card-content>
+    </mat-tab>
+</mat-tab-group>
