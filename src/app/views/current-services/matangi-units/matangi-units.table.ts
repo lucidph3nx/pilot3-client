@@ -51,6 +51,7 @@ export class MatangiUnitsTableComponent implements OnInit {
         car.positionAgeSeconds = car.positionAgeSeconds + 1
         car.positionAge = String(Math.floor(car.positionAgeSeconds / 60)).padStart(2, '0') + ':' + String(car.positionAgeSeconds % 60).padStart(2, '0')
       }
+      this.currentUnitList = [...this.currentUnitList]; 
       this.currentCarList = [...this.currentCarList];
     },1000);
   }
