@@ -43,6 +43,18 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'train-performance', 
+        loadChildren: './views/train-performance/train-performance.module#TrainPerformanceModule', 
+        data: { title: 'Train Performance', breadcrumb: 'Train Performance'}
+      }
+    ]
+  },
+  {
+    path: '', 
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
         path: 'rosters', 
         loadChildren: './views/rosters/rosters.module#RostersModule', 
         data: { title: 'Rosters', breadcrumb: 'Rosters'}

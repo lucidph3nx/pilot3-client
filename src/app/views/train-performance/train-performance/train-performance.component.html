@@ -1,0 +1,27 @@
+<mat-card-content>
+        {{todayDate}}   {{currentPeak}}
+    <div fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlex="50" fxFlex.lt-md="100">
+            <mat-card style="padding:10px; text-align:center">
+                <h3>Punctuality</h3>
+            </mat-card>
+            <mat-card style="padding:10px; text-align:center">
+                <h3>{{totalPunctualityPercent}}%</h3>
+            </mat-card>
+            <mat-card style="padding:10px; text-align:center">
+                <h3>{{totalPunctualityServices}} of {{totalServiceCount}}</h3>
+            </mat-card>
+        </div>
+        <div fxFlex="50" fxFlex.lt-md="100">
+            <mat-card style="padding:10px; text-align:center">
+                <h3>Reliability</h3>
+            </mat-card>
+            <mat-card style="padding:10px; text-align:center">
+                <h3>{{totalReliabilityPercent}}%</h3>
+            </mat-card>
+            <mat-card style="padding:10px; text-align:center">
+                <h3>{{totalReliabilityServices}} of {{totalServiceCount}}</h3>
+            </mat-card>
+        </div>
+    </div>
+</mat-card-content>
