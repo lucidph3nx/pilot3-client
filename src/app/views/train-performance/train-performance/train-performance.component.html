@@ -1,26 +1,120 @@
 <mat-card-content>
-        {{todayDate}}   {{currentPeak}}
+        <h2>{{todayDate}}   {{currentPeak}}</h2>
     <div fxLayout="row" fxLayout.lt-md="column">
-        <div fxFlex="50" fxFlex.lt-md="100">
+        <div fxFlex="33" fxFlex.lt-md="100">
             <mat-card style="padding:10px; text-align:center">
-                <h3>Punctuality</h3>
-            </mat-card>
-            <mat-card style="padding:10px; text-align:center">
-                <h3>{{totalPunctualityPercent}}%</h3>
-            </mat-card>
-            <mat-card style="padding:10px; text-align:center">
-                <h3>{{totalPunctualityServices}} of {{totalServiceCount}}</h3>
+                <mat-card-header>
+                    <mat-card-title>Total Network</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Punctuality</h3>
+                                <h2>{{totalPunctualityPercent}}%</h2>
+                                <p>({{totalPunctualityServices}} out of a total of {{totalServiceCount}})</p>
+                        </div>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Reliability</h3>
+                                <h2>{{totalReliabilityPercent}}%</h2>
+                                <p>({{totalReliabilityServices}} out of a total of {{totalServiceCount}} planned)</p>
+                        </div>
+                </mat-card-content>
             </mat-card>
         </div>
-        <div fxFlex="50" fxFlex.lt-md="100">
+        <div fxFlex="33" fxFlex.lt-md="100">
             <mat-card style="padding:10px; text-align:center">
-                <h3>Reliability</h3>
+                <mat-card-header>
+                    <mat-card-title>Hutt Valley Line</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Punctuality</h3>
+                                <h2>{{HVL.percentPunctualityFailure}}%</h2>
+                                <p>({{HVL.totalServices - HVL.punctualityFailure}} out of a total of {{HVL.totalServices}})</p>
+                        </div>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Reliability</h3>
+                                <h2>{{HVL.percentReliabilityFailure}}%</h2>
+                                <p>({{HVL.totalServices - HVL.reliabilityFailure}} out of a total of {{HVL.totalServices}} planned)</p>
+                        </div>
+                </mat-card-content>
             </mat-card>
+        </div>
+        <div fxFlex="33" fxFlex.lt-md="100">
             <mat-card style="padding:10px; text-align:center">
-                <h3>{{totalReliabilityPercent}}%</h3>
+                <mat-card-header>
+                    <mat-card-title>Johnsonville Line</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Punctuality</h3>
+                                <h2>{{JVL.percentPunctualityFailure}}%</h2>
+                                <p>({{JVL.totalServices - JVL.punctualityFailure}} out of a total of {{JVL.totalServices}})</p>
+                        </div>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Reliability</h3>
+                                <h2>{{JVL.percentReliabilityFailure}}%</h2>
+                                <p>({{JVL.totalServices - JVL.reliabilityFailure}} out of a total of {{JVL.totalServices}} planned)</p>
+                        </div>
+                </mat-card-content>
             </mat-card>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlex="33" fxFlex.lt-md="100">
             <mat-card style="padding:10px; text-align:center">
-                <h3>{{totalReliabilityServices}} of {{totalServiceCount}}</h3>
+                <mat-card-header>
+                    <mat-card-title>Kapiti Line</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Punctuality</h3>
+                                <h3>{{KPL.percentPunctualityFailure}}%</h3>
+                                <p>({{KPL.totalServices - KPL.punctualityFailure}} out of a total of {{KPL.totalServices}})</p>
+                        </div>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Reliability</h3>
+                                <h3>{{KPL.percentReliabilityFailure}}%</h3>
+                                <p>({{KPL.totalServices - KPL.reliabilityFailure}} out of a total of {{KPL.totalServices}} planned)</p>
+                        </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div fxFlex="33" fxFlex.lt-md="100">
+            <mat-card style="padding:10px; text-align:center">
+                <mat-card-header>
+                    <mat-card-title>Melling Line</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Punctuality</h3>
+                                <h3>{{MEL.percentPunctualityFailure}}%</h3>
+                                <p>({{MEL.totalServices - MEL.punctualityFailure}} out of a total of {{MEL.totalServices}})</p>
+                        </div>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Reliability</h3>
+                                <h3>{{MEL.percentReliabilityFailure}}%</h3>
+                                <p>({{MEL.totalServices - MEL.reliabilityFailure}} out of a total of {{MEL.totalServices}} planned)</p>
+                        </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div fxFlex="33" fxFlex.lt-md="100">
+            <mat-card style="padding:10px; text-align:center">
+                <mat-card-header>
+                    <mat-card-title>Wairarapa Line</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Punctuality</h3>
+                                <h3>{{WRL.percentPunctualityFailure}}%</h3>
+                                <p>({{WRL.totalServices - WRL.punctualityFailure}} out of a total of {{WRL.totalServices}})</p>
+                        </div>
+                        <div fxFlex="50" fxFlex.lt-md="100">
+                                <h3>Reliability</h3>
+                                <h3>{{WRL.percentReliabilityFailure}}%</h3>
+                                <p>({{WRL.totalServices - WRL.reliabilityFailure}} out of a total of {{WRL.totalServices}} planned)</p>
+                        </div>
+                </mat-card-content>
             </mat-card>
         </div>
     </div>

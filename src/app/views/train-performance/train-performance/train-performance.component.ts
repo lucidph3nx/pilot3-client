@@ -30,6 +30,11 @@ export class TrainPerformanceComponent implements OnInit {
   totalPunctualityFailures = 0
   totalPunctualityServices = 0
   totalPunctualityPercent = 100
+  HVL = {}
+  JVL = {}
+  KPL = {}
+  MEL = {}
+  WRL = {}
 
   ngOnInit() {
     this.service.getCurrentPeakPerformance()
@@ -52,14 +57,36 @@ export class TrainPerformanceComponent implements OnInit {
         this.totalServiceCount += this.currentPeakPerformance[lp].totalServices
         this.totalReliabilityFailures += this.currentPeakPerformance[lp].reliabilityFailure
         this.totalPunctualityFailures += this.currentPeakPerformance[lp].punctualityFailure
+        switch(this.currentPeakPerformance[lp].line ) {
+          case 'HVL':
+            this.HVL = this.currentPeakPerformance[lp]
+          case 'JVL':
+              this.JVL = this.currentPeakPerformance[lp]
+          case 'KPL':
+              this.KPL = this.currentPeakPerformance[lp]
+          case 'MEL':
+              this.MEL = this.currentPeakPerformance[lp]
+          case 'WRL':
+              this.WRL = this.currentPeakPerformance[lp]
+          default:
+            //do nothing
+        }
       }
       this.totalReliabilityServices = this.totalServiceCount - this.totalReliabilityFailures
       this.totalPunctualityServices = this.totalServiceCount - this.totalPunctualityFailures
-      this.totalReliabilityPercent = (1 - (this.totalReliabilityFailures / this.totalServiceCount))*100
-      this.totalReliabilityPercent = parseFloat(this.totalReliabilityPercent.toFixed(1))
-      this.totalPunctualityPercent = (1 - (this.totalPunctualityFailures / this.totalServiceCount))*100
-      this.totalPunctualityPercent = parseFloat(this.totalPunctualityPercent.toFixed(1))
-      
+      if (this.totalReliabilityFailures !== 0){
+        this.totalReliabilityPercent = (this.totalReliabilityServices / this.totalServiceCount)*100
+        this.totalReliabilityPercent = parseFloat(this.totalReliabilityPercent.toFixed(1))
+      } else {
+        this.totalReliabilityPercent = 100
+      }
+      if (this.totalPunctualityFailures !== 0){
+        this.totalPunctualityPercent = (this.totalPunctualityServices / this.totalServiceCount)*100
+        this.totalPunctualityPercent = parseFloat(this.totalPunctualityPercent.toFixed(1))
+      } else {
+        this.totalReliabilityPercent = 100
+      }
+
     });
   }
 }

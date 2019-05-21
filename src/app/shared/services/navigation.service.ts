@@ -38,6 +38,13 @@ export class NavigationService {
       state: 'current-services/variance',
     },
     {
+      name: 'Peak Train Performane',
+      type: 'link',
+      tooltip: 'peak train performance',
+      icon: 'view_module',
+      state: 'train-performance/train-performance',
+    },
+    {
       name: 'Matangi Tracking',
       type: 'link',
       tooltip: 'matangi tracking',
