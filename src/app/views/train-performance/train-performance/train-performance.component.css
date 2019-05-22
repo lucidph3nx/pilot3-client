@@ -1,0 +1,56 @@
+.train-performance-card{
+    padding: 0px;
+    text-align:center;
+}
+.train-performance-card .mat-card-content .performance-card-content h3{
+    font-size: 30px !important;
+}
+.train-performance-card .mat-card-content .performance-card-content{
+    font-size: 50px !important;
+}
+
+.mat-card-title{
+    font-size: 30px !important;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.total-header{
+    text-align:center;
+    padding: 5px;
+}
+
+.melling-header{
+    background-color: #ef802f;
+    color: black;
+    text-align:center;
+    padding: 5px;
+}
+
+.hutt-valley-header{
+    background-color: #ef802f;
+    color: black;
+    text-align:center;
+    padding: 5px;
+}
+
+.kapiti-header{
+    background-color: #dbda3b;
+    color: black;
+    text-align:center;
+    padding: 5px;
+}
+
+.wairarapa-header{
+    background-color: #ffd42c;
+    color: black;
+    text-align:center;
+    padding: 5px;
+}
+
+.johnsonville-header{
+    background-color: #3BB9FF;
+    color: black;
+    text-align:center;
+    padding: 5px;
+}
