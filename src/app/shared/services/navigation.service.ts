@@ -38,7 +38,7 @@ export class NavigationService {
       state: 'current-services/variance',
     },
     {
-      name: 'Peak Train Performane',
+      name: 'Peak Train Performance',
       type: 'link',
       tooltip: 'peak train performance',
       icon: 'view_module',
