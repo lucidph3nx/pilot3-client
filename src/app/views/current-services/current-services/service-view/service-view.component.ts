@@ -13,7 +13,7 @@ export class serviceViewComponent implements OnInit {
     public dialogRef: MatDialogRef<serviceViewComponent>,
     private router: Router
   ) {}
-  service = {};
+  service: any;
 
   ngOnInit() {
     this.service = this.data
