@@ -24,11 +24,11 @@ export class TrainPerformanceComponent implements OnInit {
   todayDate;
   currentPeak;
   totalServiceCount = 0
-  totalReliabilityFailures = 0
-  totalReliabilityServices = 0
+  totalReliabilityFailure = 0
+  totalReliable = 0
   totalReliabilityPercent = 100
-  totalPunctualityFailures = 0
-  totalPunctualityServices = 0
+  totalPunctualityFailure = 0
+  totalPunctual = 0
   totalPunctualityPercent = 100
   HVL: any;
   JVL: any;
@@ -40,11 +40,11 @@ export class TrainPerformanceComponent implements OnInit {
     this.service.getCurrentPeakPerformance()
     .subscribe((response: any) => {
       this.totalServiceCount = 0
-      this.totalReliabilityFailures = 0
-      this.totalReliabilityServices = 0
+      this.totalReliabilityFailure = 0
+      this.totalReliable = 0
       this.totalReliabilityPercent = 100
-      this.totalPunctualityFailures = 0
-      this.totalPunctualityServices = 0
+      this.totalPunctualityFailure = 0
+      this.totalPunctual = 0
       this.totalPunctualityPercent = 100
       this.currentPeakPerformance = response
       this.todayDate = moment(this.currentPeakPerformance[0].date).format("DD/MM/YYYY")
@@ -55,8 +55,8 @@ export class TrainPerformanceComponent implements OnInit {
       }
       for (let lp = 0; lp < this.currentPeakPerformance.length; lp++){
         this.totalServiceCount += this.currentPeakPerformance[lp].totalServices
-        this.totalReliabilityFailures += this.currentPeakPerformance[lp].reliabilityFailure
-        this.totalPunctualityFailures += this.currentPeakPerformance[lp].punctualityFailure
+        this.totalReliabilityFailure += this.currentPeakPerformance[lp].reliabilityFailure
+        this.totalPunctualityFailure += this.currentPeakPerformance[lp].punctualityFailure
         switch(this.currentPeakPerformance[lp].line ) {
           case 'HVL':
             this.HVL = this.currentPeakPerformance[lp]
@@ -72,16 +72,17 @@ export class TrainPerformanceComponent implements OnInit {
             //do nothing
         }
       }
-      this.totalReliabilityServices = this.totalServiceCount - this.totalReliabilityFailures
-      this.totalPunctualityServices = this.totalServiceCount - this.totalPunctualityFailures
-      if (this.totalReliabilityFailures !== 0){
-        this.totalReliabilityPercent = (this.totalReliabilityServices / this.totalServiceCount)*100
+      this.totalReliable = this.totalServiceCount - this.totalReliabilityFailure
+      this.totalPunctual = this.totalServiceCount - this.totalPunctualityFailure
+      console.log(this.totalReliable)
+      if (this.totalReliable !== 0){
+        this.totalReliabilityPercent = (this.totalReliable / this.totalServiceCount)*100
         this.totalReliabilityPercent = parseFloat(this.totalReliabilityPercent.toFixed(1))
       } else {
         this.totalReliabilityPercent = 100
       }
-      if (this.totalPunctualityFailures !== 0){
-        this.totalPunctualityPercent = (this.totalPunctualityServices / this.totalServiceCount)*100
+      if (this.totalPunctual !== 0){
+        this.totalPunctualityPercent = (this.totalPunctual / this.totalServiceCount)*100
         this.totalPunctualityPercent = parseFloat(this.totalPunctualityPercent.toFixed(1))
       } else {
         this.totalReliabilityPercent = 100
