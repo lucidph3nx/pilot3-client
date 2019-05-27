@@ -39,6 +39,7 @@ export class TrainPerformanceComponent implements OnInit {
   ngOnInit() {
     this.service.getCurrentPeakPerformance()
     .subscribe((response: any) => {
+        // reset these variables to calculate from scratch
       this.totalServiceCount = 0
       this.totalReliabilityFailure = 0
       this.totalReliable = 0
@@ -46,6 +47,7 @@ export class TrainPerformanceComponent implements OnInit {
       this.totalPunctualityFailure = 0
       this.totalPunctual = 0
       this.totalPunctualityPercent = 100
+      // load in response
       this.currentPeakPerformance = response
       this.todayDate = moment(this.currentPeakPerformance[0].date).format("DD/MM/YYYY")
       if (this.currentPeakPerformance[0].peak == 1){
@@ -74,7 +76,6 @@ export class TrainPerformanceComponent implements OnInit {
       }
       this.totalReliable = this.totalServiceCount - this.totalReliabilityFailure
       this.totalPunctual = this.totalServiceCount - this.totalPunctualityFailure
-      console.log(this.totalReliable)
       if (this.totalReliable !== 0){
         this.totalReliabilityPercent = (this.totalReliable / this.totalServiceCount)*100
         this.totalReliabilityPercent = parseFloat(this.totalReliabilityPercent.toFixed(1))
@@ -87,7 +88,6 @@ export class TrainPerformanceComponent implements OnInit {
       } else {
         this.totalReliabilityPercent = 100
       }
-
     });
   }
 }
