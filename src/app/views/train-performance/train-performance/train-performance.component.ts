@@ -30,11 +30,22 @@ export class TrainPerformanceComponent implements OnInit {
   totalPunctualityFailure = 0
   totalPunctual = 0
   totalPunctualityPercent = 100
-  HVL: any;
-  JVL: any;
-  KPL: any;
-  MEL: any;
-  WRL: any;
+  
+  blankLinePerformance = {
+    date: "",
+    line: "",
+    peak: "",
+    reliabilityFailure: 0,
+    punctualityFailure: 0,
+    totalServices: 0,
+    percentPunctualityFailure: 0,
+    percentReliabilityFailure: 0,
+  }
+  HVL = this.blankLinePerformance;
+  JVL = this.blankLinePerformance;
+  KPL = this.blankLinePerformance;
+  MEL = this.blankLinePerformance;
+  WRL = this.blankLinePerformance;
 
   ngOnInit() {
     this.service.getCurrentPeakPerformance()
