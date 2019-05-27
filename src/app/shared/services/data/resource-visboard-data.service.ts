@@ -13,21 +13,21 @@ export class ResourceVisboardDataService {
     getHeadCountData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/visboardHeadcount').map((response: Response) => response.json()))
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardHeadcount').map((response: Response) => response.json()))
     }
     getAnnualLeaveData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/visboardAnnualLeave').map((response: Response) => response.json()))
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardAnnualLeave').map((response: Response) => response.json()))
     }
     getSicknessData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/visboardSickness').map((response: Response) => response.json()))
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardSickness').map((response: Response) => response.json()))
     }
     getAltDutiesData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/visboardAltDuties').map((response: Response) => response.json()))
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardAltDuties').map((response: Response) => response.json()))
     }
 }

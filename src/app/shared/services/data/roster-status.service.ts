@@ -13,11 +13,11 @@ export class RosterStatusService {
     getCurrentRosterStatus = (date) => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/rosterDayStatus?date='+date.format('YYYYMMDD')).map((response: Response) => response.json()))
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/rosterDayStatus?date='+date.format('YYYYMMDD')).map((response: Response) => response.json()))
     }
     getUncoveredShifts = (date) => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://10.47.16.76:4000/api/uncoveredShifts?date='+date.format('YYYYMMDD')).map((response: Response) => response.json()))
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/uncoveredShifts?date='+date.format('YYYYMMDD')).map((response: Response) => response.json()))
     }
 }
