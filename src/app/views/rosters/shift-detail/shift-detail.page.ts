@@ -71,7 +71,7 @@ export class ShiftDetailPage implements OnInit {
       this.selectedStaffName = this.selectedShift[0].staffName
       this.shiftSelect.controls.shiftId.setValue(this.selectedShift[0].shiftId)
       this.selectedStaffId = this.selectedShift[0].staffId
-      this.selectedStaffPhoto = 'http://10.47.16.76:4000/api/staffImage?staffId='+this.selectedStaffId.padStart(3, '0')
+      this.selectedStaffPhoto = 'http://10.44.0.124:4000/api/staffImage?staffId='+this.selectedStaffId.padStart(3, '0')
     }
   }
 }
