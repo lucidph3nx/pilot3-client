@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { 
   Router, 
   NavigationEnd, 
@@ -8,42 +8,38 @@ import {
   ResolveEnd 
 } from '@angular/router';
 import { Subscription } from "rxjs";
-import { MatSidenav } from '@angular/material';
-import { MediaChange, ObservableMedia } from "@angular/flex-layout";
 import { TranslateService } from '@ngx-translate/core';
 import { ThemeService } from '../../../services/theme.service';
-// import PerfectScrollbar from 'perfect-scrollbar';
 import { LayoutService } from '../../../services/layout.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-layout',
-  templateUrl: './admin-layout.template.html'
+  templateUrl: './admin-layout.template.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminLayoutComponent implements OnInit, AfterViewInit {
   public isModuleLoading: Boolean = false;
   private moduleLoaderSub: Subscription;
   private layoutConfSub: Subscription;
   private routerEventSub: Subscription;
-  private mediaSub: Subscription;
-  // private sidebarPS: PerfectScrollbar;
 
-  // private bodyPS: PerfectScrollbar;
-  // private headerFixedBodyPS: PerfectScrollbar;
   public  scrollConfig = {}
   public layoutConf: any = {};
-
+  public adminContainerClasses: any = {};
+  
   constructor(
     private router: Router,
     public translate: TranslateService,
     public themeService: ThemeService,
     private layout: LayoutService,
-    private media: ObservableMedia
+    private cdr: ChangeDetectorRef
   ) {
     // Close sidenav after route change in mobile
     this.routerEventSub = router.events.pipe(filter(event => event instanceof NavigationEnd))
     .subscribe((routeChange: NavigationEnd) => {
       this.layout.adjustLayout({ route: routeChange.url });
+      this.scrollToTop();
     });
     
     // Translator init
@@ -51,9 +47,12 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
   }
   ngOnInit() {
-    this.layoutConf = this.layout.layoutConf;
-    // this.layout.adjustLayout();
-    // console.log(this.layoutConf)
+    // this.layoutConf = this.layout.layoutConf;
+    this.layoutConfSub = this.layout.layoutConf$.subscribe((layoutConf) => {
+        this.layoutConf = layoutConf;
+        this.adminContainerClasses = this.updateAdminContainerClasses(this.layoutConf);
+        this.cdr.markForCheck();
+    });
 
     // FOR MODULE LOADER FLAG
     this.moduleLoaderSub = this.router.events.subscribe(event => {
@@ -71,49 +70,67 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
-    // this.layoutConfSub = this.layout.layoutConf$.subscribe(change => {
-    //   // this.initBodyPS(change)
-    // })
+
   }
   
-  // initBodyPS(layoutConf:any = {}) {
-  //   if(layoutConf.navigationPos === 'side' && layoutConf.topbarFixed) {
-  //     if (this.bodyPS) this.bodyPS.destroy();
-  //     if (this.headerFixedBodyPS) this.headerFixedBodyPS.destroy();
-  //     this.headerFixedBodyPS = new PerfectScrollbar('.rightside-content-hold', {
-  //       suppressScrollX: true
-  //     });
-  //     this.scrollToTop('.rightside-content-hold');
-  //   } else {
-  //     if (this.bodyPS) this.bodyPS.destroy();
-  //     if (this.headerFixedBodyPS) this.headerFixedBodyPS.destroy();
-  //     this.bodyPS = new PerfectScrollbar('.main-content-wrap', {
-  //       suppressScrollX: true
-  //     });
-  //     this.scrollToTop('.main-content-wrap');
-  //   }
-  // }
-  scrollToTop(selector: string) {
+  scrollToTop() {
     if(document) {
-      let element = <HTMLElement>document.querySelector(selector);
-      element.scrollTop = 0;
+      setTimeout(() => {
+        let element;
+        if(this.layoutConf.topbarFixed) {
+          element = <HTMLElement>document.querySelector('#rightside-content-hold');
+        } else {
+          element = <HTMLElement>document.querySelector('#main-content-wrap');
+        }
+        element.scrollTop = 0;
+      })
     }
   }
   ngOnDestroy() {
     if(this.moduleLoaderSub) {
-      this.moduleLoaderSub.unsubscribe()
+      this.moduleLoaderSub.unsubscribe();
     }
     if(this.layoutConfSub) {
-      this.layoutConfSub.unsubscribe()
+      this.layoutConfSub.unsubscribe();
     }
     if(this.routerEventSub) {
-      this.routerEventSub.unsubscribe()
+      this.routerEventSub.unsubscribe();
     }
   }
   closeSidebar() {
     this.layout.publishLayoutChange({
       sidebarStyle: 'closed'
     })
+  }
+
+  sidebarMouseenter(e) {
+    // console.log(this.layoutConf);
+    if(this.layoutConf.sidebarStyle === 'compact') {
+        this.layout.publishLayoutChange({sidebarStyle: 'full'}, {transitionClass: true});
+    }
+  }
+
+  sidebarMouseleave(e) {
+    // console.log(this.layoutConf);
+    if (
+        this.layoutConf.sidebarStyle === 'full' &&
+        this.layoutConf.sidebarCompactToggle
+    ) {
+        this.layout.publishLayoutChange({sidebarStyle: 'compact'}, {transitionClass: true});
+    }
+  }
+
+  updateAdminContainerClasses(layoutConf) {
+    return {
+      'navigation-top': layoutConf.navigationPos === 'top',
+      'sidebar-full': layoutConf.sidebarStyle === 'full',
+      'sidebar-compact': layoutConf.sidebarStyle === 'compact' && layoutConf.navigationPos === 'side',
+      'compact-toggle-active': layoutConf.sidebarCompactToggle,
+      'sidebar-compact-big': layoutConf.sidebarStyle === 'compact-big' && layoutConf.navigationPos === 'side',
+      'sidebar-opened': layoutConf.sidebarStyle !== 'closed' && layoutConf.navigationPos === 'side',
+      'sidebar-closed': layoutConf.sidebarStyle === 'closed',
+      'fixed-topbar': layoutConf.topbarFixed && layoutConf.navigationPos === 'side'
+    }
   }
   
 }

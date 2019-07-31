@@ -6,6 +6,7 @@ import { RoutePartsService } from "./shared/services/route-parts.service";
 import { ThemeService } from './shared/services/theme.service';
 
 import { filter } from 'rxjs/operators';
+import { LayoutService } from './shared/services/layout.service';
 
 @Component({
   selector: 'app-root',
@@ -22,15 +23,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     private activeRoute: ActivatedRoute,
     private routePartsService: RoutePartsService,
     private themeService: ThemeService,
+    private layout: LayoutService,
     private renderer: Renderer2
   ) { }
 
   ngOnInit() {
     this.changePageTitle();
   }
-
   ngAfterViewInit() {
-    this.themeService.applyMatTheme(this.renderer)
+    this.layout.applyMatTheme(this.renderer)
   }
   changePageTitle() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((routeChange) => {

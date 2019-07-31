@@ -1,79 +1,15 @@
-$mat-primary: (
-    50 : #fce4ec,
-    100 : #f8bcd0,
-    200 : #f48fb1,
-    300 : #f06292,
-    400 : #ec407a,
-    500 : #e91e63,
-    600 : #e61a5b,
-    700 : #e31651,
-    800 : #df1247,
-    900 : #d90a35,
-    A100 : #ffffff,
-    A200 : #ffd0d8,
-    A400 : #ff9dae,
-    A700 : #ff8498,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #ffffff,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
-);
+$mat-primary: map-get($material-colors, pink);
+$mat-accent: map-get($material-colors, blue-grey);
 
-$mat-accent: (
-    50 : #eceff1,
-    100 : #cfd8dc,
-    200 : #b0bec5,
-    300 : #90a4ae,
-    400 : #78919c,
-    500 : #607d8b,
-    600 : #587583,
-    700 : #4e6a78,
-    800 : #44606e,
-    900 : #334d5b,
-    A100 : #abe1ff,
-    A200 : #78ceff,
-    A400 : #45bcff,
-    A700 : #2bb3ff,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #000000,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
-);
-
-// mandatory stuff for theming
 $egret-primary: mat-palette($mat-primary);
 $egret-accent:  mat-palette($mat-accent);
 
-// include the custom theme components into a theme object
+// custom theme palettes are passed into a theme function
 $egret-theme: mat-dark-theme($egret-primary, $egret-accent);
 
 $primary-dark: darken( map-get($mat-primary, 500), 8% );
 
-// include the custom theme object into the angular material theme
+// Material theme is wrapped by a parent class
 .egret-dark-pink {
     @include angular-material-theme($egret-theme);
 
@@ -109,9 +45,9 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     .messages-wrap .inbox-hold {
         background: transparent !important;
     }
-    .sidebar-panel {
-        background: url('../../assets/images/sidebar-bg-dark.jpg') no-repeat;
-    }
+    // .sidebar-panel {
+    //     background: url('../../assets/images/sidebar-bg-dark.jpg') no-repeat;
+    // }
     .header-topnav,
     .topnav ul ul,
     .app-user .app-user-name,
@@ -136,7 +72,7 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
         border-color: rgba(255, 255, 255, 0.12) !important;
     }
     
-    .sidebar-panel .navigation-hold,
+    // .sidebar-panel .navigation-hold,
     .message-item.open .message-head,
     .ngx-datatable.material .datatable-header,
     .bg-white,
@@ -151,10 +87,12 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     .sidebar-compact ul.submenu,
     .topnav ul li ul li:hover, 
     .topnav ul li ul li.open,
-    .default-bg {
+    .default-bg,
+    .default-light-bg {
         background: #424242;
         color: #ffffff;
     }
+    
     .header-topnav,
     .topnav ul ul,
     .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover, 
@@ -233,5 +171,19 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     }
     .mat-color-default {
         color: #ffffff;
+    }
+
+    .fill-color-accent {
+        color: map-get($mat-accent, 500);
+    }
+
+    .fill-color-warn {
+        color: #f44336;
+    }
+    @media (max-width: 959px) {
+      .default-bg-mobile {
+        background: #424242;
+        color: #ffffff;  
+      }
     }
 }

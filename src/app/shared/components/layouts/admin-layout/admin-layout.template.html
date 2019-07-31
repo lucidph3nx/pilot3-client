@@ -1,4 +1,4 @@
-<div class="app-admin-wrap" [dir]='layoutConf.dir'>
+<div class="app-admin-wrap" [dir]='layoutConf?.dir'>
   <!-- Header for top navigation layout -->
   <!-- ONLY REQUIRED FOR **TOP** NAVIGATION LAYOUT -->
   <app-header-top 
@@ -8,27 +8,22 @@
   <!-- Main Container -->
   <mat-sidenav-container 
   [dir]='layoutConf.dir'
-  class="app-admin-container app-side-nav-container mat-drawer-transition"
-  [ngClass]="{
-    'navigation-top': layoutConf.navigationPos === 'top',
-    'sidebar-full': layoutConf.sidebarStyle === 'full',
-    'sidebar-compact': layoutConf.sidebarStyle === 'compact' && layoutConf.navigationPos === 'side',
-    'sidebar-compact-big': layoutConf.sidebarStyle === 'compact-big' && layoutConf.navigationPos === 'side',
-    'layout-intransition': layoutConf.layoutInTransition,
-    'sidebar-opened': layoutConf.sidebarStyle !== 'closed' && layoutConf.navigationPos === 'side',
-    'sidebar-closed': layoutConf.sidebarStyle === 'closed',
-    'fixed-topbar': layoutConf.topbarFixed && layoutConf.navigationPos === 'side'
-  }">
+  class="app-admin-container app-side-nav-container mat-drawer-transition sidebar-{{layoutConf?.sidebarColor}} topbar-{{layoutConf?.topbarColor}}"
+  [ngClass]="adminContainerClasses">
   <!-- SIDEBAR -->
   <!-- ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT -->
-  <app-sidebar-side *ngIf="layoutConf.navigationPos === 'side'"></app-sidebar-side>
+  <app-sidebar-side 
+  *ngIf="layoutConf.navigationPos === 'side'" 
+  (mouseenter)="sidebarMouseenter($event)"
+  (mouseleave)="sidebarMouseleave($event)"
+  ></app-sidebar-side>
   
   <!-- Top navigation layout (navigation for mobile screen) -->
   <!-- ONLY REQUIRED FOR **TOP** NAVIGATION MOBILE LAYOUT -->
   <app-sidebar-top *ngIf="layoutConf.navigationPos === 'top' && layoutConf.isMobile"></app-sidebar-top>
 
     <!-- App content -->
-    <div class="main-content-wrap" [perfectScrollbar]="scrollConfig" [disabled]="layoutConf.topbarFixed">
+    <div class="main-content-wrap" id="main-content-wrap" [perfectScrollbar]="" [disabled]="layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
       <!-- Header for side navigation layout -->
       <!-- ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT -->
       <app-header-side 
@@ -36,7 +31,7 @@
         [notificPanel]="notificationPanel">
       </app-header-side>
 
-      <div class="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed">
+      <div class="rightside-content-hold" id="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
         <!-- View Loader -->
         <div class="view-loader" *ngIf="isModuleLoading">
           <div class="spinner">
@@ -57,7 +52,7 @@
     
     <!-- Notificaation bar -->
     <mat-sidenav #notificationPanel mode="over" class="" position="end">
-      <div class="navigation-hold" fxLayout="column">
+      <div class="nofication-panel" fxLayout="column">
         <app-notifications [notificPanel]="notificationPanel"></app-notifications>
       </div>
     </mat-sidenav>

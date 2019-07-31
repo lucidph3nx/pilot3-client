@@ -39,12 +39,12 @@
 }
 
 .topbar-button-right {
-  margin-left: 1rem !important;
+  margin: 0 .5rem !important;
 }
 
 [dir=rtl] {
-  .topbar-button-right {
-    margin-right: 1rem;
-    margin-left: 0 !important;
-  }
+//   .topbar-button-right {
+//     margin-right: 1rem;
+//     margin-left: 0 !important;
+//   }
 }

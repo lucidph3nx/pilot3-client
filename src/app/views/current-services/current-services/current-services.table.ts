@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { egretAnimations } from "app/shared/animations/egret-animations";
 import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment-timezone';
 import { serviceViewComponent } from './service-view/service-view.component';
+import 'core-js/es7/string';
 
 @Component({
   selector: 'current-services',
@@ -10,6 +12,7 @@ import { serviceViewComponent } from './service-view/service-view.component';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./current-services.table.css'],
   providers: [CurrentServicesService],
+  animations: egretAnimations
 })
 export class CurrentServicesTableComponent implements OnInit {
   constructor(

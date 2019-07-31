@@ -3,7 +3,7 @@
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
 */
 import { Injectable, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable()
 export class LandingPageService {

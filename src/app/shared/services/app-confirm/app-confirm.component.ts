@@ -3,8 +3,8 @@ import { Component, Inject } from '@angular/core';
 
 @Component({
   selector: 'app-confirm',
-  template: `<h1 matDialogTitle>{{ data.title }}</h1>
-    <div mat-dialog-content>{{ data.message }}</div>
+  template: `<h1 matDialogTitle class="mb-05">{{ data.title }}</h1>
+    <div mat-dialog-content class="mb-1">{{ data.message }}</div>
     <div mat-dialog-actions>
     <button 
     type="button" 

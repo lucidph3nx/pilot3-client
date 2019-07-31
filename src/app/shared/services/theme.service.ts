@@ -2,7 +2,7 @@ import { Injectable, Inject, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import  { getQueryParam } from '../helpers/url.helper';
 
-interface ITheme {
+export interface ITheme {
   name: string,
   baseColor?: string,
   isActive?: boolean
@@ -11,49 +11,54 @@ interface ITheme {
 @Injectable()
 export class ThemeService {
   public egretThemes :ITheme[]  = [{
-    "name": "pilot-light",
-    "baseColor": "#fafafa",
-    "isActive": false 
+    "name": "egret-dark-purple",
+    "baseColor": "#9c27b0",
+    "isActive": false
   }, {
-    "name": "pilot-dark",
-    "baseColor": "#303030",
-    "isActive": true 
+    "name": "egret-dark-pink",
+    "baseColor": "#e91e63",
+    "isActive": false
+  }, {
+    "name": "egret-blue",
+    "baseColor": "#03a9f4",
+    "isActive": true
+  }, {
+    "name": "egret-navy",
+    "baseColor": "#10174c",
+    "isActive": false 
   }];
   public activatedTheme: ITheme;
-
+  private renderer: Renderer2;
   constructor(
     @Inject(DOCUMENT) private document: Document
   ) {}
 
   // Invoked in AppComponent and apply 'activatedTheme' on startup
-  applyMatTheme(r: Renderer2) {
-    /*
-    ****** (SET YOUR DEFAULT THEME HERE) *******
-    * Assign new Theme to activatedTheme
-    */
-    // this.activatedTheme = this.egretThemes[0]; 
-    // this.activatedTheme = this.egretThemes[1]; 
-    // this.activatedTheme = this.egretThemes[2]; 
-    this.activatedTheme = this.egretThemes[1];
+  applyMatTheme(r: Renderer2, themeName: string) {
+    this.renderer = r;
+
+    this.activatedTheme = this.egretThemes[2]; 
 
     // *********** ONLY FOR DEMO **********
-    this.setThemeFromQuery();
+    //this.setThemeFromQuery();
     // ************************************
 
-    this.changeTheme(r, this.activatedTheme)
+    // this.changeTheme(themeName);
+    this.renderer.addClass(this.document.body, themeName);
+
   }
 
-  changeTheme(r: Renderer2, theme:ITheme) {
-    r.removeClass(this.document.body, this.activatedTheme.name);
-    r.addClass(this.document.body, theme.name);
-    this.flipActiveFlag(theme)
+  changeTheme(prevTheme, themeName: string) {
+    this.renderer.removeClass(this.document.body, prevTheme);
+    this.renderer.addClass(this.document.body, themeName);
+    this.flipActiveFlag(themeName);
   }
-  flipActiveFlag(theme:ITheme) {
+  flipActiveFlag(themeName:string) {
     this.egretThemes.forEach((t) => {
       t.isActive = false;
-      if(t.name === theme.name) {
+      if(t.name === themeName) {
         t.isActive = true;
-        this.activatedTheme = theme;
+        this.activatedTheme = t;
       }
     });
   }
@@ -63,7 +68,7 @@ export class ThemeService {
     let themeStr = getQueryParam('theme');
     try {
       this.activatedTheme = JSON.parse(themeStr);
-      this.flipActiveFlag(this.activatedTheme);
+      this.flipActiveFlag(this.activatedTheme.name);
     } catch(e) {}
   }
 }

@@ -1,10 +1,11 @@
-<div class="page-wrap height-100 mat-bg-primary">
+<div class="page-wrap height-100 black">
   <div class="session-form-hold">
     <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
     <mat-card>
       <mat-card-content>
-        <div class="text-center pb-1">
-          <img src="assets/images/logo-full.png" alt="" class="mb-05">
+        <div class="text-center pt-8 pb-16">
+          <img width="60px" src="assets/images/logo-lg.png" alt="" class="mb-05">
+           <h2>Lets get started</h2>
           <p class="text-muted m-0">Sign up to use our service</p>
         </div>
         <form [formGroup]="signupForm"  (ngSubmit)="signup()">
@@ -69,7 +70,7 @@
 
           <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signupForm.invalid">Sign up</button>
           <div class="text-center">
-            <a [routerLink]="'/sessions/signin'" class="mat-primary text-center full-width">Sign in to existing account</a>
+            <a [routerLink]="'/sessions/signin'" class="text-center full-width">Sign in to existing account</a>
           </div>
         </form>
       </mat-card-content>

@@ -2,63 +2,43 @@ import { Component, OnInit, EventEmitter, Input, Output, Renderer2 } from '@angu
 import { ThemeService } from '../../services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { TranslateService } from '@ngx-translate/core';
-import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
-import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-header-side',
-  templateUrl: './header-side.template.html',
-  styleUrls: ['./header-side.template.scss'],
-  providers: [CurrentServicesService],
+  templateUrl: './header-side.template.html'
 })
 export class HeaderSideComponent implements OnInit {
   @Input() notificPanel;
-  currentLang = 'en';
   public availableLangs = [{
-    name: 'English',
+    name: 'EN',
     code: 'en',
+    flag: 'flag-icon-us'
   }, {
-    name: 'Spanish',
+    name: 'ES',
     code: 'es',
+    flag: 'flag-icon-es'
   }]
+  currentLang = this.availableLangs[0];
+
   public egretThemes;
   public layoutConf:any;
   constructor(
     private themeService: ThemeService,
     private layout: LayoutService,
     public translate: TranslateService,
-    private renderer: Renderer2,
-    private service: CurrentServicesService,
+    private renderer: Renderer2
   ) {}
-  serverTime = moment();
-  serverStatus = '';
   ngOnInit() {
     this.egretThemes = this.themeService.egretThemes;
     this.layoutConf = this.layout.layoutConf;
-    this.translate.use(this.currentLang);
-
-    this.service.getCurrentServerStatus()
-    .subscribe((response) => {
-      this.serverTime = moment(response.time)
-      this.serverStatus = response.status
-    },
-    (status) => {
-      if (status.status !== 200){
-        this.serverStatus = "Server Connection Error"
-      } else {
-        this.serverStatus = ""
-      }
-        });
-    setInterval(() => {
-      this.serverTime.add(1, 'second');
-    },1000)
+    this.translate.use(this.currentLang.code);
   }
-  setLang(e) {
-    console.log(e)
-    this.translate.use(this.currentLang);
+  setLang(lng) {
+    this.currentLang = lng;
+    this.translate.use(lng.code);
   }
   changeTheme(theme) {
-    this.themeService.changeTheme(this.renderer, theme);
+    // this.themeService.changeTheme(theme);
   }
   toggleNotific() {
     this.notificPanel.toggle();
@@ -73,16 +53,25 @@ export class HeaderSideComponent implements OnInit {
       sidebarStyle: 'closed'
     })
   }
+
   toggleCollapse() {
     // compact --> full
     if(this.layoutConf.sidebarStyle === 'compact') {
       return this.layout.publishLayoutChange({
-        sidebarStyle: 'full'
+        sidebarStyle: 'full',
+        sidebarCompactToggle: false
       }, {transitionClass: true})
     }
+
     // * --> compact
     this.layout.publishLayoutChange({
-      sidebarStyle: 'compact'
+      sidebarStyle: 'compact',
+      sidebarCompactToggle: true
     }, {transitionClass: true})
+
+  }
+
+  onSearch(e) {
+    //   console.log(e)
   }
 }

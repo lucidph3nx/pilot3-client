@@ -9,8 +9,8 @@ import { CustomValidators } from 'ng2-validation';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  @ViewChild(MatProgressBar) progressBar: MatProgressBar;
-  @ViewChild(MatButton) submitButton: MatButton;
+  @ViewChild(MatProgressBar, {static: false}) progressBar: MatProgressBar;
+  @ViewChild(MatButton, {static: false}) submitButton: MatButton;
 
   signupForm: FormGroup
   constructor() {}

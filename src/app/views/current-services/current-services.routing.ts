@@ -5,16 +5,13 @@ import { MatangiUnitsTableComponent } from './matangi-units/matangi-units.table'
 
 export const CurrentServicesRoutes: Routes = [
   {
-    path: '',
-    children: [{
-      path: 'variance',
-      component: CurrentServicesTableComponent,
-      data: { title: 'Variance', breadcrumb: 'Variance' }
-    },
-    {
-      path: 'matangi-units',
-      component: MatangiUnitsTableComponent,
-      data: { title: 'Matangi Units', breadcrumb: 'Matangi Units' }
-    }]
-  }
+    path: 'variance',
+    component: CurrentServicesTableComponent,
+    data: { title: 'Variance', breadcrumb: 'Variance' }
+  },
+  {
+    path: 'matangi-units',
+    component: MatangiUnitsTableComponent,
+    data: { title: 'Matangi Units', breadcrumb: 'Matangi Units' }
+  },
 ];

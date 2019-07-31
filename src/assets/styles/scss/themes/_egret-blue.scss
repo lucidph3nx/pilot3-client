@@ -1,84 +1,16 @@
-$black-87-opacity: rgba(0,0,0, .87);
-
-// You can define colors here (using http://mcg.mbitson.com)
-$mat-primary: (
-    50 : #e5eff4,
-    100 : #bdd7e3,
-    200 : #92bdd0,
-    300 : #66a3bd,
-    400 : #458fae,
-    500 : #247ba0,
-    600 : #207398,
-    700 : #1b688e,
-    800 : #165e84,
-    900 : #0d4b73,
-    A100 : #a6d8ff,
-    A200 : #73c2ff,
-    A400 : #40acff,
-    A700 : #26a1ff,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #ffffff,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
-);
-
-$mat-accent: (
-    50 : #fffaef,
-    100 : #fff4d8,
-    200 : #ffecbe,
-    300 : #ffe4a4,
-    400 : #ffdf91,
-    500 : #ffd97d,
-    600 : #ffd575,
-    700 : #ffcf6a,
-    800 : #ffca60,
-    900 : #ffc04d,
-    A100 : #ffffff,
-    A200 : #ffffff,
-    A400 : #fffbf3,
-    A700 : #fff1da,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #000000,
-        500 : #000000,
-        600 : #000000,
-        700 : #000000,
-        800 : #000000,
-        900 : #000000,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
-);
+$mat-primary: map-get($material-colors, light-blue);
+$mat-accent: map-get($material-colors, amber);
 
 
-
-// mandatory stuff for theming
 $egret-primary: mat-palette($mat-primary);
 $egret-accent:  mat-palette($mat-accent);
 
-// include the custom theme components into a theme object
+// custom theme palettes are passed into a theme function
 $egret-theme: mat-light-theme($egret-primary, $egret-accent);
 
 $primary-dark: darken( map-get($mat-primary, 500), 8% );
 
-// include the custom theme object into the angular material theme
+// Material theme is wrapped by a parent class
 .egret-blue {
     @include angular-material-theme($egret-theme);
 
@@ -113,6 +45,9 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     .sidebar-compact ul.submenu,
     .default-bg {
         background: #ffffff !important;
+    }
+    .default-light-bg {
+      background: #fafafa !important;
     }
     /* Hopscotch Tour */ 
     div.hopscotch-bubble {
@@ -170,5 +105,19 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     }
     .mat-color-default {
         color: rgba(0, 0, 0, 0.87);
+    }
+
+    .fill-color-accent {
+        color: map-get($mat-accent, 500);
+    }
+
+    .fill-color-warn {
+        color: #f44336;
+
+    }
+    @media (max-width: 959px) {
+      .default-bg-mobile {
+        background: #ffffff;
+      }
     }
 }

@@ -50,6 +50,9 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   parseText(part) {
+      if(!part.breadcrumb) {
+        return ''
+      }
     part.breadcrumb = part.breadcrumb.replace(/{{([^{}]*)}}/g, function (a, b) {
       var r = part.params[b];
       return typeof r === 'string' ? r : a;

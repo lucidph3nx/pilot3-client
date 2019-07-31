@@ -25,7 +25,7 @@
   }
   .nav-item-sep {
     padding: 0;
-    margin: 1rem 0;
+    margin: 0 0 1rem;
     .icon-menu-title {
       padding-left: 0px;
       margin-left: -8px;
@@ -73,6 +73,7 @@
         margin-right: 3px;
         height: 48px;
         width: 48px;
+        font-size: $sidebar-navigation-icon-size;
         line-height: 48px;
         border-left: 3px solid;
         border-color: transparent;
@@ -194,18 +195,23 @@
 
 .sidebar-compact {
   .icon-menu {
-    width: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: $compact-sidebar-width;
     .icon-menu-item {
       button {
-        margin: 0 0 4px 0;
+        margin: 0 0 8px 0;
         padding: 0 12px;
+        box-shadow: none;
       }
     }
   }
 
   .sidenav-hold {
-    .mat-icon:not(.menu-caret) {
-      margin-right: 0;
+    .sidenav .mat-icon:not(.menu-caret) {
+      margin: 0 !important;
+      width: $compact-sidebar-width !important;
     }
     .item-name.lvl1 {
       display: none;

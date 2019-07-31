@@ -3,7 +3,7 @@
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
 */
 
-body.landing {
+.landing {
   .h1, 
   .h2, 
   .h3, 
@@ -55,6 +55,11 @@ body.landing {
     font-weight: 700;
     margin: 0 0 16px;
   }
+  .mat-card {
+    .mat-divider {
+      position: relative;
+    }
+  }
 }
 @-webkit-keyframes slideDown {
   0% { top: -60px }
@@ -70,9 +75,16 @@ body.landing {
 
 .home-section {
   padding: 80px 0;
+  .ngucarousel {
+      overflow: visible !important;
+    .ngu-touch-container {
+        padding: 1.25rem 0;
+        overflow: hidden;
+    }
+  }
 }
 .home-section mat-card:hover {
-  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.2) !important;
 }
 
 .section-header {
@@ -133,8 +145,36 @@ body.landing {
   color: rgba(0, 0, 0, .87);
 }
 .ngucarousel .carousel-left {
-  left: -20px;
+  left: -10px;
 }
 .ngucarousel .carousel-right {
-  right: -20px;
+  right: -10px;
 }
+
+.carousel-point {
+  list-style-type: none;
+  text-align: center;
+  padding: 12px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: auto;
+  box-sizing: border-box;
+
+  li {
+    display: inline-block;
+    border-radius: 50%;
+    background: #6b6b6b;
+    padding: 5px;
+    margin: 0 4px;
+    transition-timing-function: cubic-bezier(.17,.67,.83,.67);
+    transition: .4s;
+    cursor: pointer;
+  }
+
+  li.active {
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    -webkit-transform: scale(1.7);
+    transform: scale(1.7);
+  }
+} 
+

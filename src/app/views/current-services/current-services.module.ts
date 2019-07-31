@@ -19,10 +19,9 @@ import {
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
-
 
 import { CurrentServicesTableComponent } from './current-services/current-services.table';
 import { MatangiUnitsTableComponent } from './matangi-units/matangi-units.table';

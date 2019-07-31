@@ -2,7 +2,7 @@
   &.mat-toolbar {
     position: relative;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-    z-index: 999;
+    z-index: 1001;
   }
   .mat-select-value {
     font-weight: 400;
@@ -18,15 +18,18 @@
 .sidebar-compact .toggle-collapsed {
   transform: rotate(180deg);
 }
+
 .search-bar {
   .top-search-form {
     position: relative;
     background: #fff;
-    border-radius: 2px;
+    border-radius: 40px;
     margin-right: 1rem;
     display: block;
-    max-width: 800px;
+    max-width: 220px;
     margin-left: 20px;
+    box-shadow: inset 0 0 2px 2px rgba(136, 136, 136, 0.2);
+
     .material-icons {
       position: absolute;
       top: 50%;
@@ -36,7 +39,7 @@
     }
     input {
       font-size: 1rem;
-      padding: .95rem .75rem;
+      padding: .6rem .75rem;
       z-index: 2;
       cursor: text;
       text-indent: 30px;

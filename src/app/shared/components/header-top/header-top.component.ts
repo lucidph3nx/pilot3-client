@@ -60,7 +60,7 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
     this.translate.use(this.currentLang)
   }
   changeTheme(theme) {
-    this.themeService.changeTheme(this.renderer, theme);
+    this.layout.publishLayoutChange({matTheme: theme.name})
   }
   toggleNotific() {
     this.notificPanel.toggle();

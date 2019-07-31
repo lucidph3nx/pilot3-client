@@ -1,4 +1,4 @@
-<div class="page-wrap height-100 mat-bg-primary">
+<div class="page-wrap height-100 black">
   <div class="session-form-hold session-lockscreen">
     <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
     <mat-card>
@@ -22,12 +22,12 @@
                   placeholder="Password">
               </mat-form-field>
               <small 
-                *ngIf="password.errors && (password.dirty || password.touched) && (password.errors.required)" 
+                *ngIf="password.errors && (password.dirty || password.touched) && (password?.errors?.required)" 
                 class="form-error-msg"> Password is required </small>
             </div>
             
             <button mat-raised-button class="mat-primary full-width mb-05" [disabled]="lockscreenForm.invalid">Unlock</button>
-            <button mat-raised-button [routerLink]="'/sessions/signin'" color="accent" class="mat-primary full-width">It's Not Me!</button>
+            <button mat-raised-button [routerLink]="'/sessions/signin'" color="accent" class="mat-primary full-width">It's not me!</button>
           </form>
         </div>
       </mat-card-content>

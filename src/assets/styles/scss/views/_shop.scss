@@ -41,7 +41,6 @@ h1.title {
 }
 .shop-sidebar {
   width: 15rem;
-  background: transparent !important;
 }
 .shop-filters-wrap {
   margin-top: 7px;
@@ -272,6 +271,9 @@ h1.title {
     margin: 0;
     padding: 0;
   }
+  .shop-sidebar {
+    background: #fff;
+  }
 }
 @media (max-width: 680px) {
   .product-container {
@@ -285,41 +287,6 @@ h1.title {
       min-height: auto;
     }
   }
-
-
-  /* Force table to not be like tables anymore */
-	table, thead, tbody, th, td, tr { 
-		display: block; 
-	}
-	
-	/* Hide table headers (but not display: none;, for accessibility) */
-	thead tr { 
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
-	
-	tr { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
-	tr:last-child { border-bottom: none; }
-	
-	td { 
-		/* Behave  like a "row" */
-		border: none;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.03); 
-		position: relative;
-		padding-left: 50%; 
-	}
-	
-	td:before { 
-		/* Now like a table header */
-		position: absolute;
-		/* Top/left values mimic padding */
-		top: 6px;
-		left: 6px;
-		width: 45%; 
-		padding-right: 10px; 
-		white-space: nowrap;
-	}
 }
 
 @media (min-width: 1100px) {

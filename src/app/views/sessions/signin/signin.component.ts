@@ -8,8 +8,8 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  @ViewChild(MatProgressBar) progressBar: MatProgressBar;
-  @ViewChild(MatButton) submitButton: MatButton;
+  @ViewChild(MatProgressBar, {static: false}) progressBar: MatProgressBar;
+  @ViewChild(MatButton, {static: false}) submitButton: MatButton;
 
   signinForm: FormGroup;
 

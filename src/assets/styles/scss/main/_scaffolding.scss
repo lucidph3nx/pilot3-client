@@ -2,15 +2,15 @@ html {
   font-size: 16px;
 }
 
-html:not(.landing), 
-body:not(.landing) {
+html, 
+body {
   width: 100%;
-  height: 100%;
+  // height: 100%;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-touch-callout: none;
-  min-height: 100%;
+  // min-height: 100%;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -54,10 +54,11 @@ bdo[dir=ltr] {
   direction: ltr;
   unicode-bidi: bidi-override;
 }
+
 .mat-card {
   font-size: .875rem;
 }
-img {
+img:not(.mat-card-image) {
   max-width: 100%;
 }
 a, a:focus, a:hover {
@@ -125,87 +126,6 @@ code {
 }
 .bg-white {
   background: #ffffff !important;
-}
-.m-0 {
-  margin: 0 !important;
-}
-.m-1 {
-  margin: 1rem !important;
-}
-.mt-1 {
-  margin-top: 1rem !important;
-}
-.mt-05 {
-  margin-top: .5rem !important;
-}
-.mt-0 {
-  margin-top: 0 !important;
-}
-.mr-1 {
-  margin-right: 1rem !important;
-}
-.mr-05 {
-  margin-right: .5rem !important;
-}
-.mr-0 {
-  margin-right: 0 !important;
-}
-.mb-1 {
-  margin-bottom: 1rem !important;
-}
-.mb-0 {
-  margin-bottom: 0 !important;
-}
-.ml-1 {
-  margin-left: 1rem !important;
-}
-.ml-05 {
-  margin-left: .5rem !important;
-}
-.ml-0 {
-  margin-left: 0 !important;
-}
-.mb-05 {
-  margin-bottom: .5rem !important;
-}
-.m-333 {
-  margin: .333333rem !important;
-}
-.margin-333 {
-  margin: .333333rem !important;
-}
-.pt-1 {
-  padding-top: 1rem !important;
-}
-.pt-0 {
-  padding-top: 0 !important;
-}
-.pr-1 {
-  padding-right: 1rem !important;
-}
-.pr-0 {
-  padding-right: 0 !important;
-}
-.pb-1 {
-  padding-bottom: 1rem !important;
-}
-.pb-0 {
-  padding-bottom: 0 !important;
-}
-.pl-1 {
-  padding-left: 1rem !important;
-}
-.pl-0 {
-  padding-left: 0 !important;
-}
-.p-0 {
-  padding: 0 !important;
-}
-.p-1 {
-  padding: 1rem !important;
-}
-.p-05 {
-  padding: .5rem !important;
 }
 
 .height-100 {
@@ -322,72 +242,6 @@ code {
   width: 13px;
 }
 
-.mat-card.default {
-  padding: 0;
-}
-.mat-card.default .mat-card-title {
-  padding-top: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  line-height: 1;
-  font-weight: 400;
-}
-.mat-card.default>:first-child {
-  border-radius: 2px 2px 0 0;
-}
-.mat-card.default .mat-card-subtitle:first-child {
-  padding-top: 1rem;
-}
-.mat-card.default .mat-card-subtitle {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  line-height: 1;
-}
-.mat-card.default .mat-card-content {
-  padding: 1rem;
-  margin-bottom: 0;
-  position: relative;
-}
-.mat-card.default .mat-card-actions,
-.mat-card.default .mat-card-actions:last-child {
-  padding: .5rem;
-  margin: 0;
-}
-.mat-card.default>:last-child {
-  border-radius: 0 0 2px 2px;
-}
-
-.mat-card {
-  margin: .333333rem;
-  overflow: hidden;
-}
-.mat-card .mat-card-title .mat-divider, .mat-divider.full-width {
-  margin-left: -24px;
-  margin-right: -24px;
-}
-
-.mat-card.p-0 .mat-card-title .card-title-text {
-  padding: 1rem 1.5rem;
-}
-.mat-card.p-0 .mat-card-title .card-title-text .card-control {
-  height: 24px;
-  width: 24px;
-  line-height: 24px;
-}
-.mat-card.p-0 .mat-card-title .card-title-text .mat-card-subtitle {
-  margin: 0;
-}
-.mat-card.p-0 .mat-card-title .mat-divider {
-  margin-left: 0;
-  margin-right: 0;
-  border-top-color: rgba(0, 0, 0, 0.04);
-}
-.mat-card.p-0 .mat-card-image {
-  margin: 0 0 1rem !important;
-}
-.mat-card.p-0 .mat-card-content {
-  padding:  0 1.5rem 1.5rem;
-}
 .mat-button,
 .mat-raised-button {
   font-weight: 400 !important;
@@ -510,6 +364,10 @@ code {
 }
 .mat-sidenav .mat-list-item:hover {
   background: rgba(0, 0, 0, .035) !important;
+}
+.mat-chip {
+  position: relative;
+  overflow: hidden;
 }
 .text-small {
   font-size: .813rem;
@@ -720,7 +578,12 @@ body .mat-select-trigger {
 .ngx-datatable.material {
   box-shadow: none !important;
 }
-
+// .datatable-body, .datatable-body-row {
+//   min-width: 100% !important;
+// }
+// datatable-scroller {
+//   width: 100% !important;
+// }
 /*------ Map ------*/
 .agm-info-window-content {
   color: rgba(0, 0, 0, .87);
@@ -821,14 +684,6 @@ div.hopscotch-bubble .hopscotch-nav-button.prev:hover {
 }
 
 [dir=rtl] {
-  .pr-1 {
-    padding-left: 1rem;
-    padding-right: 0 !important;
-  }
-  .mr-1 {
-    margin-right: 0 !important;
-    margin-left: 1rem;
-  }
   .ps__rail-y {
     right: auto !important;
     left: 0 !important;

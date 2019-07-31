@@ -10,17 +10,12 @@ export const rootRouterConfig: Routes = [
     pathMatch: 'full' 
   },
   {
-    path: 'pilot', 
-    redirectTo: 'current-services/variance', 
-    pathMatch: 'full' 
-  },
-  {
     path: '', 
     component: AuthLayoutComponent,
     children: [
       { 
         path: 'sessions', 
-        loadChildren: './views/sessions/sessions.module#SessionsModule',
+        loadChildren: () => import('./views/sessions/sessions.module').then(m => m.SessionsModule),
         data: { title: 'Session'} 
       }
     ]
@@ -32,67 +27,32 @@ export const rootRouterConfig: Routes = [
     children: [
       {
         path: 'current-services', 
-        loadChildren: './views/current-services/current-services.module#CurrentServicesModule', 
+        loadChildren: () => import('./views/current-services/current-services.module').then(m => m.CurrentServicesModule),
         data: { title: 'Current Services', breadcrumb: 'CurrentServices'}
-      }
-    ]
-  },
-  {
-    path: '', 
-    component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
+      },
       {
         path: 'train-performance', 
-        loadChildren: './views/train-performance/train-performance.module#TrainPerformanceModule', 
+        loadChildren: () => import('./views/train-performance/train-performance.module').then(m => m.TrainPerformanceModule),
         data: { title: 'Train Performance', breadcrumb: 'Train Performance'}
-      }
-    ]
-  },
-  {
-    path: '', 
-    component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
+      },
       {
         path: 'rosters', 
-        loadChildren: './views/rosters/rosters.module#RostersModule', 
+        loadChildren: () => import('./views/rosters/rosters.module').then(m => m.RostersModule),
         data: { title: 'Rosters', breadcrumb: 'Rosters'}
-      }
-    ]
-  },
-  {
-    path: '', 
-    component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
+      },
       {
         path: 'resource-visboard', 
-        loadChildren: './views/resource-visboard/resource-visboard.module#ResourceVisboardModule', 
+        loadChildren: () => import('./views/resource-visboard/resource-visboard.module').then(m => m.ResourceVisboardModule),
         data: { title: 'Resource Visboard', breadcrumb: 'Resource Visboard'}
-      }
-    ]
-  },
-  {
-    path: '', 
-    component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
+      },
       {
         path: 'rti-boards', 
-        loadChildren: './views/rti-boards/rti-boards.module#RtiBoardsModule', 
+        loadChildren: () => import('./views/rti-boards/rti-boards.module').then(m => m.RtiBoardsModule),
         data: { title: 'RTI', breadcrumb: 'RTI'}
-      }
-    ]
-  },
-  {
-    path: '', 
-    component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
+      },
       {
         path: 'others', 
-        loadChildren: './views/others/others.module#OthersModule', 
+        loadChildren: () => import('./views/others/others.module').then(m => m.OthersModule), 
         data: { title: 'Others', breadcrumb: 'OTHERS'}
       }
     ]
@@ -102,4 +62,3 @@ export const rootRouterConfig: Routes = [
     redirectTo: 'sessions/404'
   }
 ];
-
