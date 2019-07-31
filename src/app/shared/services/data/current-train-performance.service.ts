@@ -12,7 +12,7 @@ export class CurrentTrainPerformanceService {
     getCurrentPeakPerformance = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentPeakPerformance').map((response: Response) => response.json()))
+        .switchMap(() => this.http.get('http://localhost:4000/api/currentPeakPerformance').map((response: Response) => response.json()))
     }
 
 }
