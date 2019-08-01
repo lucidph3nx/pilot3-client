@@ -48,7 +48,7 @@ export class LayoutService {
     //******** SET YOUR LAYOUT OPTIONS HERE *********
     this.layoutConf = {
       "navigationPos": "side",      // side, top
-      "sidebarStyle": "full",       // full, compact, closed
+      "sidebarStyle": "closed",       // full, compact, closed
       "sidebarColor": "black",      // http://demos.ui-lib.com/egret-doc/#egret-colors
       "sidebarCompactToggle": false, // applied when "sidebarStyle" is "compact"
       "dir": "ltr",                 // ltr, rtl

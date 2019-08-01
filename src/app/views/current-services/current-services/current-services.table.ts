@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, EventEmitter, Output, Injectable } from '@angular/core';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
+import {Subscription} from 'rxjs';
 import { egretAnimations } from "app/shared/animations/egret-animations";
 import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
@@ -14,13 +16,27 @@ import 'core-js/es7/string';
   providers: [CurrentServicesService],
   animations: egretAnimations,
 })
+@Injectable()
 export class CurrentServicesTableComponent implements OnInit {
 
   constructor(
     private service: CurrentServicesService,
     public dialog: MatDialog,
-  ) {}
-
+    // public mediaObserver: MediaObserver,
+    // public watcher: Subscription,
+    
+  ) {
+    // this.watcher = mediaObserver.media$.subscribe((change: MediaChange) => {
+    //   this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
+    //   if ( change.mqAlias == 'xs') {
+    //     console.log('xs')
+    //   }
+    // });
+  }
+  // ngOnDestroy() {
+  //   this.watcher.unsubscribe();
+  // }
+  // activeMediaQuery = ''
   uprows = [];
   downrows = [];
   currentServices = [];

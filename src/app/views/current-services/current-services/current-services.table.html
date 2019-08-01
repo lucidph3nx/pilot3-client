@@ -9,7 +9,7 @@
                     [rowHeight]="40" [scrollbarV]="false" [rows]="uprows" [sorts]="[{prop: 'kiwirail', dir: 'asc'},{prop: 'departs', dir: 'asc'}]"
                     (activate)="openServiceView($event)">
                     <ngx-datatable-column name="Train" prop="serviceId" [cellClass]="getStatusClass"></ngx-datatable-column>
-                    <ngx-datatable-column name="Cars" prop="cars"></ngx-datatable-column>
+                    <ngx-datatable-column name="Cars" prop="cars" ></ngx-datatable-column>
                     <ngx-datatable-column name="Start" prop="departs"></ngx-datatable-column>
                     <ngx-datatable-column name="Var" prop="varianceFriendly" maxWidth=80 [cellClass]="getVarClass"></ngx-datatable-column>
                     <ngx-datatable-column name="Last Stn" prop="lastStation" [cellClass]="getStnClass"></ngx-datatable-column>
