@@ -4,28 +4,28 @@
             
             <!-- App Logo -->
             <div class="branding">
-                <img src="assets/images/logo.png" alt="" class="app-logo">
-                <span class="app-logo-text">EGRET</span>
+                <img src="assets/images/pilot-logo.png" alt="" class="app-logo">
+                <span class="app-logo-text">PILOT</span>
                 
                 <span style="margin: auto" *ngIf="layoutConf.sidebarStyle !== 'compact'"></span>
-                <div 
+                <!-- <div 
                 class="sidebar-compact-switch"
                 [ngClass]="{active: layoutConf.sidebarCompactToggle}"
                 (click)="toggleCollapse()" 
-                *ngIf="layoutConf.sidebarStyle !== 'compact'"><span></span></div>
+                *ngIf="layoutConf.sidebarStyle !== 'compact'"><span></span></div> -->
             </div>
         
             <!-- Sidebar user -->
-            <div class="app-user">
+            <!-- <div class="app-user">
                 <div class="app-user-photo">
                 <img src="assets/images/face-7.jpg" class="mat-elevation-z1" alt="">
                 </div>
                 <span class="app-user-name mb-05">
                 <mat-icon class="icon-xs text-muted">lock</mat-icon> 
                 Watson Joyce
-                </span>
+                </span> -->
                 <!-- Small buttons -->
-                <div class="app-user-controls">
+                <!-- <div class="app-user-controls">
                 <button 
                 class="text-muted"
                 mat-icon-button 
@@ -68,7 +68,7 @@
                     </button>
                     </mat-menu>
                 </div>
-            </div>
+            </div> -->
             <!-- Navigation -->
             <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
         </div>

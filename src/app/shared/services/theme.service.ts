@@ -21,11 +21,15 @@ export class ThemeService {
   }, {
     "name": "egret-blue",
     "baseColor": "#03a9f4",
-    "isActive": true
+    "isActive": false
   }, {
     "name": "egret-navy",
     "baseColor": "#10174c",
     "isActive": false 
+  }, {
+    "name": "pilot-dark",
+    "baseColor": "#03a9f4",
+    "isActive": true 
   }];
   public activatedTheme: ITheme;
   private renderer: Renderer2;
@@ -37,7 +41,7 @@ export class ThemeService {
   applyMatTheme(r: Renderer2, themeName: string) {
     this.renderer = r;
 
-    this.activatedTheme = this.egretThemes[2]; 
+    this.activatedTheme = this.egretThemes[4]; 
 
     // *********** ONLY FOR DEMO **********
     //this.setThemeFromQuery();

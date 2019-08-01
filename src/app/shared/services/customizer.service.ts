@@ -27,6 +27,10 @@ export class CustomizerService {
       active: false
     },
     {
+      class: "dark-gray",
+      active: false
+    },
+    {
       class: "brown",
       active: false
     },
@@ -77,7 +81,7 @@ export class CustomizerService {
   }
 
   getSidebarColors() {
-    let sidebarColors = ['black', 'white', 'grey', 'brown', 'purple', 'dark-blue',];
+    let sidebarColors = ['black', 'white', 'grey', 'brown', 'purple', 'dark-blue', 'dark-gray'];
     return this.colors.filter(color => {
       return sidebarColors.includes(color.class);
     })
