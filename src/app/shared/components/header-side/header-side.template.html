@@ -9,7 +9,7 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
-  
+  <h2 style="padding:10px; text-align:center">{{serverTimeString}} {{serverStatus}}</h2>
   <!-- Search form -->
   <!-- <div fxFlex fxHide.lt-sm="true" class="search-bar">
     <form class="top-search-form">
@@ -20,7 +20,7 @@
 
   <span fxFlex></span>
   <!-- Language Switcher -->
-  <button mat-button [matMenuTriggerFor]="menu">
+  <!-- <button mat-button [matMenuTriggerFor]="menu">
     <span class="flag-icon {{currentLang.flag}} mr-05"></span>
     <span>{{currentLang.name}}</span>
   </button>
@@ -33,11 +33,11 @@
 
 
   <egret-search-input-over placeholder="Country (e.g. US)" resultPage="/search">
-  </egret-search-input-over>
+  </egret-search-input-over> -->
   <!-- Open "views/search-view/result-page.component" to understand how to subscribe to input field value -->
 
   <!-- Notification toggle button -->
-  <button
+  <!-- <button
     mat-icon-button
     matTooltip="Notifications"
     (click)="toggleNotific()"
@@ -46,17 +46,17 @@
   >
     <mat-icon>notifications</mat-icon>
     <span class="notification-number mat-bg-warn">3</span>
-  </button>
+  </button> -->
   <!-- Top left user menu -->
-  <button
+  <!-- <button
     mat-icon-button
     [matMenuTriggerFor]="accountMenu"
     class="topbar-button-right img-button"
   >
     <img src="assets/images/face-7.jpg" alt="" />
-  </button>
+  </button> -->
 
-  <mat-menu #accountMenu="matMenu">
+  <!-- <mat-menu #accountMenu="matMenu">
     <button mat-menu-item [routerLink]="['/profile/overview']">
       <mat-icon>account_box</mat-icon>
       <span>Profile</span>
@@ -73,5 +73,5 @@
       <mat-icon>exit_to_app</mat-icon>
       <span>Sign out</span>
     </button>
-  </mat-menu>
+  </mat-menu> -->
 </mat-toolbar>

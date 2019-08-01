@@ -16,7 +16,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.template.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class AdminLayoutComponent implements OnInit, AfterViewInit {
   public isModuleLoading: Boolean = false;
@@ -47,7 +47,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
   }
   ngOnInit() {
-    // this.layoutConf = this.layout.layoutConf;
+    this.layoutConf = this.layout.layoutConf;
     this.layoutConfSub = this.layout.layoutConf$.subscribe((layoutConf) => {
         this.layoutConf = layoutConf;
         this.adminContainerClasses = this.updateAdminContainerClasses(this.layoutConf);

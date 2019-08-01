@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
 import { egretAnimations } from "app/shared/animations/egret-animations";
 import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
@@ -12,9 +12,10 @@ import 'core-js/es7/string';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./current-services.table.css'],
   providers: [CurrentServicesService],
-  animations: egretAnimations
+  animations: egretAnimations,
 })
 export class CurrentServicesTableComponent implements OnInit {
+
   constructor(
     private service: CurrentServicesService,
     public dialog: MatDialog,
@@ -82,15 +83,14 @@ export class CurrentServicesTableComponent implements OnInit {
   }
 
   updateTable(){
-    this.uprows = this.currentServices.filter(service => service.direction === 'UP')
-    this.downrows = this.currentServices.filter(service => service.direction === 'DOWN')
+    this.uprows = this.currentServices.filter(service => service.direction === 'UP');
+    this.downrows = this.currentServices.filter(service => service.direction === 'DOWN');
   }
 
   openServiceView(e){
     if ( e.type == "click" ) {
       const dialogRef: MatDialogRef<any> = this.dialog.open(serviceViewComponent, {
         width: '720px',
-        //disableClose: true,
         data: e.row
       })
     }
@@ -101,6 +101,7 @@ export class CurrentServicesTableComponent implements OnInit {
     .subscribe((response) => {
       this.currentServices = response.currentServices
       this.updateTable()
+
     });
     setInterval(() => {
       for(let service of this.currentServices) {
@@ -108,12 +109,8 @@ export class CurrentServicesTableComponent implements OnInit {
           service.locationAgeSeconds = service.locationAgeSeconds + 1
           service.locationAge = String(Math.floor(service.locationAgeSeconds / 60)).padStart(2, '0') + ':' + String(service.locationAgeSeconds % 60).padStart(2, '0')
           }
-         
       }
       this.updateTable()
     },1000);
   }
-
-
-
 }
