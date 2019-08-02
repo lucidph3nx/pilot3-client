@@ -37,9 +37,9 @@ export class NavigationService {
       state: 'current-services/variance',
     },
     {
-      name: 'Peak Train Performance',
+      name: 'Train Performance',
       type: 'link',
-      tooltip: 'peak train performance',
+      tooltip: 'train performance',
       icon: 'view_module',
       state: 'train-performance/train-performance',
     },
@@ -72,6 +72,13 @@ export class NavigationService {
       state: 'rosters/shift-detail',
     },
     {
+      name: 'Staff Holistic',
+      type: 'link',
+      tooltip: 'staff-holistic',
+      icon: 'accessibility',
+      state: 'rosters/staff-holistic',
+    },
+    {
       name: 'Resource Visboard',
       type: 'link',
       tooltip: 'Resource Visboard',
@@ -81,8 +88,8 @@ export class NavigationService {
     {
       name: "Blank",
       type: "link",
-      tooltip: "Dashboard",
-      icon: "dashboard",
+      tooltip: "Blank",
+      icon: "blur_on",
       state: "others/blank"
     },
   ];

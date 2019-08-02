@@ -3,7 +3,7 @@ import * as moment from 'moment-timezone';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { CurrentRosterService } from '../../../shared/services/data/current-roster.service';
+import { RosterService } from '../../../shared/services/data/roster.service';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'shift-detail',
   templateUrl: './shift-detail.page.html',
   styleUrls: ['./shift-detail.page.css'],
-  providers: [CurrentRosterService],
+  providers: [RosterService],
 })
 export class ShiftDetailPage implements OnInit {
 
@@ -23,7 +23,7 @@ export class ShiftDetailPage implements OnInit {
   })
 
   constructor(
-    private service: CurrentRosterService,
+    private service: RosterService,
     private route: ActivatedRoute
   ) { }
   currentRoster = []

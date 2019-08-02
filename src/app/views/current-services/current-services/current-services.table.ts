@@ -1,6 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, EventEmitter, Output, Injectable } from '@angular/core';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Subscription} from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, EventEmitter, Output, Injectable } from '@angular/core';
 import { egretAnimations } from "app/shared/animations/egret-animations";
 import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
@@ -21,22 +19,9 @@ export class CurrentServicesTableComponent implements OnInit {
 
   constructor(
     private service: CurrentServicesService,
-    public dialog: MatDialog,
-    // public mediaObserver: MediaObserver,
-    // public watcher: Subscription,
-    
-  ) {
-    // this.watcher = mediaObserver.media$.subscribe((change: MediaChange) => {
-    //   this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
-    //   if ( change.mqAlias == 'xs') {
-    //     console.log('xs')
-    //   }
-    // });
-  }
-  // ngOnDestroy() {
-  //   this.watcher.unsubscribe();
-  // }
-  // activeMediaQuery = ''
+    public dialog: MatDialog,    
+  ) {}
+  private serviceSubscription;
   uprows = [];
   downrows = [];
   currentServices = [];
@@ -70,7 +55,8 @@ export class CurrentServicesTableComponent implements OnInit {
       'status-nolink' : row.statusMessage === 'No Linked Unit',
       'status-arriving' : row.statusMessage === 'Arriving',
       'status-stoppedbetweenstations' : row.statusMessage === 'Stopped between stations',
-      'status-prevdelayed' : row.statusMessage === 'Previous Service Delayed'
+      'status-prevdelayed' : row.statusMessage === 'Previous Service Delayed',
+      'status': row.statusMessage !== '',
     };
   }
   getStnClass({ row, column, value }): any {
@@ -113,7 +99,7 @@ export class CurrentServicesTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.getCurrentServices()
+    this.serviceSubscription = this.service.getCurrentServices()
     .subscribe((response) => {
       this.currentServices = response.currentServices
       this.updateTable()
@@ -128,5 +114,8 @@ export class CurrentServicesTableComponent implements OnInit {
       }
       this.updateTable()
     },1000);
+  }
+  ngOnDestroy(){
+    this.serviceSubscription.unsubscribe();
   }
 }

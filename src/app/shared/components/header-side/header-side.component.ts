@@ -8,6 +8,7 @@ import { CurrentServicesService } from '../../../shared/services/data/current-se
 @Component({
   selector: 'app-header-side',
   templateUrl: './header-side.template.html',
+  styleUrls: ['./header-side.template.css'],
   providers: [CurrentServicesService],
 })
 export class HeaderSideComponent implements OnInit {

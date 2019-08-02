@@ -23,12 +23,15 @@ import {
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
 
 import { RosterStatusTableComponent } from './roster-status/roster-status.table';
 import { ShiftDetailPage } from './shift-detail/shift-detail.page';
+import { StaffHolistic } from './staff-holistic/staff-holistic.page';
+
 import { RostersRoutes } from "./rosters.routing";
 
 
@@ -52,6 +55,7 @@ import { RostersRoutes } from "./rosters.routing";
     MatProgressBarModule,
     FlexLayoutModule,
     NgxDatatableModule,
+    NgxEchartsModule,
     ChartsModule,
     FileUploadModule,
     SharedModule,
@@ -63,6 +67,7 @@ import { RostersRoutes } from "./rosters.routing";
   declarations: [
     RosterStatusTableComponent,
     ShiftDetailPage,
+    StaffHolistic,
   ],
 })
 export class RostersModule { }

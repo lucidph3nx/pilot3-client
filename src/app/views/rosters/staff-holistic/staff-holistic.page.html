@@ -1,0 +1,20 @@
+<mat-card style="padding:10px;" fxFlex="25">
+  <div class="card-title-text">Staff Lookup</div>
+  <form [formGroup]="staffSelect" (ngSubmit)="loadData()">
+    <div fxLayout="row wrap">
+      <mat-form-field>
+        <input matInput name="staffId" formControlName="staffId" placeholder="staffId">
+      </mat-form-field>
+      <button mat-raised-button color="primary" style="max-height: 40px;" type="submit">Search</button>
+    </div>
+  </form>
+</mat-card>
+
+
+<mat-card style="padding:10px;" fxFlex="100">
+  <div class="card-title-text">Staff Detail</div>
+  <img mat-card-image src="{{ this.staffPhotoURL }}" />
+  <mat-card-content>
+    <h3>{{ this.staffId }}</h3>
+  </mat-card-content>
+</mat-card>

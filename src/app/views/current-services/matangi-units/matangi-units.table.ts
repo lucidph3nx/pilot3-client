@@ -30,10 +30,10 @@ export class MatangiUnitsTableComponent implements OnInit {
 
   updateLines(){
     this.unitsUnknown = this.currentUnitList.filter(unit => unit.line === '???')
-    this.unitsJVL = this.currentUnitList.filter(unit => unit.line === 'JVL')
+    this.unitsJVL = this.currentUnitList.filter(unit => unit.line === 'JVILL')
     this.unitsKPL = this.currentUnitList.filter(unit => unit.line === 'NIMT')
-    this.unitsWRL = this.currentUnitList.filter(unit => unit.line === 'WRL')
-    this.unitsMEL = this.currentUnitList.filter(unit => unit.line === 'MEL')
+    this.unitsWRL = this.currentUnitList.filter(unit => unit.line === 'WRAPA')
+    this.unitsMEL = this.currentUnitList.filter(unit => unit.line === 'MLING')
   }
 
   ngOnInit() {

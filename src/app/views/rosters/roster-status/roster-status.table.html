@@ -40,12 +40,16 @@
         <div fxFlex="100" fxFlex.sm="100">
             <mat-card id="rosterChart" fxFlex="50">
                 <mat-card-title class="">
-                    <div class="card-title-text">Roster Availability chart</div>
+                    <div class="card-title-text">Roster Availability</div>
                     <mat-divider></mat-divider>
                 </mat-card-title>
                 <mat-card-content>
-                    <canvas baseChart class="chart" [datasets]="StaffChartData" [labels]="StaffChartLabels" [options]="StaffChartOptions"
-                        [colors]="StaffChartColors" [legend]="StaffChartLegend" [chartType]="StaffChartType"></canvas>
+                        <div
+                        echarts
+                        [options]="rosterGroupsChart"
+                        [merge]="updateRosterGroupsChart"
+                        [autoResize]="true"
+                      ></div>
                 </mat-card-content>
             </mat-card>
             <mat-card id="rosterChart" fxFlex="50">
@@ -54,8 +58,12 @@
                     <mat-divider></mat-divider>
                 </mat-card-title>
                 <mat-card-content>
-                    <canvas baseChart class="chart" [data]="doughnutChartData" [labels]="doughnutChartLabels" [options]="doughnutOptions"
-                        [colors]="doughnutChartColors" [chartType]="doughnutChartType"></canvas>
+                        <div
+                        echarts
+                        [options]="unavailabilityBreakdownChart"
+                        [merge]="updateUnavailabilityBreakdownChart"
+                        [autoResize]="true"
+                      ></div>
                 </mat-card-content>
             </mat-card>
         </div>

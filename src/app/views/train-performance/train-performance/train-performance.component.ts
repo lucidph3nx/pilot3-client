@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as moment from 'moment-timezone';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { CurrentTrainPerformanceService } from '../../../shared/services/data/current-train-performance.service';
+import { TrainPerformanceService } from '../../../shared/services/data/train-performance.service';
 import { ActivatedRoute } from '@angular/router';
 import { eachDay } from 'date-fns';
 
@@ -12,15 +12,16 @@ import { eachDay } from 'date-fns';
   selector: 'train-performance',
   templateUrl: './train-performance.component.html',
   styleUrls: ['./train-performance.component.css'],
-  providers: [CurrentTrainPerformanceService],
+  providers: [TrainPerformanceService],
 })
 export class TrainPerformanceComponent implements OnInit {
 
   constructor(
-    private service: CurrentTrainPerformanceService,
+    private service: TrainPerformanceService,
     private route: ActivatedRoute
   ) { }
-  currentPeakPerformance = []
+  private trainPerformanceSubscription;
+  trainPerformance = []
   todayDate;
   currentPeak;
   totalServiceCount = 0
@@ -48,7 +49,7 @@ export class TrainPerformanceComponent implements OnInit {
   WRL = this.blankLinePerformance;
 
   ngOnInit() {
-    this.service.getCurrentPeakPerformance()
+    this.trainPerformanceSubscription = this.service.getTrainPerformance()
     .subscribe((response: any) => {
         // reset these variables to calculate from scratch
       this.totalServiceCount = 0
@@ -59,28 +60,23 @@ export class TrainPerformanceComponent implements OnInit {
       this.totalPunctual = 0
       this.totalPunctualityPercent = 100
       // load in response
-      this.currentPeakPerformance = response
-      this.todayDate = moment(this.currentPeakPerformance[0].date).format("DD/MM/YYYY")
-      if (this.currentPeakPerformance[0].peak == 1){
-        this.currentPeak = 'AM Peak'
-      } else {
-        this.currentPeak = 'PM Peak'
-      }
-      for (let lp = 0; lp < this.currentPeakPerformance.length; lp++){
-        this.totalServiceCount += this.currentPeakPerformance[lp].totalServices
-        this.totalReliabilityFailure += this.currentPeakPerformance[lp].reliabilityFailure
-        this.totalPunctualityFailure += this.currentPeakPerformance[lp].punctualityFailure
-        switch(this.currentPeakPerformance[lp].line ) {
+      this.trainPerformance = response.trainPerformance
+      this.todayDate = moment(this.trainPerformance[0].date).format("DD/MM/YYYY")
+      for (let lp = 0; lp < this.trainPerformance.length; lp++){
+        this.totalServiceCount += this.trainPerformance[lp].totalServices
+        this.totalReliabilityFailure += this.trainPerformance[lp].reliabilityFailure
+        this.totalPunctualityFailure += this.trainPerformance[lp].punctualityFailure
+        switch(this.trainPerformance[lp].line ) {
           case 'HVL':
-            this.HVL = this.currentPeakPerformance[lp]
+            this.HVL = this.trainPerformance[lp]
           case 'JVL':
-              this.JVL = this.currentPeakPerformance[lp]
+              this.JVL = this.trainPerformance[lp]
           case 'KPL':
-              this.KPL = this.currentPeakPerformance[lp]
+              this.KPL = this.trainPerformance[lp]
           case 'MEL':
-              this.MEL = this.currentPeakPerformance[lp]
+              this.MEL = this.trainPerformance[lp]
           case 'WRL':
-              this.WRL = this.currentPeakPerformance[lp]
+              this.WRL = this.trainPerformance[lp]
           default:
             //do nothing
         }
@@ -100,6 +96,9 @@ export class TrainPerformanceComponent implements OnInit {
         this.totalReliabilityPercent = 100
       }
     });
+  }
+  ngOnDestroy(){
+    this.trainPerformanceSubscription.unsubscribe();
   }
 }
 

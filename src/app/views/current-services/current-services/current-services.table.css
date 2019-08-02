@@ -1,9 +1,9 @@
-.pilot-dark .mat-dialog-container {
+/* .pilot-dark .mat-dialog-container {
   background: #1e2129;
-}
+} */
 
 #variancetable .datatable-header-cell{
-  /* text-align: center; */
+  text-align: center;
   line-height: 1.325;
   font-size: 1.3rem;
   font-weight: 400;
@@ -13,7 +13,7 @@
   padding-left: 0.9rem;
   }
 #variancetable .datatable-body-cell{
-  /* text-align: center; */
+  text-align: center;
   line-height: 1.325;
   font-size: 1.3rem;
   font-weight: 400;
@@ -35,9 +35,12 @@
     color: white;
     background-color: #3BB9FF;
   }
+  .pilot-dark #variancetable .ngx-datatable .status{
+    text-align: left !important;
+  }
   .pilot-dark #variancetable .ngx-datatable .variance-okay {
     color: #97c475 !important;
-    text-align: left !important;
+    /* text-align: left !important; */
   }
   .pilot-light #variancetable .ngx-datatable .variance-okay {
     color: #566e43 !important;
