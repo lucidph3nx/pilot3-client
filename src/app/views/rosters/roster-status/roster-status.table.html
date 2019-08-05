@@ -5,7 +5,8 @@
             <form [formGroup]="daySelect" (ngSubmit)="onSubmit()">
                 <div fxLayout="row wrap">
                     <mat-form-field>
-                        <input matInput name="date" formControlName="date" placeholder="Date" [matDatepicker]="appDatepicker">
+                        <input matInput name="date" formControlName="date" placeholder="Date"
+                            [matDatepicker]="appDatepicker">
                         <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
                     </mat-form-field>
                     <mat-datepicker #appDatepicker></mat-datepicker>
@@ -38,32 +39,24 @@
     </div>
     <div fxLayout="row" fxLayout.sm="column">
         <div fxFlex="100" fxFlex.sm="100">
-            <mat-card id="rosterChart" fxFlex="50">
+            <mat-card id="rosterChart" fxFlex="60">
                 <mat-card-title class="">
                     <div class="card-title-text">Roster Availability</div>
                     <mat-divider></mat-divider>
                 </mat-card-title>
                 <mat-card-content>
-                        <div
-                        echarts
-                        [options]="rosterGroupsChart"
-                        [merge]="updateRosterGroupsChart"
-                        [autoResize]="true"
-                      ></div>
+                    <div echarts [options]="rosterGroupsChart" [merge]="updateRosterGroupsChart" [autoResize]="true">
+                    </div>
                 </mat-card-content>
             </mat-card>
-            <mat-card id="rosterChart" fxFlex="50">
+            <mat-card id="rosterChart" fxFlex="40">
                 <mat-card-title class="">
                     <div class="card-title-text">Unavailability Breakdown</div>
                     <mat-divider></mat-divider>
                 </mat-card-title>
                 <mat-card-content>
-                        <div
-                        echarts
-                        [options]="unavailabilityBreakdownChart"
-                        [merge]="updateUnavailabilityBreakdownChart"
-                        [autoResize]="true"
-                      ></div>
+                    <div echarts [options]="unavailabilityBreakdownChart" [merge]="updateUnavailabilityBreakdownChart"
+                        [autoResize]="true"></div>
                 </mat-card-content>
             </mat-card>
         </div>
@@ -73,15 +66,20 @@
             <mat-card style="padding:10px; text-align:center">
                 <mat-card-title>Overall Counters</mat-card-title>
             </mat-card>
-            <div id="variancetable" class="mat-box-shadow margin-333">
+            <mat-card>
+                <div echarts [options]="overallCountersChart" [merge]="updateOverallCountersChart" [autoResize]="true">
+                </div>
+            </mat-card>
+            <!-- <div id="variancetable" class="mat-box-shadow margin-333">
                 <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
-                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredRosterDayStatus" [sorts]="[{prop: 'staffType', dir: 'asc'}]">
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredRosterDayStatus"
+                    [sorts]="[{prop: 'staffType', dir: 'asc'}]">
                     <ngx-datatable-column name="staffType" prop="staffType"></ngx-datatable-column>
                     <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>
                     <ngx-datatable-column name="Counter" prop="counterType"></ngx-datatable-column>
                     <ngx-datatable-column name="Count" prop="count"></ngx-datatable-column>
                 </ngx-datatable>
-            </div>
+            </div> -->
         </div>
         <div fxFlex="33.33">
             <mat-card style="padding:10px; text-align:center">
@@ -89,8 +87,8 @@
             </mat-card>
             <div id="variancetable" class="mat-box-shadow margin-333">
                 <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
-                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredUncoveredShifts" [sorts]="[{prop: 'startTime', dir: 'asc'}]" 
-                    (activate)="showDayRoster($event)">
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredUncoveredShifts"
+                    [sorts]="[{prop: 'startTime', dir: 'asc'}]" (activate)="showDayRoster($event)">
                     <ngx-datatable-column name="Shift Name" prop="shiftName"></ngx-datatable-column>
                     <ngx-datatable-column name="Staff Type" prop="staffType"></ngx-datatable-column>
                     <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>

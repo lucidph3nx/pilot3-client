@@ -38,6 +38,17 @@ export class currentRosterResponse {
     }
   }
 
+  export class holisticYearResponse {
+    public time?: string;
+    public holisticYear?: Array<object>;
+    constructor() {}
+    fromJSON(json) {
+      for (var propName in json)
+         this[propName] = json[propName];
+      return this;
+    }
+  }
+
 @Injectable()
 export class RosterService {
 
@@ -62,5 +73,10 @@ export class RosterService {
         .switchMap(() => this.http.get('http://localhost:4000/api/uncoveredShifts?date='+date.format('YYYYMMDD'))
         .map((response: Response) => new uncoveredShiftsResponse().fromJSON(response)))
     }
-
+    getHolisticYear = (year, staffId) => {
+      return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://localhost:4000/api/holisticYear?year='+year+'&staffId='+staffId)
+      .map((response: Response) => new holisticYearResponse().fromJSON(response)))
+  }
 }

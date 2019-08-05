@@ -6,6 +6,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MatDialogRef, MatDialog, MatSnackBar, MatSelectModule } from '@angular/material';
 import * as moment from 'moment-timezone';
 import { Router } from "@angular/router";
+import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   selector: 'roster-status',
@@ -60,7 +61,6 @@ export class RosterStatusTableComponent implements OnInit {
     if ($event.source.placeholder == 'location') {
       this.currentFilters.location = $event.value
     }
-    console.log(this.currentFilters)
     this.updateTables(this.currentFilters)
   }
 
@@ -122,6 +122,10 @@ export class RosterStatusTableComponent implements OnInit {
 
   rosterGroupsChart: any;
   updateRosterGroupsChart: any;
+
+  overallCountersChart: any;
+  updateOverallCountersChart: any;
+  countersData: any;
 
   ngOnInit() {
     this.unavailabilityBreakdownChart = {
@@ -275,10 +279,68 @@ export class RosterStatusTableComponent implements OnInit {
         '#808080',
         '#ff8080',
       ],
-      series: [
-      ]
+      series: []
     };
-
+    this.overallCountersChart = {
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove'
+      },
+      series: [
+        {
+          type: 'sankey',
+          data: [],
+          links: [],
+          focusNodeAdjacency: true,
+          levels: [{
+            depth: 0,
+            itemStyle: {
+              color: '#fbb4ae'
+            },
+            lineStyle: {
+              color: 'source',
+              opacity: 0.6
+            }
+          }, {
+            depth: 1,
+            itemStyle: {
+              color: '#b3cde3'
+            },
+            lineStyle: {
+              color: 'source',
+              opacity: 0.6
+            }
+          }, {
+            depth: 2,
+            itemStyle: {
+              color: '#ccebc5'
+            },
+            lineStyle: {
+              color: 'source',
+              opacity: 0.6
+            }
+          }, {
+            depth: 3,
+            itemStyle: {
+              color: '#decbe4'
+            },
+            lineStyle: {
+              color: 'source',
+              opacity: 0.6
+            }
+          }],
+          label: {
+            color: '#fff',
+          },
+          lineStyle: {
+            normal: {
+              color: "#fff",
+              curveness: 0.5
+            }
+          }
+        }
+      ]
+    }
     this.currentFilters = {
       staffType: 'ALL',
       location: 'ALL',
@@ -342,6 +404,93 @@ export class RosterStatusTableComponent implements OnInit {
       training: 0,
     }
 
+    this.countersData = {
+      links: [],
+      nodes: [
+        { name: 'ALL' },
+      ],
+    }
+
+    class CounterCollection extends Array {
+      sum(key) {
+        return this.reduce((a, b) => a + (b[key] || 0), 0);
+      }
+    }
+
+    // fill out node list
+    for (let c = 0; c < this.filteredRosterDayStatus.length; c++) {
+      let newNode = false
+      let thisNode = { name: this.filteredRosterDayStatus[c].staffType }
+
+      newNode = !(this.countersData.nodes.some(item => item.name === this.filteredRosterDayStatus[c].staffType))
+      if (newNode) {
+        this.countersData.nodes.push(thisNode)
+      }
+      thisNode = { name: this.filteredRosterDayStatus[c].location }
+      newNode = !(this.countersData.nodes.some(item => item.name === this.filteredRosterDayStatus[c].location))
+      if (newNode) {
+        this.countersData.nodes.push(thisNode)
+      }
+      thisNode = { name: this.filteredRosterDayStatus[c].counterType }
+      newNode = !(this.countersData.nodes.some(item => item.name === this.filteredRosterDayStatus[c].counterType))
+      if (newNode) {
+        this.countersData.nodes.push(thisNode)
+      }
+    }
+    // fill out link list
+    for (let c = 0; c < this.filteredRosterDayStatus.length; c++) {
+      let newLink = false
+      // staff types
+      let thisLink = {
+        source: 'ALL',
+        target: this.filteredRosterDayStatus[c].staffType,
+        value: 0,
+      }
+      let thisCountArray = this.filteredRosterDayStatus.filter(area => area.staffType === this.filteredRosterDayStatus[c].staffType)
+      let thisCounterCollection = new CounterCollection(...thisCountArray);
+      thisLink.value = thisCounterCollection.sum('count');
+      newLink = !(this.countersData.links.some(item => item.source === 'ALL'
+        && item.target === this.filteredRosterDayStatus[c].staffType
+      ))
+      if (newLink) {
+        this.countersData.links.push(thisLink)
+      }
+      // locations
+      thisLink = {
+        source: this.filteredRosterDayStatus[c].staffType,
+        target: this.filteredRosterDayStatus[c].location,
+        value: 0,
+      }
+      thisCountArray = this.filteredRosterDayStatus.filter(area => area.staffType === this.filteredRosterDayStatus[c].staffType
+        && area.location === this.filteredRosterDayStatus[c].location)
+      thisCounterCollection = new CounterCollection(...thisCountArray);
+      thisLink.value = thisCounterCollection.sum('count');
+      newLink = !(this.countersData.links.some(item => item.source === this.filteredRosterDayStatus[c].staffType
+        && item.target === this.filteredRosterDayStatus[c].location
+      ))
+      if (newLink) {
+        this.countersData.links.push(thisLink)
+      }
+      // Counters
+      thisLink = {
+        source: this.filteredRosterDayStatus[c].location,
+        target: this.filteredRosterDayStatus[c].counterType,
+        value: 0,
+      }
+      thisCountArray = this.filteredRosterDayStatus.filter(area => area.location === this.filteredRosterDayStatus[c].location
+        && area.counterType === this.filteredRosterDayStatus[c].counterType)
+      thisCounterCollection = new CounterCollection(...thisCountArray);
+      thisLink.value = thisCounterCollection.sum('count');
+      newLink = !(this.countersData.links.some(item => item.source === this.filteredRosterDayStatus[c].location
+        && item.target === this.filteredRosterDayStatus[c].counterType
+      ))
+      if (newLink) {
+        this.countersData.links.push(thisLink)
+      }
+    }
+
+
+
     for (let c = 0; c < this.filteredRosterDayStatus.length; c++) {
       if (this.filteredRosterDayStatus[c].counterType === 'SL') { this.unavailabilityBreakdown.sickLeave += this.filteredRosterDayStatus[c].count };
       if (this.filteredRosterDayStatus[c].counterType === 'CC') { this.unavailabilityBreakdown.acc += this.filteredRosterDayStatus[c].count };
@@ -375,6 +524,14 @@ export class RosterStatusTableComponent implements OnInit {
         },
       ],
     }
+    this.updateOverallCountersChart = {
+      series: [
+        {
+          data: this.countersData.nodes,
+          links: this.countersData.links,
+        },
+      ],
+    }
 
     for (let st = 1; st < this.staffTypeList.length; st++) {
       let staffType = this.staffTypeList[st].value
@@ -399,9 +556,6 @@ export class RosterStatusTableComponent implements OnInit {
       //calculate the requirement
       this.rosterChart[staffType][0] = this.rosterChart[staffType][1] + this.uncoveredShifts.filter(area => area.staffType === staffType).length
     }
-
-    console.log(this.rosterChart);
-
     this.updateRosterGroupsChart = {
       series: [
         {
