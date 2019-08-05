@@ -51,7 +51,7 @@ export class StaffHolistic implements OnInit {
       tooltip: {
           position: 'top',
           formatter: function (params) {
-            return localDayCodeMap[params.value[1]].code;
+            return params.value[0] + ' - ' + localDayCodeMap[params.value[1]].code;
         },
       },
       visualMap: {
