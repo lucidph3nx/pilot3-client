@@ -39,8 +39,12 @@ export class currentRosterResponse {
   }
 
   export class holisticYearResponse {
-    public time?: string;
-    public holisticYear?: Array<object>;
+    public reportTime?: string;
+    public staffId?: string;
+    public year?: string;
+    public sickToLeaveRatio?: number;
+    public holisticYearData?: Array<object>;
+    public dayCodes?: Array<object>;
     constructor() {}
     fromJSON(json) {
       for (var propName in json)

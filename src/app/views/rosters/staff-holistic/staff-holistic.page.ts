@@ -6,6 +6,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { RosterService } from '../../../shared/services/data/roster.service';
 import { ActivatedRoute } from '@angular/router';
 import * as echarts from 'echarts';
+import { columnsTotalWidth } from '@swimlane/ngx-datatable/release/utils';
 
 @Component({
   selector: 'staff-holistic',
@@ -19,6 +20,7 @@ export class StaffHolistic implements OnInit {
   staffPhotoURL: string;
   holisticYear: string;
   holisticYearData: Array<object>;
+  sickToLeaveRatio: number;
   dayCodeMap: any;
   sub;
   holisticCal: any;
@@ -39,21 +41,7 @@ export class StaffHolistic implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dayCodeMap = [
-      {code: 'OFF', colour: '#C8C8C8'},
-      {code: 'OBR', colour: '#808080'},
-      {code: 'SL', colour: '#FF0000'},
-      {code: 'AL', colour: '#80FFFF'},
-    ];
-
-    let localDayCodeMap = this.dayCodeMap
     this.holisticCal = {
-      tooltip: {
-          position: 'top',
-          formatter: function (params) {
-            return params.value[0] + ' - ' + localDayCodeMap[params.value[1]].code;
-        },
-      },
       visualMap: {
         categories: [],
         type: 'piecewise',
@@ -67,9 +55,6 @@ export class StaffHolistic implements OnInit {
         inRange: {
           color: [],
           symbolSize: [],
-        },
-        formatter: function (value) {
-          return localDayCodeMap[value].code;
         },
       },
       calendar: {
@@ -98,13 +83,15 @@ export class StaffHolistic implements OnInit {
     this.holisticYear = '2017' //holisticYear
     this.service.getHolisticYear(this.holisticYear, this.staffId)
       .subscribe((response) => {
-        this.holisticYearData = response.holisticYear
+        this.holisticYearData = response.holisticYearData
+        this.holisticYear = response.year
+        this.sickToLeaveRatio = response.sickToLeaveRatio
+        this.dayCodeMap = response.dayCodes
         this.updateHolisticCalData()
       });
   }
 
   updateHolisticCalData() {
-    console.log('updatetriggered')
     let codeList = []
     for (let i = 0; i < this.dayCodeMap.length; i++) {
       codeList.push(i)
@@ -113,13 +100,25 @@ export class StaffHolistic implements OnInit {
     for (let i = 0; i < this.dayCodeMap.length; i++) {
       colourList.push(this.dayCodeMap[i].colour)
     }
-    
+    let localDayCodeMap = this.dayCodeMap;
+    // let localHolisticData = this.holisticYearData;
     this.updateHolisticCal = {
+      tooltip: {
+        position: 'top',
+        formatter: function (params) {
+          let tooltip = params.value[0] + " <br/> "
+          + localDayCodeMap[params.value[1]].dayType + " <br/> ";
+          return tooltip;
+      },
+    },
       visualMap: {
         categories: codeList,
         inRange: {
           color: colourList,
           symbolSize: codeList,
+        },
+        formatter: function (value) {
+          return localDayCodeMap[value].dayType;
         },
       },
       calendar: {
@@ -129,7 +128,6 @@ export class StaffHolistic implements OnInit {
         data: this.getHolisticYearData(this.holisticYearData),
       },
     }
-    console.log(this.updateHolisticCal)
   }
 
   getHolisticYearData(holisticYearData) {
@@ -139,7 +137,7 @@ export class StaffHolistic implements OnInit {
         if (holisticYearData[i].date !== undefined) {
           data.push([
             moment(holisticYearData[i].date).format('YYYY-MM-DD'),
-            this.dayCodeMap.findIndex(item => item.code === holisticYearData[i].dayCode),
+            this.dayCodeMap.findIndex(item => item.dayType === holisticYearData[i].dayType),
           ]);
         }
       }
