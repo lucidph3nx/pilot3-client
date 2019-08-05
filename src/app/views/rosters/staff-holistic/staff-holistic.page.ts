@@ -89,7 +89,6 @@ export class StaffHolistic implements OnInit {
         data: [],
       },
     };
-    console.log(this.holisticCal)
   }
   
 
@@ -130,12 +129,14 @@ export class StaffHolistic implements OnInit {
         data: this.getHolisticYearData(this.holisticYearData),
       },
     }
+    console.log(this.updateHolisticCal)
   }
+
   getHolisticYearData(holisticYearData) {
     let data = [];
     if (holisticYearData !== []) {
       for (let i = 0; i < holisticYearData.length; i++) {
-        if (holisticYearData[i].date != undefined) {
+        if (holisticYearData[i].date !== undefined) {
           data.push([
             moment(holisticYearData[i].date).format('YYYY-MM-DD'),
             this.dayCodeMap.findIndex(item => item.code === holisticYearData[i].dayCode),
