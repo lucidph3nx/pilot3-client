@@ -279,7 +279,7 @@ export class RosterStatusTableComponent implements OnInit {
         '#808080',
         '#ff8080',
       ],
-      series: []
+      series: [],
     };
     this.overallCountersChart = {
       tooltip: {

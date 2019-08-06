@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment-timezone';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { RosterService } from '../../../shared/services/data/roster.service';
 import { ActivatedRoute } from '@angular/router';
@@ -25,13 +26,16 @@ export class StaffHolistic implements OnInit {
   sub;
   holisticCal: any;
   updateHolisticCal: any;
+  selectableYears: Array<object>;
+  calendarModes: Array<string>;
 
   // lookup form
   staffSelect = new FormGroup({
     staffId: new FormControl()
   })
-  holisticYearSelect = new FormGroup({
-    year: new FormControl()
+  holisticCalendarOptions = new FormGroup({
+    year: new FormControl(),
+    calendarMode: new FormControl()
   })
 
 
@@ -41,6 +45,17 @@ export class StaffHolistic implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.holisticYear = this.holisticCalendarOptions.value.year
+    this.calendarModes = ['standard']
+
+    let year = moment('2016-01-01')
+    this.selectableYears = []
+    do {
+      this.selectableYears.push(year.format('YYYY'))
+      year = year.add(1, 'year')
+    } while (year < moment())
+
     this.holisticCal = {
       visualMap: {
         categories: [],
@@ -50,7 +65,7 @@ export class StaffHolistic implements OnInit {
         left: 'center',
         top: 65,
         textStyle: {
-          color: '#000'
+          color: '#FFF'
         },
         inRange: {
           color: [],
@@ -66,6 +81,12 @@ export class StaffHolistic implements OnInit {
         itemStyle: {
           normal: { borderWidth: 0.5 }
         },
+        dayLabel: {
+          color: '#FFF',
+        },
+        monthLabel: {
+          color: '#FFF',
+        },
         yearLabel: { show: false }
       },
       series: {
@@ -75,16 +96,22 @@ export class StaffHolistic implements OnInit {
       },
     };
   }
-  
+
 
   loadData() {
     this.staffId = this.staffSelect.controls.staffId.value
-    this.staffPhotoURL = 'http://localhost:4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
-    this.holisticYear = '2017' //holisticYear
+    //this.staffPhotoURL = 'http://localhost:4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
+    console.log(this.holisticCalendarOptions.value)
+
+    this.holisticYear = this.holisticCalendarOptions.value.year
+
+    
     this.service.getHolisticYear(this.holisticYear, this.staffId)
       .subscribe((response) => {
         this.holisticYearData = response.holisticYearData
         this.holisticYear = response.year
+        // this.holisticYearSelect.controls.year
+        //this.holisticYearSelect.setValue({year: this.holisticYear})
         this.sickToLeaveRatio = response.sickToLeaveRatio
         this.dayCodeMap = response.dayCodes
         this.updateHolisticCalData()
@@ -102,15 +129,26 @@ export class StaffHolistic implements OnInit {
     }
     let localDayCodeMap = this.dayCodeMap;
     // let localHolisticData = this.holisticYearData;
+    let getTooltip = function (params) {
+      let dayType = localDayCodeMap[params.value[1]].dayType
+      let hasShiftDetails = (params.value[4] !== null)
+      let tooltip = params.value[0] + " <br/> "
+        + dayType + " <br/>";
+      + params.value[2] + " <br/> "
+      if (hasShiftDetails) {
+        tooltip += params.value[4] + " - " + params.value[3] + " <br/> "
+          + params.value[5] + " - " + params.value[6] + " <br/> "
+          + params.value[7] + " hours";
+      }
+      return tooltip;
+    }
     this.updateHolisticCal = {
       tooltip: {
         position: 'top',
         formatter: function (params) {
-          let tooltip = params.value[0] + " <br/> "
-          + localDayCodeMap[params.value[1]].dayType + " <br/> ";
-          return tooltip;
+          return getTooltip(params);
+        },
       },
-    },
       visualMap: {
         categories: codeList,
         inRange: {
@@ -138,6 +176,12 @@ export class StaffHolistic implements OnInit {
           data.push([
             moment(holisticYearData[i].date).format('YYYY-MM-DD'),
             this.dayCodeMap.findIndex(item => item.dayType === holisticYearData[i].dayType),
+            holisticYearData[i].dayCode,
+            holisticYearData[i].location,
+            holisticYearData[i].workType,
+            holisticYearData[i].hourFrom,
+            holisticYearData[i].hourTo,
+            holisticYearData[i].totalHours,
           ]);
         }
       }

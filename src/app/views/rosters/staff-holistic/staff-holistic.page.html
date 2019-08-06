@@ -23,8 +23,26 @@
 <div fxLayout="row">
   <mat-card id="rosterChart" fxFlex="100">
     <mat-card-title class="">
-      <div class="card-title-text">Holistic year {{this.holisticYear}}</div>
+      <div class="card-title-text">Holistic Report</div>
       <mat-divider></mat-divider>
+      <div fxLayout="row">
+        <form [formGroup]="holisticCalendarOptions" (ngSubmit)="loadData()">
+          <mat-form-field>
+            <mat-select formControlName="year">
+              <mat-option *ngFor="let year of this.selectableYears" [value]="year">
+                {{year}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+            <!-- <mat-form-field>
+            <mat-select>
+              <mat-option *ngFor="let mode of this.calendarModes" [value]="mode">
+                {{mode}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+        </form>
+      </div>
     </mat-card-title>
     <mat-card-content>
       <div echarts [options]="holisticCal" [merge]="updateHolisticCal" [autoResize]="true"></div>
