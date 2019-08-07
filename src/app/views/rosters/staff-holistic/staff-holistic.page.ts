@@ -19,15 +19,16 @@ export class StaffHolistic implements OnInit {
 
   staffId: string;
   staffPhotoURL: string;
-  holisticYear: string;
+  public selectedHolisticYear: string;
   holisticYearData: Array<object>;
   sickToLeaveRatio: number;
   dayCodeMap: any;
   sub;
   holisticCal: any;
   updateHolisticCal: any;
-  selectableYears: Array<object>;
+  selectableYears: Array<string>;
   calendarModes: Array<string>;
+  public selectedCalendarMode: any;
 
   // lookup form
   staffSelect = new FormGroup({
@@ -46,19 +47,26 @@ export class StaffHolistic implements OnInit {
 
   ngOnInit() {
 
-    this.holisticYear = this.holisticCalendarOptions.value.year
-    this.calendarModes = ['standard']
+    this.calendarModes = ['Standard', 'Day Length']
 
-    let year = moment('2016-01-01')
+    let year = moment()
     this.selectableYears = []
     do {
       this.selectableYears.push(year.format('YYYY'))
-      year = year.add(1, 'year')
-    } while (year < moment())
+      year = year.subtract(1, 'year')
+    } while (year > moment('2016-01-01'))
 
+    this.selectedHolisticYear = this.selectableYears[0]
+    this.selectedCalendarMode = this.calendarModes[0]
+    // set defaults
+    this.holisticCalendarOptions.patchValue({
+      year: this.selectedHolisticYear,
+      calendarMode: this.selectedCalendarMode,
+    })
     this.holisticCal = {
       visualMap: {
-        categories: [],
+        min: 0,
+        max: 10,
         type: 'piecewise',
         dimension: 1,
         orient: 'horizontal',
@@ -66,10 +74,6 @@ export class StaffHolistic implements OnInit {
         top: 65,
         textStyle: {
           color: '#FFF'
-        },
-        inRange: {
-          color: [],
-          symbolSize: [],
         },
       },
       calendar: {
@@ -99,17 +103,18 @@ export class StaffHolistic implements OnInit {
 
 
   loadData() {
+
     this.staffId = this.staffSelect.controls.staffId.value
     //this.staffPhotoURL = 'http://localhost:4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
-    console.log(this.holisticCalendarOptions.value)
 
-    this.holisticYear = this.holisticCalendarOptions.value.year
+    this.selectedHolisticYear = this.holisticCalendarOptions.value.year
+    this.selectedCalendarMode = this.holisticCalendarOptions.value.calendarMode
 
-    
-    this.service.getHolisticYear(this.holisticYear, this.staffId)
+
+    this.service.getHolisticYear(this.selectedHolisticYear, this.staffId)
       .subscribe((response) => {
         this.holisticYearData = response.holisticYearData
-        this.holisticYear = response.year
+        //this.holisticYear = response.year
         // this.holisticYearSelect.controls.year
         //this.holisticYearSelect.setValue({year: this.holisticYear})
         this.sickToLeaveRatio = response.sickToLeaveRatio
@@ -119,16 +124,41 @@ export class StaffHolistic implements OnInit {
   }
 
   updateHolisticCalData() {
+    let calendarMode = this.holisticCalendarOptions.value.calendarMode
+    let modeDimension;
+    let modeMin;
+    let modeMax;
+    let modeInRange;
     let codeList = []
-    for (let i = 0; i < this.dayCodeMap.length; i++) {
-      codeList.push(i)
-    }
     let colourList = [];
-    for (let i = 0; i < this.dayCodeMap.length; i++) {
-      colourList.push(this.dayCodeMap[i].colour)
+    switch (calendarMode) {
+      case 'Standard':
+        modeDimension = 1
+        modeMin = 0
+        modeMax = 10
+        for (let i = 0; i < this.dayCodeMap.length; i++) {
+          codeList.push(i)
+        }
+        for (let i = 0; i < this.dayCodeMap.length; i++) {
+          colourList.push(this.dayCodeMap[i].colour)
+        }
+        modeInRange = {
+          color: colourList,
+          symbolSize: codeList,
+        }
+        break;
+      case 'Day Length':
+        modeDimension = 8
+        modeMin = 0
+        modeMax = 16
+        codeList = [0, 6, 8, 9, 10, 12, 14, 16]
+        modeInRange = null
+        break;
+      default:
+        modeDimension = 1
     }
+
     let localDayCodeMap = this.dayCodeMap;
-    // let localHolisticData = this.holisticYearData;
     let getTooltip = function (params) {
       let dayType = localDayCodeMap[params.value[1]].dayType
       let hasShiftDetails = (params.value[4] !== null)
@@ -142,6 +172,7 @@ export class StaffHolistic implements OnInit {
       }
       return tooltip;
     }
+
     this.updateHolisticCal = {
       tooltip: {
         position: 'top',
@@ -150,22 +181,32 @@ export class StaffHolistic implements OnInit {
         },
       },
       visualMap: {
+        dimension: modeDimension,
         categories: codeList,
-        inRange: {
-          color: colourList,
-          symbolSize: codeList,
-        },
+        min: modeMin,
+        max: modeMax,
+        inRange: modeInRange,
         formatter: function (value) {
-          return localDayCodeMap[value].dayType;
+          switch (calendarMode) {
+            case 'Standard':
+              return localDayCodeMap[value].dayType;
+            case 'Day Length':
+              return value;
+            default:
+              return value;
+          }
+
         },
       },
       calendar: {
-        range: this.holisticYear,
+        range: this.selectedHolisticYear,
       },
       series: {
         data: this.getHolisticYearData(this.holisticYearData),
       },
     }
+    delete this.updateHolisticCal.visualMap.formatter
+    console.log(this.updateHolisticCal)
   }
 
   getHolisticYearData(holisticYearData) {
@@ -182,6 +223,7 @@ export class StaffHolistic implements OnInit {
             holisticYearData[i].hourFrom,
             holisticYearData[i].hourTo,
             holisticYearData[i].totalHours,
+            holisticYearData[i].totalHoursNumber,
           ]);
         }
       }
