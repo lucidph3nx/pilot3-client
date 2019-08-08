@@ -21,29 +21,34 @@
   </mat-card>
 </div> -->
 <div fxLayout="row">
-  <mat-card id="rosterChart" fxFlex="100">
+  <mat-card fxFlex="100">
     <mat-card-title class="">
       <div class="card-title-text">Holistic Report</div>
-      <mat-divider></mat-divider>
-      <div fxLayout="row">
-        <form [formGroup]="holisticCalendarOptions" (selectionChange)="loadData()">
-          <mat-form-field>
-            <mat-select formControlName="year" placeholder="Year">
-              <mat-option *ngFor="let calYear of this.selectableYears" [value]='calYear'>
-                {{calYear}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-            <mat-form-field>
-            <mat-select formControlName="calendarMode" placeholder="calendar Mode">
-              <mat-option *ngFor="let mode of this.calendarModes" [value]='mode'>
-                {{mode}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </form>
-      </div>
     </mat-card-title>
+
+    <form [formGroup]="holisticCalendarOptions">
+      <mat-form-field>
+        <mat-select formControlName="year" placeholder="Year" (selectionChange)="loadData()">
+          <mat-option *ngFor="let calYear of this.selectableYears" [value]='calYear'>
+            {{calYear}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="calendarMode" placeholder="calendar Mode" (selectionChange)="loadData()">
+          <mat-option *ngFor="let mode of this.calendarModes" [value]='mode'>
+            {{mode}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </mat-card>
+</div>
+<div fxLayout="row">
+  <mat-card id="rosterChart" fxFlex="100">
+      <mat-card-title class="">
+          <div class="card-title-text">Year Calendar</div>
+        </mat-card-title>
     <mat-card-content>
       <div echarts [options]="holisticCal" [merge]="updateHolisticCal" [autoResize]="true"></div>
     </mat-card-content>

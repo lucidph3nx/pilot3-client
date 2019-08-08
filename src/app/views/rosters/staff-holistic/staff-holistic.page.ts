@@ -65,25 +65,27 @@ export class StaffHolistic implements OnInit {
     })
     this.holisticCal = {
       visualMap: {
-        min: 0,
-        max: 10,
+        // min: 0,
+        // max: 10,
         type: 'piecewise',
         dimension: 1,
         orient: 'horizontal',
         left: 'center',
-        top: 65,
+        top: 10,//65,
         textStyle: {
           color: '#FFF'
         },
       },
       calendar: {
-        top: 120,
+        top: 70,//120,
+        //bottom: 70,
         left: 30,
         right: 30,
         cellSize: ['auto', 20],
         range: '2016',
         itemStyle: {
-          normal: { borderWidth: 0.5 }
+          borderWidth: 0.5,
+          color: '#000',
         },
         dayLabel: {
           color: '#FFF',
@@ -131,6 +133,7 @@ export class StaffHolistic implements OnInit {
     let modeInRange;
     let codeList = []
     let colourList = [];
+    let valueFormatFunction;
     switch (calendarMode) {
       case 'Standard':
         modeDimension = 1
@@ -146,16 +149,24 @@ export class StaffHolistic implements OnInit {
           color: colourList,
           symbolSize: codeList,
         }
+        valueFormatFunction = stdValueFormatterFunction
         break;
       case 'Day Length':
-        modeDimension = 8
         modeMin = 0
-        modeMax = 16
-        codeList = [0, 6, 8, 9, 10, 12, 14, 16]
-        modeInRange = null
+        modeMax = 14
+        modeDimension = 8
+
+        codeList = [0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        //modeInRange = null
+        modeInRange = {
+          color: ['#FFF', '#F0CF7E', '#EAC077', '#E4B271', '#DFA46B', '#D99665', '#D4885E', '#CE7A58', '#C96C52', '#C35E4C', '#BE5046'],
+          symbolSize: [0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        }
+        valueFormatFunction = altValueFormatterFunction
         break;
       default:
         modeDimension = 1
+        valueFormatFunction = altValueFormatterFunction
     }
 
     let localDayCodeMap = this.dayCodeMap;
@@ -163,8 +174,8 @@ export class StaffHolistic implements OnInit {
       let dayType = localDayCodeMap[params.value[1]].dayType
       let hasShiftDetails = (params.value[4] !== null)
       let tooltip = params.value[0] + " <br/> "
-        + dayType + " <br/>";
-      + params.value[2] + " <br/> "
+        + dayType + " <br/>"
+        + params.value[2] + " <br/> ";
       if (hasShiftDetails) {
         tooltip += params.value[4] + " - " + params.value[3] + " <br/> "
           + params.value[5] + " - " + params.value[6] + " <br/> "
@@ -172,7 +183,6 @@ export class StaffHolistic implements OnInit {
       }
       return tooltip;
     }
-
     this.updateHolisticCal = {
       tooltip: {
         position: 'top',
@@ -186,17 +196,7 @@ export class StaffHolistic implements OnInit {
         min: modeMin,
         max: modeMax,
         inRange: modeInRange,
-        formatter: function (value) {
-          switch (calendarMode) {
-            case 'Standard':
-              return localDayCodeMap[value].dayType;
-            case 'Day Length':
-              return value;
-            default:
-              return value;
-          }
-
-        },
+        formatter: valueFormatFunction
       },
       calendar: {
         range: this.selectedHolisticYear,
@@ -205,15 +205,26 @@ export class StaffHolistic implements OnInit {
         data: this.getHolisticYearData(this.holisticYearData),
       },
     }
-    delete this.updateHolisticCal.visualMap.formatter
+    if (calendarMode == 'Day Length'){
+      //delete this.updateHolisticCal.visualMap.categories
+      //delete this.updateHolisticCal.visualMap.inRange
+    }
+    console.log(this.holisticCal)
     console.log(this.updateHolisticCal)
+
+    function stdValueFormatterFunction(value) {
+      return localDayCodeMap[value].dayType;
+    }
+    function altValueFormatterFunction(value) {
+      return value;
+    }
   }
 
   getHolisticYearData(holisticYearData) {
     let data = [];
     if (holisticYearData !== []) {
       for (let i = 0; i < holisticYearData.length; i++) {
-        if (holisticYearData[i].date !== undefined) {
+        if (holisticYearData[i].date !== undefined) {         
           data.push([
             moment(holisticYearData[i].date).format('YYYY-MM-DD'),
             this.dayCodeMap.findIndex(item => item.dayType === holisticYearData[i].dayType),
@@ -223,7 +234,7 @@ export class StaffHolistic implements OnInit {
             holisticYearData[i].hourFrom,
             holisticYearData[i].hourTo,
             holisticYearData[i].totalHours,
-            holisticYearData[i].totalHoursNumber,
+            Math.floor(holisticYearData[i].totalHoursNumber),
           ]);
         }
       }
