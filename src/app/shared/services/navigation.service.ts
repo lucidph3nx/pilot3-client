@@ -71,13 +71,13 @@ export class NavigationService {
       icon: 'person',
       state: 'rosters/shift-detail',
     },
-    {
-      name: 'Staff Holistic',
-      type: 'link',
-      tooltip: 'staff-holistic',
-      icon: 'accessibility',
-      state: 'rosters/staff-holistic',
-    },
+    // {
+    //   name: 'Staff Holistic',
+    //   type: 'link',
+    //   tooltip: 'staff-holistic',
+    //   icon: 'accessibility',
+    //   state: 'rosters/staff-holistic',
+    // },
     {
       name: 'Resource Visboard',
       type: 'link',
