@@ -8,6 +8,7 @@ import { RosterService } from '../../../shared/services/data/roster.service';
 import { ActivatedRoute } from '@angular/router';
 import * as echarts from 'echarts';
 import { columnsTotalWidth } from '@swimlane/ngx-datatable/release/utils';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'staff-holistic',
@@ -107,7 +108,7 @@ export class StaffHolistic implements OnInit {
   loadData() {
 
     this.staffId = this.staffSelect.controls.staffId.value
-    //this.staffPhotoURL = 'http://10.44.0.124:4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
+    //this.staffPhotoURL = 'http://'+environment.apiURL+':4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
 
     this.selectedHolisticYear = this.holisticCalendarOptions.value.year
     this.selectedCalendarMode = this.holisticCalendarOptions.value.calendarMode

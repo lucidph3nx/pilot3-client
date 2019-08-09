@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import { environment } from '../../../../environments/environment';
+
+
 
 export class currentServicesResponse {
     public Time?: string;
@@ -46,19 +49,19 @@ export class CurrentServicesService {
     getCurrentServices = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentServices')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentServices')
         .map((response: Response) => new currentServicesResponse().fromJSON(response)))
     }
     getCurrentServerStatus = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentStatus')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentStatus')
         .map((response: Response) => new currentServerStatusResponse().fromJSON(response)))
     }
     getDetailedCurrentServerStatus = () => {
       return Observable
       .timer(0,10000)
-      .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentStatusFull')
+      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentStatusFull')
       .map((response: Response) => new detailedCurrentServerStatusResponse().fromJSON(response)))
   }
     

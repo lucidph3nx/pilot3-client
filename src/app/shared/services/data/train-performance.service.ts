@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import { environment } from '../../../../environments/environment';
 
 export class trainPerformanceResponse {
     public time?: string;
@@ -23,14 +24,14 @@ export class TrainPerformanceService {
     // getCurrentPeakPerformance = () => {
     //     return Observable
     //     .timer(0,10000)
-    //     .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentPeakPerformance')
+    //     .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentPeakPerformance')
     //     .map((response: Response) => response.json))
     // }
 
     getTrainPerformance = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/trainPerformance')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/trainPerformance')
         .map((response: Response) => new trainPerformanceResponse().fromJSON(response)))
     }
 

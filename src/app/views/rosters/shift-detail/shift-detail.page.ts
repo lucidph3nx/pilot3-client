@@ -5,7 +5,7 @@ import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-mome
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { RosterService } from '../../../shared/services/data/roster.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'shift-detail',
@@ -71,7 +71,7 @@ export class ShiftDetailPage implements OnInit {
       this.selectedStaffName = this.selectedShift[0].staffName
       this.shiftSelect.controls.shiftId.setValue(this.selectedShift[0].shiftId)
       this.selectedStaffId = this.selectedShift[0].staffId
-      this.selectedStaffPhoto = 'http://10.44.0.124:4000/api/staffImage?staffId='+this.selectedStaffId.padStart(3, '0')
+      this.selectedStaffPhoto = 'http://'+environment.apiURL+':4000/api/staffImage?staffId='+this.selectedStaffId.padStart(3, '0')
     }
   }
 }
