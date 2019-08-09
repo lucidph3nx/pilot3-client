@@ -53,25 +53,25 @@ export class ResourceVisboardDataService {
     getHeadCountData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardHeadcount')
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardHeadcount')
         .map((response: Response) => new headCountDataResponse().fromJSON(response)))
     }
     getAnnualLeaveData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardAnnualLeave')
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardAnnualLeave')
         .map((response: Response) => new annualLeaveDataResponse().fromJSON(response)))
     }
     getSicknessData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardSickness')
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardSickness')
         .map((response: Response) => new sicknessDataResponse().fromJSON(response)))
     }
     getAltDutiesData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardAltDuties')
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/visboardAltDuties')
         .map((response: Response) => new altDutiesDataResponse().fromJSON(response)))
     }
 }

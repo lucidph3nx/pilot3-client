@@ -107,7 +107,7 @@ export class StaffHolistic implements OnInit {
   loadData() {
 
     this.staffId = this.staffSelect.controls.staffId.value
-    //this.staffPhotoURL = 'http://localhost:4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
+    //this.staffPhotoURL = 'http://10.44.0.124:4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
 
     this.selectedHolisticYear = this.holisticCalendarOptions.value.year
     this.selectedCalendarMode = this.holisticCalendarOptions.value.calendarMode

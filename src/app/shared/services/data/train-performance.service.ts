@@ -23,14 +23,14 @@ export class TrainPerformanceService {
     // getCurrentPeakPerformance = () => {
     //     return Observable
     //     .timer(0,10000)
-    //     .switchMap(() => this.http.get('http://localhost:4000/api/currentPeakPerformance')
+    //     .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentPeakPerformance')
     //     .map((response: Response) => response.json))
     // }
 
     getTrainPerformance = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://localhost:4000/api/trainPerformance')
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/trainPerformance')
         .map((response: Response) => new trainPerformanceResponse().fromJSON(response)))
     }
 

@@ -46,19 +46,19 @@ export class CurrentServicesService {
     getCurrentServices = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://localhost:4000/api/currentServices')
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentServices')
         .map((response: Response) => new currentServicesResponse().fromJSON(response)))
     }
     getCurrentServerStatus = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://localhost:4000/api/currentStatus')
+        .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentStatus')
         .map((response: Response) => new currentServerStatusResponse().fromJSON(response)))
     }
     getDetailedCurrentServerStatus = () => {
       return Observable
       .timer(0,10000)
-      .switchMap(() => this.http.get('http://localhost:4000/api/currentStatusFull')
+      .switchMap(() => this.http.get('http://10.44.0.124:4000/api/currentStatusFull')
       .map((response: Response) => new detailedCurrentServerStatusResponse().fromJSON(response)))
   }
     
