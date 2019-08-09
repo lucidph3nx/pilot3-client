@@ -86,12 +86,19 @@ export class NavigationService {
       state: 'resource-visboard/resource-visboard',
     },
     {
-      name: "Blank",
+      name: "Pilot Status",
       type: "link",
-      tooltip: "Blank",
-      icon: "blur_on",
-      state: "others/blank"
+      tooltip: "Pilot Status",
+      icon: "cloud",
+      state: "pilot-status/status-page"
     },
+    // {
+    //   name: "Blank",
+    //   type: "link",
+    //   tooltip: "Blank",
+    //   icon: "blur_on",
+    //   state: "others/blank"
+    // },
   ];
 
   // Icon menu TITLE at the very top of navigation.
