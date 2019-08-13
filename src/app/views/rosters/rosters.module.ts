@@ -31,6 +31,7 @@ import { SharedModule } from './../../shared/shared.module';
 import { RosterStatusTableComponent } from './roster-status/roster-status.table';
 import { ShiftDetailPage } from './shift-detail/shift-detail.page';
 import { StaffHolistic } from './staff-holistic/staff-holistic.page';
+import { ShiftVisualiser } from './shift-visualiser/shift-visualiser.page';
 
 import { RostersRoutes } from "./rosters.routing";
 
@@ -68,6 +69,7 @@ import { RostersRoutes } from "./rosters.routing";
     RosterStatusTableComponent,
     ShiftDetailPage,
     StaffHolistic,
+    ShiftVisualiser,
   ],
 })
 export class RostersModule { }
