@@ -34,7 +34,14 @@ export class NavigationService {
       type: 'link',
       tooltip: 'current services',
       icon: 'dashboard',
-      state: 'current-services/variance',
+      state: 'services/variance',
+    },
+    {
+      name: 'Service Detail',
+      type: 'link',
+      tooltip: 'service detail',
+      icon: 'shutter_speed',
+      state: 'services/detail',
     },
     {
       name: 'Train Performance',
@@ -48,7 +55,7 @@ export class NavigationService {
       type: 'link',
       tooltip: 'matangi tracking',
       icon: 'subway',
-      state: 'current-services/matangi-units',
+      state: 'services/matangi-units',
     },
     {
       name: 'RTI Boards',

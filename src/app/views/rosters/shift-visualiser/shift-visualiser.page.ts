@@ -21,6 +21,8 @@ import { eachDay } from 'date-fns';
 })
 export class ShiftVisualiser implements OnInit {
 
+  // https://echarts.apache.org/examples/en/editor.html?c=custom-gantt-flight
+
   daySelect = new FormGroup({
     date: new FormControl()
   })

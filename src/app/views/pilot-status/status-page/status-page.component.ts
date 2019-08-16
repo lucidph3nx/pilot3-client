@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
+import { ServicesService } from '../../../shared/services/data/services.service';
 import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'status-page',
   templateUrl: './status-page.component.html',
   styleUrls: ['./status-page.component.css'],
-  providers: [CurrentServicesService],
+  providers: [ServicesService],
 })
 
 
 export class StatusPageComponent implements OnInit {
 
   constructor(
-    private service: CurrentServicesService,
+    private service: ServicesService,
   ) { }
   private serviceSubscription;
   geVisStatusMessage: string;
@@ -24,9 +24,9 @@ export class StatusPageComponent implements OnInit {
   compassStatusTime: string;
 
   ngOnInit() {
-    this.serviceSubscription = this.service.getDetailedCurrentServerStatus()
+    this.serviceSubscription = this.service.getCurrentServerStatus()
     .subscribe((response) => {
-      const serverStatus = new ServerStatus().fromJSON(response.status)
+      const serverStatus = new ServerStatus().fromJSON(response.integrations)
       const geVisStatus = new integrationStatus().fromJSON(serverStatus.GEVIS)
       this.geVisStatusMessage = geVisStatus.message
       this.geVisStatusTime = moment(geVisStatus.updateTime).format('DD/MM/YYYY HH:mm:ss')

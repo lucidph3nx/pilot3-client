@@ -6,7 +6,7 @@ import { AuthGuard } from './shared/services/auth/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '', 
-    redirectTo: 'current-services/variance', 
+    redirectTo: 'services/variance', 
     pathMatch: 'full' 
   },
   {
@@ -26,8 +26,8 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'current-services', 
-        loadChildren: () => import('./views/current-services/current-services.module').then(m => m.CurrentServicesModule),
+        path: 'services', 
+        loadChildren: () => import('./views/services/services.module').then(m => m.ServicesModule),
         data: { title: 'Current Services', breadcrumb: 'CurrentServices'}
       },
       {

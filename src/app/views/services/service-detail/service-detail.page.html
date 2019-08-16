@@ -1,0 +1,95 @@
+<mat-card style="padding:10px">
+    <mat-card-content>
+        <div fxLayout="row" fxLayout.lt-md="column">
+            <div class="card-title-text">Service Lookup</div>
+            <form [formGroup]="serviceSelect" (ngSubmit)="updateData()">
+                <div fxLayout="row wrap">
+                    <mat-form-field>
+                        <input matInput name="date" formControlName="date" placeholder="Date"
+                            [matDatepicker]="appDatepicker">
+                        <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+                    </mat-form-field>
+                    <mat-datepicker #appDatepicker></mat-datepicker>
+                    <mat-form-field>
+                        <input matInput name="serviceId" formControlName="serviceId" placeholder="serviceId">
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" style="max-height: 40px;"
+                        [disabled]="serviceSelect.invalid" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>
+<mat-card-content>
+    <mat-card style="padding:10px; text-align:center">
+        <mat-card-title>
+            <h2>{{serviceHeading}}</h2>
+        </mat-card-title>
+        <table>
+            <tr>
+                <td>Service Id</td>
+                <td>{{serviceDetail.serviceId}}</td>
+            </tr>
+            <tr>
+                <td>Line</td>
+                <td>{{serviceDetail.line}}</td>
+            </tr>
+            <tr>
+                <td>Peak Service</td>
+                <td>{{serviceDetail.peak}}</td>
+            </tr>
+        </table>
+    </mat-card>
+    <div fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlex="50" fxFlex.lt-md="100">
+            <mat-card id="delayBreakdownChart">
+                <mat-card-title class="">
+                    <div class="card-title-text">Delay Breakdown</div>
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content>
+                    <table>
+                        <tr>
+                            <td>Delay at origin station</td>
+                            <td>{{delayBreakdownPercent.origin}}%</td>
+                        </tr>
+                        <tr>
+                            <td>Delay due to TSR</td>
+                            <td>{{delayBreakdownPercent.TSR}}%</td>
+                        </tr>
+                        <tr>
+                            <td>Delay between stations</td>
+                            <td>{{delayBreakdownPercent.betweenStations}}%</td>
+                        </tr>
+                        <tr>
+                            <td>Delay at stations</td>
+                            <td>{{delayBreakdownPercent.atStations}}%</td>
+                        </tr>
+                    </table>
+                    <div echarts [options]="delayBreakdownChart" [merge]="updateDelayBreakdownChart"
+                        [autoResize]="true"></div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div fxFlex="50" fxFlex.lt-md="100">
+            <mat-card style="padding:10px; text-align:center">
+                <h3>Timing Points</h3>
+            </mat-card>
+            <div id="timingPointTable" class="mat-box-shadow margin-333">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="timingPoints"
+                    [sorts]="[{prop: 'sequence', dir: 'asc'}]">
+                    <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>
+                    <ngx-datatable-column name="activityType" prop="activityType"></ngx-datatable-column>
+                    <ngx-datatable-column name="plannedTime" prop="plannedTime"></ngx-datatable-column>
+                    <ngx-datatable-column name="actualTime" prop="actualTime" [cellClass]="getFailureClass">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="TSRDelaySec" prop="TSRDelaySec"></ngx-datatable-column>
+                    <ngx-datatable-column name="delaySec" prop="delaySec"></ngx-datatable-column>
+                    <ngx-datatable-column name="timingSource" prop="timingSource"></ngx-datatable-column>
+                    <ngx-datatable-column name="impactSeconds" prop="impactSeconds"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+    </div>
+</mat-card-content>

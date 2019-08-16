@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, EventEmitter, Output, Injectable } from '@angular/core';
 import { egretAnimations } from "app/shared/animations/egret-animations";
-import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
+import { ServicesService } from '../../../shared/services/data/services.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment-timezone';
 import { serviceViewComponent } from './service-view/service-view.component';
@@ -11,14 +11,14 @@ import 'core-js/es7/string';
   templateUrl: './current-services.table.html',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./current-services.table.css'],
-  providers: [CurrentServicesService],
+  providers: [ServicesService],
   animations: egretAnimations,
 })
 @Injectable()
 export class CurrentServicesTableComponent implements OnInit {
 
   constructor(
-    private service: CurrentServicesService,
+    private service: ServicesService,
     public dialog: MatDialog,    
   ) {}
   private serviceSubscription;
