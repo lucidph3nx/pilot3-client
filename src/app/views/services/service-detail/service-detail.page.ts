@@ -6,6 +6,7 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as moment from 'moment-timezone';
 import 'core-js/es7/string';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'service-detail',
@@ -33,9 +34,14 @@ export class ServiceDetailComponent implements OnInit {
   private serviceSubscription;
   serviceId = '';
   date = '';
+  serviceSelected = false;
   serviceDetail = {};
   serviceHeading = '';
   timingPoints = [];
+  crew = [];
+  consist = [];
+  reliabilityFailure = false;
+  punctualityFailure = false;
   delayOverall = 0
   delayBreakdown = {
     origin: 25,
@@ -51,6 +57,9 @@ export class ServiceDetailComponent implements OnInit {
   }
   delayBreakdownChart: any;
   updateDelayBreakdownChart: any;
+
+  distanceDelayChart: any;
+  updateDistanceDelayChart: any;
 
   getFailureClass({ row, column, value }): any {
     return {
@@ -69,33 +78,56 @@ export class ServiceDetailComponent implements OnInit {
     this.serviceSubscription = this.service.getServiceDetail(this.date, this.serviceId)
       .subscribe((response) => {
         this.serviceDetail = response.serviceDetail
-        let serviceId = response.serviceDetail.serviceId;
-        let dateString = moment(response.serviceDetail.date).format('DD/MM/YYYY');
-        this.serviceHeading = serviceId + ' on ' + dateString;
-        this.timingPoints = response.serviceDetail.timingPoints;
-        this.delayOverall = response.serviceDetail.delayOverall;
-        this.delayBreakdown.origin = response.serviceDetail.delayBreakdown.origin
-        this.delayBreakdownPercent.origin = Math.round((response.serviceDetail.delayBreakdown.origin / response.serviceDetail.delayOverall)*100)
-        this.delayBreakdown.TSR = response.serviceDetail.delayBreakdown.TSR
-        this.delayBreakdownPercent.TSR = Math.round((response.serviceDetail.delayBreakdown.TSR / response.serviceDetail.delayOverall)*100)
-        this.delayBreakdown.betweenStations = response.serviceDetail.delayBreakdown.betweenStations
-        this.delayBreakdownPercent.betweenStations = Math.round((response.serviceDetail.delayBreakdown.betweenStations / response.serviceDetail.delayOverall)*100)
-        this.delayBreakdown.atStations = response.serviceDetail.delayBreakdown.atStations
-        this.delayBreakdownPercent.atStations = Math.round((response.serviceDetail.delayBreakdown.atStations / response.serviceDetail.delayOverall)*100)
-        this.updateDelayBreakdownChart = {
-          series: [
-            {
-              data: [
-                { name: 'At Origin', value: response.serviceDetail.delayBreakdown.origin },
-                { name: 'TSRs', value: response.serviceDetail.delayBreakdown.TSR },
-                { name: 'Between Stations', value: response.serviceDetail.delayBreakdown.betweenStations },
-                { name: 'At Stations', value: response.serviceDetail.delayBreakdown.atStations },
-              ]
+        if (response.serviceDetail.serviceId !== undefined){
+          this.serviceSelected = true;
+          let serviceId = response.serviceDetail.serviceId;
+          let dateString = moment(response.serviceDetail.date).format('DD/MM/YYYY');
+          this.serviceHeading = serviceId + ' on ' + dateString;
+          this.crew = response.serviceDetail.crew
+          for (let i=0; i < this.crew.length; i++) {
+            this.crew[i].photoURL = 'http://'+environment.apiURL+':4000/api/'+ this.crew[i].photoURL
+          }
+          this.consist = response.serviceDetail.consist
+          this.reliabilityFailure = response.serviceDetail.reliabilityFailure
+          this.punctualityFailure = response.serviceDetail.punctualityFailure
+          this.timingPoints = response.serviceDetail.timingPoints;
+          this.delayOverall = response.serviceDetail.delayOverall;
+          this.delayBreakdown.origin = response.serviceDetail.delayBreakdown.origin
+          this.delayBreakdownPercent.origin = Math.round((response.serviceDetail.delayBreakdown.origin / response.serviceDetail.delayOverall)*100)
+          this.delayBreakdown.TSR = response.serviceDetail.delayBreakdown.TSR
+          this.delayBreakdownPercent.TSR = Math.round((response.serviceDetail.delayBreakdown.TSR / response.serviceDetail.delayOverall)*100)
+          this.delayBreakdown.betweenStations = response.serviceDetail.delayBreakdown.betweenStations
+          this.delayBreakdownPercent.betweenStations = Math.round((response.serviceDetail.delayBreakdown.betweenStations / response.serviceDetail.delayOverall)*100)
+          this.delayBreakdown.atStations = response.serviceDetail.delayBreakdown.atStations
+          this.delayBreakdownPercent.atStations = Math.round((response.serviceDetail.delayBreakdown.atStations / response.serviceDetail.delayOverall)*100)
+          this.updateDelayBreakdownChart = {
+            series: [
+              {
+                data: [
+                  { name: 'At Origin', value: response.serviceDetail.delayBreakdown.origin },
+                  { name: 'TSRs', value: response.serviceDetail.delayBreakdown.TSR },
+                  { name: 'Between Stations', value: response.serviceDetail.delayBreakdown.betweenStations },
+                  { name: 'At Stations', value: response.serviceDetail.delayBreakdown.atStations },
+                ]
+              },
+            ],
+          }
+          let data = []
+          for (let i = 0; i < this.timingPoints.length; i++){
+            data.push([this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate])
+          }
+          this.updateDistanceDelayChart = {
+            xAxis: {
+                min: this.timingPoints[0],
+                max: this.timingPoints[this.timingPoints.length-1],
             },
-          ],
+            series: [{
+                data: data,
+            }]
+        };
+        } else {
+          this.serviceSelected = false
         }
-        //this.updateData()
-        console.log(this.serviceDetail)
       });
   }
   ngOnInit() {
@@ -110,15 +142,6 @@ export class ServiceDetailComponent implements OnInit {
         '#ef802f',
         '#f0cf7e',
       ],
-      // legend: {
-      //   textStyle: {
-      //     color: 'rgba(256,256,256,1)'
-      //   },
-      //   x: 'right',
-      //   orient: 'vertical',
-      //   position: 'right',
-      //   data: ['At Origin', 'TSRs', 'Between Stations', 'At Stations']
-      // },
       tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {d}% ({c} seconds)"
@@ -145,5 +168,18 @@ export class ServiceDetailComponent implements OnInit {
         }
       ]
     };
+    this.distanceDelayChart = {
+      xAxis: {
+          type: 'value',
+      },
+      yAxis: {
+          type: 'value'
+      },
+      series: [{
+          data: [],
+          type: 'line'
+      }]
+  };
+  
   }
 }

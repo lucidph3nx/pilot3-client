@@ -24,6 +24,12 @@
   vertical-align: middle;
 }
 
+.toolbar-avatar.md, .toolbar-avatar.md > img {
+  width: 48px !important;
+  height: 48px;
+  object-fit: cover;
+}
+
   .pilot-dark #timingPointTable .datatable-body-cell{
     border-top: 1px solid white;
   }

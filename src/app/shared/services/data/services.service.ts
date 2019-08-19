@@ -40,8 +40,8 @@ export class CurrentServicesResponse {
       peak?: boolean;
       direction?: string;
       consist?: Array<string>;
-      punctualityFaulure?: boolean;
-      reliabilityFaulure?: boolean;
+      punctualityFailure?: boolean;
+      reliabilityFailure?: boolean;
       busReplaced?: boolean;
       departs?: string;
       origin?: string;
