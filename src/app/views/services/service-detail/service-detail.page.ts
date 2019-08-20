@@ -93,13 +93,18 @@ export class ServiceDetailComponent implements OnInit {
           this.timingPoints = response.serviceDetail.timingPoints;
           this.delayOverall = response.serviceDetail.delayOverall;
           this.delayBreakdown.origin = response.serviceDetail.delayBreakdown.origin
-          this.delayBreakdownPercent.origin = Math.round((response.serviceDetail.delayBreakdown.origin / response.serviceDetail.delayOverall)*100)
+          let tempSum = response.serviceDetail.delayBreakdown.origin
+              + response.serviceDetail.delayBreakdown.TSR
+              + response.serviceDetail.delayBreakdown.betweenStations
+              + response.serviceDetail.delayBreakdown.atStations
+          this.delayBreakdownPercent.origin = Math.round((response.serviceDetail.delayBreakdown.origin / tempSum)*100)
           this.delayBreakdown.TSR = response.serviceDetail.delayBreakdown.TSR
-          this.delayBreakdownPercent.TSR = Math.round((response.serviceDetail.delayBreakdown.TSR / response.serviceDetail.delayOverall)*100)
+          this.delayBreakdownPercent.TSR = Math.round((response.serviceDetail.delayBreakdown.TSR /tempSum)*100)
           this.delayBreakdown.betweenStations = response.serviceDetail.delayBreakdown.betweenStations
-          this.delayBreakdownPercent.betweenStations = Math.round((response.serviceDetail.delayBreakdown.betweenStations / response.serviceDetail.delayOverall)*100)
+          this.delayBreakdownPercent.betweenStations = Math.round((response.serviceDetail.delayBreakdown.betweenStations / tempSum)*100)
           this.delayBreakdown.atStations = response.serviceDetail.delayBreakdown.atStations
-          this.delayBreakdownPercent.atStations = Math.round((response.serviceDetail.delayBreakdown.atStations / response.serviceDetail.delayOverall)*100)
+          this.delayBreakdownPercent.atStations = Math.round((response.serviceDetail.delayBreakdown.atStations / tempSum)*100)
+          console.log(this.delayBreakdownPercent)
           this.updateDelayBreakdownChart = {
             series: [
               {
