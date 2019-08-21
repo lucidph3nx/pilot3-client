@@ -122,7 +122,7 @@ export class ServiceDetailComponent implements OnInit {
             data.push([this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate])
           }
           let inverse = false
-          if (response.serviceDetail.direction = 'D'){
+          if (response.serviceDetail.direction == 'D'){
             inverse = true
           }
           this.updateDistanceDelayChart = {
