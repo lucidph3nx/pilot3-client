@@ -121,15 +121,21 @@ export class ServiceDetailComponent implements OnInit {
           for (let i = 0; i < this.timingPoints.length; i++){
             data.push([this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate])
           }
+          let inverse = false
+          if (response.serviceDetail.direction = 'D'){
+            inverse = true
+          }
           this.updateDistanceDelayChart = {
             xAxis: {
-                min: this.timingPoints[0],
-                max: this.timingPoints[this.timingPoints.length-1],
+                min: this.timingPoints[0].locationMeterage,
+                max: this.timingPoints[this.timingPoints.length-1].locationMeterage,
+                inverse: inverse,
             },
             series: [{
                 data: data,
             }]
         };
+        console.log(this.updateDistanceDelayChart)
         } else {
           this.serviceSelected = false
         }
@@ -175,10 +181,29 @@ export class ServiceDetailComponent implements OnInit {
     };
     this.distanceDelayChart = {
       xAxis: {
+          name: 'Meterage',
+          nameLocation: 'center',
+          nameTextStyle: {
+            color: '#ffffff',
+          },
+          nameGap: 30,
           type: 'value',
+          axisLabel: {
+            color: '#ffffff',
+          },
       },
       yAxis: {
-          type: 'value'
+          name: 'Seconds Late',
+          nameLocation: 'center',
+          nameTextStyle: {
+            color: '#ffffff',
+          },
+          nameGap: 40,
+          nameRotate: 90,
+          type: 'value',
+          axisLabel: {
+            color: '#ffffff',
+          },
       },
       series: [{
           data: [],

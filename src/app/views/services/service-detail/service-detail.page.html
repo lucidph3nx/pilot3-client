@@ -178,21 +178,27 @@
     <!-- End Column -->
     <div *ngIf="serviceSelected" fxFlex="40" fxFlex.lt-md="100">
 
-        <!-- <mat-card id="distanceDelayChart">
-                <div echarts [options]="distanceDelayChart" [merge]="updateDistanceDelayChart"
-                [autoResize]="true">
-            </div>
-        </mat-card> -->
+        <mat-card>
+            <mat-card-title class="">
+                <div class="card-title-text">Delay Across Journey</div>
+            </mat-card-title>
+            <mat-card-content>
+                <div echarts [options]="distanceDelayChart" [merge]="updateDistanceDelayChart" [autoResize]="true">
+                </div>
+            </mat-card-content>
+        </mat-card>
         <mat-card style="padding:10px; text-align:center">
             <h3>Timing Points</h3>
         </mat-card>
         <div id="timingPointTable" class="mat-box-shadow margin-333">
             <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
                 [rowHeight]="40" [scrollbarV]="false" [rows]="timingPoints" [sorts]="[{prop: 'sequence', dir: 'asc'}]">
-                <ngx-datatable-column name="Location" prop="location" [cellClass]="getFailureClass"></ngx-datatable-column>
+                <ngx-datatable-column name="Location" prop="location" [cellClass]="getFailureClass">
+                </ngx-datatable-column>
                 <ngx-datatable-column name="activity" prop="activityType"></ngx-datatable-column>
                 <ngx-datatable-column name="Planned Time" prop="plannedTime"></ngx-datatable-column>
-                <ngx-datatable-column name="Actual Time" prop="actualTime" [cellClass]="getFailureClass"></ngx-datatable-column>
+                <ngx-datatable-column name="Actual Time" prop="actualTime" [cellClass]="getFailureClass">
+                </ngx-datatable-column>
                 <ngx-datatable-column name="TSR Sec" prop="TSRDelaySec"></ngx-datatable-column>
                 <!-- <ngx-datatable-column name="Delay Sec" prop="delaySec"></ngx-datatable-column> -->
                 <!-- <ngx-datatable-column name="timingSource" prop="timingSource"></ngx-datatable-column> -->
