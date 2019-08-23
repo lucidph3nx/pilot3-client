@@ -4,6 +4,7 @@ import { ServicesService } from '../../../shared/services/data/services.service'
 import { FormGroup, FormControl, Validators, } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment-timezone';
 import 'core-js/es7/string';
 import { environment } from '../../../../environments/environment';
@@ -30,8 +31,10 @@ export class ServiceDetailComponent implements OnInit {
 
   constructor(
     private service: ServicesService,
+    private route: ActivatedRoute
   ) { }
   private serviceSubscription;
+  private routeParamsSubscription;
   serviceId = '';
   date = '';
   serviceSelected = false;
@@ -43,11 +46,17 @@ export class ServiceDetailComponent implements OnInit {
   reliabilityFailure = false;
   punctualityFailure = false;
   delayOverall = 0
-  delayBreakdown = {
+  delayBreakdownSeconds = {
     origin: 25,
     TSR: 25,
     betweenStations: 25,
     atStations: 25,
+  }
+  delayBreakdownFriendly = {
+    origin: '',
+    TSR: '',
+    betweenStations: '',
+    atStations: '',
   }
   delayBreakdownPercent = {
     origin: 25,
@@ -91,20 +100,24 @@ export class ServiceDetailComponent implements OnInit {
           this.reliabilityFailure = response.serviceDetail.reliabilityFailure
           this.punctualityFailure = response.serviceDetail.punctualityFailure
           this.timingPoints = response.serviceDetail.timingPoints;
-          this.delayOverall = response.serviceDetail.delayOverall;
-          this.delayBreakdown.origin = response.serviceDetail.delayBreakdown.origin
-          let tempSum = response.serviceDetail.delayBreakdown.origin
-              + response.serviceDetail.delayBreakdown.TSR
-              + response.serviceDetail.delayBreakdown.betweenStations
-              + response.serviceDetail.delayBreakdown.atStations
-          this.delayBreakdownPercent.origin = Math.round((response.serviceDetail.delayBreakdown.origin / tempSum)*100)
-          this.delayBreakdown.TSR = response.serviceDetail.delayBreakdown.TSR
-          this.delayBreakdownPercent.TSR = Math.round((response.serviceDetail.delayBreakdown.TSR /tempSum)*100)
-          this.delayBreakdown.betweenStations = response.serviceDetail.delayBreakdown.betweenStations
-          this.delayBreakdownPercent.betweenStations = Math.round((response.serviceDetail.delayBreakdown.betweenStations / tempSum)*100)
-          this.delayBreakdown.atStations = response.serviceDetail.delayBreakdown.atStations
-          this.delayBreakdownPercent.atStations = Math.round((response.serviceDetail.delayBreakdown.atStations / tempSum)*100)
-          console.log(this.delayBreakdownPercent)
+
+          if (this.punctualityFailure){
+            this.delayOverall = response.serviceDetail.delayOverall;
+            this.delayBreakdownSeconds.origin = response.serviceDetail.delayBreakdown.origin
+            this.delayBreakdownFriendly.origin = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.origin).format('HH:mm:ss');
+            
+            this.delayBreakdownPercent.origin = Math.round((response.serviceDetail.delayBreakdown.origin / response.serviceDetail.delayOverall)*100)
+            this.delayBreakdownSeconds.TSR = response.serviceDetail.delayBreakdown.TSR
+            this.delayBreakdownFriendly.TSR = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.TSR).format('HH:mm:ss');
+            this.delayBreakdownPercent.TSR = Math.round((response.serviceDetail.delayBreakdown.TSR /response.serviceDetail.delayOverall)*100)
+            this.delayBreakdownSeconds.betweenStations = response.serviceDetail.delayBreakdown.betweenStations
+            this.delayBreakdownFriendly.betweenStations = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.betweenStations).format('HH:mm:ss');
+            this.delayBreakdownPercent.betweenStations = Math.round((response.serviceDetail.delayBreakdown.betweenStations / response.serviceDetail.delayOverall)*100)
+            this.delayBreakdownSeconds.atStations = response.serviceDetail.delayBreakdown.atStations
+            this.delayBreakdownFriendly.atStations = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.atStations).format('HH:mm:ss');
+            this.delayBreakdownPercent.atStations = Math.round((response.serviceDetail.delayBreakdown.atStations / response.serviceDetail.delayOverall)*100)
+          }
+
           this.updateDelayBreakdownChart = {
             series: [
               {
@@ -135,13 +148,24 @@ export class ServiceDetailComponent implements OnInit {
                 data: data,
             }]
         };
-        console.log(this.updateDistanceDelayChart)
         } else {
           this.serviceSelected = false
         }
       });
   }
   ngOnInit() {
+    // get date & serviceId from route params
+    this.routeParamsSubscription=this.route.params.subscribe(params => {
+      if (params['date'] !== undefined && this.serviceSelect.controls.date.value == null){
+        this.serviceSelect.controls.date.setValue(params['date'])
+      }
+      if (params['serviceId'] !== undefined && this.serviceSelect.controls.serviceId.value == null){
+        this.serviceSelect.controls.serviceId.setValue(params['serviceId'])
+      }
+      if (this.serviceSelect.value.date !== null && this.serviceSelect.value.serviceId !== null) {
+        this.updateData();
+      }
+      })
     this.serviceSelect = new FormGroup({
       date: new FormControl('', [Validators.required]),
       serviceId: new FormControl('', [Validators.required]),

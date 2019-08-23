@@ -140,28 +140,32 @@
                         <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
                             <div class="text-center pt-1 pb-1 border-right-light">
                                 <mat-icon class="text-blue">trip_origin</mat-icon>
-                                <h4 class="m-0">{{delayBreakdownPercent.origin}}%</h4>
+                                <h3 class="m-0">{{delayBreakdownPercent.origin}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.origin}}</small><br>
                                 <small class="m-0 text-muted">Origin</small>
                             </div>
                         </div>
                         <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
                             <div class="text-center pt-1 pb-1 border-right-light">
                                 <mat-icon class="text-blue">timelapse</mat-icon>
-                                <h4 class="m-0">{{delayBreakdownPercent.TSR}}%</h4>
+                                <h3 class="m-0">{{delayBreakdownPercent.TSR}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.TSR}}</small><br>
                                 <small class="m-0 text-muted">TSR</small>
                             </div>
                         </div>
                         <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
                             <div class="text-center pt-1 pb-1 border-right-light">
                                 <mat-icon class="text-blue">train</mat-icon>
-                                <h4 class="m-0">{{delayBreakdownPercent.betweenStations}}%</h4>
+                                <h3 class="m-0">{{delayBreakdownPercent.betweenStations}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.betweenStations}}</small><br>
                                 <small class="m-0 text-muted">Between Stations</small>
                             </div>
                         </div>
                         <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
                             <div class="text-center pt-1 pb-1">
                                 <mat-icon class="text-blue">location_on</mat-icon>
-                                <h4 class="m-0">{{delayBreakdownPercent.atStations}}%</h4>
+                                <h3 class="m-0">{{delayBreakdownPercent.atStations}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.atStations}}</small><br>
                                 <small class="m-0 text-muted">At Stations</small>
                             </div>
                         </div>
