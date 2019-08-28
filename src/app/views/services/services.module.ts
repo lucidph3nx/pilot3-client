@@ -30,6 +30,7 @@ import { MatangiUnitsTableComponent } from './matangi-units/matangi-units.table'
 import { ServicesRoutes } from "./services.routing";
 import { serviceViewComponent } from "./current-services/service-view/service-view.component"
 import { ServiceDetailComponent } from './service-detail/service-detail.page';
+import { TimeDistanceComponent } from './time-distance/time-distance.page';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { ServiceDetailComponent } from './service-detail/service-detail.page';
     MatangiUnitsTableComponent,
     serviceViewComponent,
     ServiceDetailComponent,
+    TimeDistanceComponent,
   ],
   entryComponents: [serviceViewComponent]
 })

@@ -31,6 +31,21 @@ export class CurrentServerStatusResponse {
   }
 }
 
+
+export class TimeDistanceResponse {
+  public time?: string;
+  public timeDistance?: {
+    date?: string;
+    line?: string;
+    timeDistancePoints?: Array<object>;
+  }
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
+  }
+}
 export class ServiceDetailResponse {
   public time?: string;
   public serviceDetail?: {
@@ -87,6 +102,12 @@ export class ServicesService {
       .timer(0, 10000)
       .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/serverStatus/current')
         .map((response: Response) => new CurrentServerStatusResponse().fromJSON(response)))
+  }
+  getTimeDistance = (date, lineId) => {
+    return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/services/timeDistance?date=' + date + '&line=' + lineId)
+        .map((response: Response) => new TimeDistanceResponse().fromJSON(response)))
   }
 
 }
