@@ -58,6 +58,13 @@ export class NavigationService {
       state: 'services/matangi-units',
     },
     {
+      name: 'Time Distance Graph',
+      type: 'link',
+      tooltip: 'time-distance',
+      icon: 'show_chart',
+      state: 'services/time-distance',
+    },
+    {
       name: 'RTI Boards',
       type: 'link',
       tooltip: 'RTI boards',

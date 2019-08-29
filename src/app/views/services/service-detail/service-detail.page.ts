@@ -132,7 +132,11 @@ export class ServiceDetailComponent implements OnInit {
           }
           let data = []
           for (let i = 0; i < this.timingPoints.length; i++){
-            data.push([this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate])
+            let secondsLate = moment.utc(response.serviceDetail.date).add(this.timingPoints[i].secondsLate, 'seconds').format('HH:mm:ss')
+            data.push({
+              name: this.timingPoints[i].location+' '+this.timingPoints[i].activityType+' '+secondsLate,
+              value: [this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate],
+            })
           }
           let inverse = false
           if (response.serviceDetail.direction == 'D'){
@@ -204,6 +208,19 @@ export class ServiceDetailComponent implements OnInit {
       ]
     };
     this.distanceDelayChart = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        },
+        formatter: function (params) {
+          let response = '';
+          for (let i = 0; i < params.length; i++) {
+            response = response + params[i].data.name + " <br/> "
+          }
+          return response
+        }
+      },
       xAxis: {
           name: 'Meterage',
           nameLocation: 'center',

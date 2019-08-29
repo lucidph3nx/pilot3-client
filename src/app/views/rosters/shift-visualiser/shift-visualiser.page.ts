@@ -50,13 +50,6 @@ export class ShiftVisualiser implements OnInit {
           + params.value[3] / 1000 / 60 + " min <br/> "
       }
     },
-    title: {
-      text: 'Shift Visualiser for ' + this.selectedDateString,
-      left: 'center',
-      textStyle: {
-        color: '#FFFF',
-      },
-    },
     dataZoom: [
       {
         type: 'slider',

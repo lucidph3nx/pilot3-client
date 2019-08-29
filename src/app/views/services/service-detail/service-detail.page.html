@@ -195,8 +195,10 @@
             <h3>Timing Points</h3>
         </mat-card>
         <div id="timingPointTable" class="mat-box-shadow margin-333">
-            <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
-                [rowHeight]="40" [scrollbarV]="false" [rows]="timingPoints" [sorts]="[{prop: 'sequence', dir: 'asc'}]">
+            <ngx-datatable class="material"
+                [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                [rowHeight]="40" [rows]="timingPoints" [scrollbarV]="true" [sorts]="[{prop: 'sequence', dir: 'asc'}]"
+                style="height: 40vh">
                 <ngx-datatable-column name="Location" prop="location" [cellClass]="getFailureClass">
                 </ngx-datatable-column>
                 <ngx-datatable-column name="activity" prop="activityType"></ngx-datatable-column>

@@ -2,24 +2,23 @@
   <mat-card style="padding:10px;" fxFlex="50">
     <div class="card-title-text">Date Lookup</div>
     <form [formGroup]="daySelect" (ngSubmit)="loadData()">
-        <div fxLayout="row wrap">
-            <mat-form-field>
-                <input matInput name="date" formControlName="date" placeholder="Date"
-                    [matDatepicker]="appDatepicker">
-                <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
-            </mat-form-field>
-            <mat-datepicker #appDatepicker></mat-datepicker>
-            <button mat-raised-button color="primary" style="max-height: 40px;" [disabled]="daySelect.invalid"
-                type="submit">Search</button>
-        </div>
+      <div fxLayout="row wrap">
+        <mat-form-field>
+          <input matInput name="date" formControlName="date" placeholder="Date" [matDatepicker]="appDatepicker">
+          <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+        </mat-form-field>
+        <mat-datepicker #appDatepicker></mat-datepicker>
+        <button mat-raised-button color="primary" style="max-height: 40px;" [disabled]="daySelect.invalid"
+          type="submit">Search</button>
+      </div>
     </form>
-</mat-card>
+  </mat-card>
 </div>
-
 <div fxLayout="row">
   <mat-card style="padding:10px;" fxFlex="100" style="height: 80vh; flex-grow: 1;">
     <mat-card-content>
-      <div echarts [options]="shiftVisOptions" [merge]="updateShiftVisOptions" [autoResize]="true" class="shiftVisChart"></div>
+      <div echarts [options]="shiftVisOptions" [merge]="updateShiftVisOptions" [autoResize]="true"
+        class="shiftVisChart"></div>
     </mat-card-content>
   </mat-card>
 </div>

@@ -1,51 +1,40 @@
-<div fxLayout="row" fxLayout.lt-md="column">
-    <!-- First Column -->
-    <div fxFlex="30" fxFlex.lt-md="100">
-        <!-- Service Lookup -->
-        <mat-card style="padding:10px">
-            <mat-card-title>
-                <div class="card-title-text">Service Lookup</div>
-            </mat-card-title>
-            <mat-card-content>
-                <div fxLayout="row" fxLayout.lt-md="column">
-                    <form [formGroup]="timeDistanceSelect" (ngSubmit)="updateData()">
-                        <div fxLayout="row wrap">
-                            <div fxFlex="100" fxFlex.gt-xs="50">
-                                <mat-form-field>
-                                    <input matInput name="date" formControlName="date" placeholder="Date"
-                                        [matDatepicker]="appDatepicker">
-                                    <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
-                                </mat-form-field>
-                                <mat-datepicker #appDatepicker></mat-datepicker>
-                            </div>
-                            <div fxFlex="100" fxFlex.gt-xs="50">
-                                <mat-form-field>
-                                    <input matInput name="lineId" formControlName="lineId"
-                                        placeholder="lineId">
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex="100" fxFlex.gt-xs="50">
-                                <button mat-raised-button color="primary" style="max-height: 40px;"
-                                    [disabled]="serviceSelect.invalid" type="submit">Search</button>
-                            </div>
-                        </div>
-                    </form>
+<!-- Date & Line Lookup -->
+<mat-card style="padding:10px">
+    <div class="card-title-text">Select Date and Line</div>
+    <mat-card-content>
+        <div fxLayout="row" fxLayout.lt-md="column">
+            <form [formGroup]="timeDistanceSelect" (ngSubmit)="updateData()">
+                <div fxLayout="row">
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+                        <mat-form-field>
+                            <input matInput name="date" formControlName="date" placeholder="Date"
+                                [matDatepicker]="appDatepicker">
+                            <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-datepicker #appDatepicker></mat-datepicker>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+                        <mat-form-field>
+                            <mat-select name="lineId" formControlName="lineId" placeholder="Line">
+                                <mat-option *ngFor="let line of lineList" [value]="line.value">
+                                    {{line.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+                        <button mat-raised-button color="primary" style="max-height: 40px;"
+                            [disabled]="timeDistanceSelect.invalid" type="submit">Search</button>
+                    </div>
                 </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
-    <!-- End Column -->
-    <div *ngIf="dateLineSelected" fxFlex="40" fxFlex.lt-md="100">
-
-        <mat-card>
-            <mat-card-title class="">
-                <div class="card-title-text">Time-Distance Graph</div>
-            </mat-card-title>
-            <mat-card-content>
-                <div echarts [options]="timeDistanceChart" [merge]="updateTimeDistanceChart" [autoResize]="true">
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
-
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>
+<div *ngIf="dateLineSelected">
+    <mat-card style="height: 80vh; flex-grow: 1;">
+        <mat-card-content>
+            <div echarts [options]="timeDistanceChart" [merge]="updateTimeDistanceChart" [autoResize]="true" class="timeDistanceChart"></div>
+        </mat-card-content>
+    </mat-card>
 </div>
