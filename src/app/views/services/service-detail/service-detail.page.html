@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayout.lt-md="column">
     <!-- First Column -->
-    <div fxFlex="30" fxFlex.lt-md="100">
+    <div fxFlex="25" fxFlex.lt-md="100">
         <!-- Service Lookup -->
         <mat-card style="padding:10px">
             <mat-card-title>
@@ -93,7 +93,7 @@
     </div>
 
     <!-- Middle Column -->
-    <div *ngIf="serviceSelected" fxFlex="30" fxFlex.lt-md="100">
+    <div *ngIf="serviceSelected" fxFlex="35" fxFlex.lt-md="100">
         <div *ngIf="reliabilityFailure">
             <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
                 <mat-icon>warning</mat-icon>
@@ -187,7 +187,7 @@
                 <div class="card-title-text">Delay Across Journey</div>
             </mat-card-title>
             <mat-card-content>
-                <div echarts [options]="distanceDelayChart" [merge]="updateDistanceDelayChart" [autoResize]="true">
+                <div echarts [options]="distanceDelayChart" [merge]="updateDistanceDelayChart" [autoResize]="true" style="height: 40vh">
                 </div>
             </mat-card-content>
         </mat-card>

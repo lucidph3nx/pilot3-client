@@ -22,6 +22,8 @@ export class StatusPageComponent implements OnInit {
   VDSStatusTime: string;
   compassStatusMessage: string;
   compassStatusTime: string;
+  metserviceStatusMessage: string;
+  metserviceStatusTime: string;
 
   ngOnInit() {
     this.serviceSubscription = this.service.getCurrentServerStatus()
@@ -36,6 +38,9 @@ export class StatusPageComponent implements OnInit {
       const compassStatus = new integrationStatus().fromJSON(serverStatus.COMPASS)
       this.compassStatusMessage = compassStatus.message
       this.compassStatusTime = moment(compassStatus.updateTime).format('DD/MM/YYYY HH:mm:ss')
+      const metserviceStatus = new integrationStatus().fromJSON(serverStatus.METSERVICE)
+      this.metserviceStatusMessage = metserviceStatus.message
+      this.metserviceStatusTime = moment(metserviceStatus.updateTime).format('DD/MM/YYYY HH:mm:ss')
     });
   }
   ngOnDestroy(){
@@ -48,6 +53,7 @@ export class ServerStatus {
   public GEVIS?: object;
   public VDS?: object;
   public COMPASS?: object;
+  public METSERVICE?: object;
   constructor() {}
   fromJSON(json) {
     for (var propName in json)

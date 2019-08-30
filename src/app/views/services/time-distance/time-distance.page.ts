@@ -154,9 +154,9 @@ export class TimeDistanceComponent implements OnInit {
           color: '#FFFF',
         },
       },
-      grid: {
-        height: 680
-      },
+      // grid: {
+      //   height: 680
+      // },
       tooltip: {
         show: true,
         trigger: "item",

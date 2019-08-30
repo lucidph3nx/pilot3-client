@@ -20,9 +20,6 @@ import { eachDay } from 'date-fns';
   ],
 })
 export class ShiftVisualiser implements OnInit {
-
-  // https://echarts.apache.org/examples/en/editor.html?c=custom-gantt-flight
-
   daySelect = new FormGroup({
     date: new FormControl()
   })
@@ -31,16 +28,16 @@ export class ShiftVisualiser implements OnInit {
     private service: RosterService,
     private route: ActivatedRoute
   ) { }
-  roster = []
   selectedDate = moment();
   selectedDateString = this.selectedDate.format('YYYY-MM-DD');
 
   // variables for graph
-  startTime = Number(moment(moment().format('YYYY-MM-DD')).format('x'))
+  startTime = Number(moment(this.selectedDate.format('YYYY-MM-DD')).format('x'))
   shiftVisData = []
   shiftNames = []
   updateShiftVisOptions;
   shiftVisOptions = {
+    animation: false,
     tooltip: {
       formatter: function (params) {
         return params.marker + params.name + " <br/> "
@@ -56,10 +53,12 @@ export class ShiftVisualiser implements OnInit {
         show: true,
         yAxisIndex: [0],
         zoomLock: true,
-        width: 10,
+        width: 20,
         handleSize: 0,
-        start: 0,
-        end: 7,
+        rangeMode: 'value',
+        maxValueSpan: 20,
+        startValue: 0,
+        endValue: 20,
         showDetail: false,
       },
       {
@@ -111,11 +110,34 @@ export class ShiftVisualiser implements OnInit {
         color: '#FFFF',
       },
       position: 'top',
+      interval: 3600000,
+      splitLine: {
+        lineStyle: {
+          color: '#808080',
+        },
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#FFFF',
+        },
+      },
     },
     yAxis: {
       data: this.shiftNames,
       axisLabel: {
         color: '#FFFF',
+        rotate: 35,
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: '#606060',
+        },
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#FFFF',
+        },
       },
     },
     series: [{
@@ -123,7 +145,7 @@ export class ShiftVisualiser implements OnInit {
       renderItem: this.renderDuty,
       itemStyle: {
         normal: {
-          opacity: 0.8
+          opacity: 1
         }
       },
       encode: {
@@ -131,26 +153,50 @@ export class ShiftVisualiser implements OnInit {
         y: 0
       },
       data: this.shiftVisData
-    }]
+    }],
+    textStyle: {
+      color: '#FFF',
+      fontWeight: 'bold',
+    }
   }
 
   ngOnInit() {
+    this.selectedDate = moment();
+    this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
     this.service.getRosterDutiesVisualiser(this.selectedDate)
       .subscribe((response) => {
-        this.roster = response.roster
-        this.loadData();
+        this.renderData(response.roster);
       });
   }
 
   loadData() {
+    this.selectedDate = moment(this.daySelect.value.date);
+    this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
+    this.service.getRosterDutiesVisualiser(this.selectedDate)
+    .subscribe((response) => {
+      this.renderData(response.roster);
+    });
+  }
+
+  renderData(roster) {
     this.shiftVisData = []
-    for (let i = 0; i < this.roster.length; i++) {
-      this.shiftNames.push(this.roster[i].shiftId)
-      for (let d = 0; d < this.roster[i].rosterDuties.length; d++) {
-        const rosterDuty = this.roster[i].rosterDuties[d];
-        const startTime = Number(moment(rosterDuty.startTime).format('x'))
-        const endTime = Number(moment(rosterDuty.endTime).format('x'))
+    this.shiftNames = []
+    let minTime = Number(moment.utc(roster[0].rosterDuties[0].endTime).format('x'))
+    let maxTime = Number(moment.utc(roster[0].rosterDuties[0].endTime).format('x'))
+    
+    for (let i = 0; i < roster.length; i++) {
+      this.shiftNames.push(roster[i].staffName+' - '+roster[i].shiftId)
+      for (let d = 0; d < roster[i].rosterDuties.length; d++) {
+        const rosterDuty = roster[i].rosterDuties[d];
+        const startTime = Number(moment(rosterDuty.startTime.substring(0,19)).format('x'))
+        const endTime = Number(moment(rosterDuty.endTime.substring(0,19)).format('x'))
         const duration = Number(endTime - startTime)
+        if (endTime > maxTime){
+          maxTime = endTime
+        }
+        if (startTime < minTime){
+          minTime = startTime
+        }
         this.shiftVisData.push({
           name: rosterDuty.name,
           value: [
@@ -162,14 +208,21 @@ export class ShiftVisualiser implements OnInit {
             rosterDuty.name,
           ],
           itemStyle: {
-            normal: {
-              color: rosterDuty.colourCode,
-            }
-          }
+            color: rosterDuty.colourCode,
+          },
         });
       }
     }
     this.updateShiftVisOptions = {
+      dataZoom: [
+        {},{},{
+          startValue: minTime,
+          endValue: maxTime,
+        },{
+          startValue: minTime,
+          endValue: maxTime,
+        },
+      ],
       yAxis: {
         data: this.shiftNames
       },
@@ -185,7 +238,7 @@ export class ShiftVisualiser implements OnInit {
     var categoryIndex = api.value(0);
     var start = api.coord([api.value(1), categoryIndex]);
     var end = api.coord([api.value(2), categoryIndex]);
-    var height = api.size([0, 1])[1] * 0.6;
+    var height = api.size([0, 1])[1] * 0.8;
 
     var rectShape = echarts.graphic.clipRectByRect({
       x: start[0],
@@ -198,87 +251,37 @@ export class ShiftVisualiser implements OnInit {
         width: params.coordSys.width,
         height: params.coordSys.height
       });
-
+      let thisTextValue = api.value(5)
+      let thisTextColor = api.style().textFill
+      let thisTextAlign = 'center'
+      let thisTextPosition = 'inside'
+      if (api.style().fill == '#ffffff'
+       || api.style().fill == '#ffff00'){
+        thisTextColor = '#000000'
+      };
+      if (api.value(4) == 'MB'){
+        thisTextColor = '#FF0000'
+      }
+      if (api.value(4) == 'SON'){
+        thisTextAlign = 'right'
+        thisTextPosition = 'left'
+        thisTextValue = moment(api.value(1)).format('HH:mm')+' Sign-on'
+      }
+      if (api.value(4) == 'SOF'){
+        thisTextAlign = 'left'
+        thisTextPosition = 'right'
+        thisTextValue = 'Sign-off '+moment(api.value(1)).format('HH:mm')
+      }
     return rectShape && {
       type: 'rect',
       shape: rectShape,
       style: api.style({
-        text: api.value(5),
-        // textFill: '#000000',
+        text: thisTextValue,
+        textFill: thisTextColor,
+        textAlign: thisTextAlign,
+        textPosition: thisTextPosition,
       })
     };
   }
-  // renderGanttItem(params, api) {
-  //   // variables for modified graph
-  //   var HEIGHT_RATIO = 0.6;
-  //   var DIM_CATEGORY_INDEX = 0;
-  //   var DIM_TIME_ARRIVAL = 1;
-  //   var DIM_TIME_DEPARTURE = 2;
-  //   var _cartesianXBounds = [];
-  //   var _cartesianYBounds = [];
-  //   var categoryIndex = api.value(DIM_CATEGORY_INDEX);
-  //   var timeArrival = api.coord([api.value(DIM_TIME_ARRIVAL), categoryIndex]);
-  //   var timeDeparture = api.coord([api.value(DIM_TIME_DEPARTURE), categoryIndex]);
-
-  //   var coordSys = params.coordSys;
-  //   _cartesianXBounds[0] = coordSys.x;
-  //   _cartesianXBounds[1] = coordSys.x + coordSys.width;
-  //   _cartesianYBounds[0] = coordSys.y;
-  //   _cartesianYBounds[1] = coordSys.y + coordSys.height;
-
-  //   var barLength = timeDeparture[0] - timeArrival[0];
-  //   // Get the heigth corresponds to length 1 on y axis.
-  //   var barHeight = api.size([0, 1])[1] * HEIGHT_RATIO;
-  //   var x = timeArrival[0];
-  //   var y = timeArrival[1] - barHeight;
-
-  //   var flightNumber = api.value(3) + '';
-  //   var flightNumberWidth = echarts.format.getTextRect(flightNumber).width;
-  //   var text = (barLength > flightNumberWidth + 40 && x + barLength >= 180)
-  //     ? flightNumber : '';
-
-  //   var rectNormal = clipRectByRect(params, {
-  //     x: x, y: y, width: barLength, height: barHeight
-  //   });
-  //   var rectVIP = clipRectByRect(params, {
-  //     x: x, y: y, width: (barLength) / 2, height: barHeight
-  //   });
-  //   var rectText = clipRectByRect(params, {
-  //     x: x, y: y, width: barLength, height: barHeight
-  //   });
-
-  //   return {
-  //     type: 'group',
-  //     children: [{
-  //       type: 'rect',
-  //       ignore: !rectNormal,
-  //       shape: rectNormal,
-  //       style: api.style()
-  //     }, {
-  //       type: 'rect',
-  //       ignore: !rectVIP && !api.value(4),
-  //       shape: rectVIP,
-  //       style: api.style({ fill: '#ddb30b' })
-  //     }, {
-  //       type: 'rect',
-  //       ignore: !rectText,
-  //       shape: rectText,
-  //       style: api.style({
-  //         fill: 'transparent',
-  //         stroke: 'transparent',
-  //         text: text,
-  //         textFill: '#fff'
-  //       })
-  //     }]
-  //   };
-  //   function clipRectByRect(params, rect) {
-  //     return echarts.graphic.clipRectByRect(rect, {
-  //       x: params.coordSys.x,
-  //       y: params.coordSys.y,
-  //       width: params.coordSys.width,
-  //       height: params.coordSys.height
-  //     });
-  //   }
-  // }
 }
 

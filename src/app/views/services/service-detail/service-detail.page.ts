@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment-timezone';
 import 'core-js/es7/string';
 import { environment } from '../../../../environments/environment';
+import { columnsTotalWidth } from '@swimlane/ngx-datatable/release/utils';
 
 @Component({
   selector: 'service-detail',
@@ -104,17 +105,16 @@ export class ServiceDetailComponent implements OnInit {
           if (this.punctualityFailure){
             this.delayOverall = response.serviceDetail.delayOverall;
             this.delayBreakdownSeconds.origin = response.serviceDetail.delayBreakdown.origin
-            this.delayBreakdownFriendly.origin = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.origin).format('HH:mm:ss');
-            
+            this.delayBreakdownFriendly.origin = this.formatMomentMinSec(moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.origin));
             this.delayBreakdownPercent.origin = Math.round((response.serviceDetail.delayBreakdown.origin / response.serviceDetail.delayOverall)*100)
             this.delayBreakdownSeconds.TSR = response.serviceDetail.delayBreakdown.TSR
-            this.delayBreakdownFriendly.TSR = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.TSR).format('HH:mm:ss');
+            this.delayBreakdownFriendly.TSR = this.formatMomentMinSec(moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.TSR));
             this.delayBreakdownPercent.TSR = Math.round((response.serviceDetail.delayBreakdown.TSR /response.serviceDetail.delayOverall)*100)
             this.delayBreakdownSeconds.betweenStations = response.serviceDetail.delayBreakdown.betweenStations
-            this.delayBreakdownFriendly.betweenStations = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.betweenStations).format('HH:mm:ss');
+            this.delayBreakdownFriendly.betweenStations = this.formatMomentMinSec(moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.betweenStations));
             this.delayBreakdownPercent.betweenStations = Math.round((response.serviceDetail.delayBreakdown.betweenStations / response.serviceDetail.delayOverall)*100)
             this.delayBreakdownSeconds.atStations = response.serviceDetail.delayBreakdown.atStations
-            this.delayBreakdownFriendly.atStations = moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.atStations).format('HH:mm:ss');
+            this.delayBreakdownFriendly.atStations = this.formatMomentMinSec(moment().startOf('day').seconds(response.serviceDetail.delayBreakdown.atStations));
             this.delayBreakdownPercent.atStations = Math.round((response.serviceDetail.delayBreakdown.atStations / response.serviceDetail.delayOverall)*100)
           }
 
@@ -132,9 +132,15 @@ export class ServiceDetailComponent implements OnInit {
           }
           let data = []
           for (let i = 0; i < this.timingPoints.length; i++){
-            let secondsLate = moment.utc(response.serviceDetail.date).add(this.timingPoints[i].secondsLate, 'seconds').format('HH:mm:ss')
+            let secondsLate = this.formatMomentMinSec(moment().startOf('day').add(this.timingPoints[i].secondsLate, 'seconds'))
+            let lateEarly = '';
+            if(this.timingPoints[i].secondsLate < 0){
+              lateEarly = ' EARLY'
+            } else if (this.timingPoints[i].secondsLate > 0) {
+              lateEarly = ' LATE'
+            }
             data.push({
-              name: this.timingPoints[i].location+' '+this.timingPoints[i].activityType+' '+secondsLate,
+              name: this.timingPoints[i].location+' '+this.timingPoints[i].activityType+' '+secondsLate + lateEarly,
               value: [this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate],
             })
           }
@@ -234,16 +240,27 @@ export class ServiceDetailComponent implements OnInit {
           },
       },
       yAxis: {
-          name: 'Seconds Late',
+          name: 'Schedule Variance',
           nameLocation: 'center',
           nameTextStyle: {
             color: '#ffffff',
           },
-          nameGap: 40,
+          nameGap: 50,
           nameRotate: 90,
           type: 'value',
           axisLabel: {
             color: '#ffffff',
+            formatter: function (value, index) {
+              // Formatted to be human readable
+              let tempMoment = moment().startOf('day').add(value, 'seconds')
+              let formattedString;
+              let hours = tempMoment.hour()
+              let minutes = tempMoment.minute() + (hours*60)
+              let seconds = tempMoment.second()
+              formattedString = (minutes.toString()).padStart(2,'0') + ':'
+                              + (seconds.toString()).padStart(2,'0')
+              return formattedString;
+            },
           },
       },
       series: [{
@@ -251,6 +268,15 @@ export class ServiceDetailComponent implements OnInit {
           type: 'line'
       }]
   };
-  
+  }
+
+  formatMomentMinSec(moment){
+    let formattedString;
+    let hours = moment.hour()
+    let minutes = moment.minute() + (hours*60)
+    let seconds = moment.second()
+    formattedString = (minutes.toString()).padStart(2,'0') + ':'
+                    + (seconds.toString()).padStart(2,'0')
+    return formattedString;
   }
 }
