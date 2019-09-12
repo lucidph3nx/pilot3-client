@@ -40,6 +40,8 @@ export class TimeDistanceComponent implements OnInit {
   date = '';
   dateLineSelected = false;
   timeDistancePoints = [];
+  plannedTimeDistancePoints = [];
+  actualTimeDistancePoints = [];
   lineList = [
     { value: 'NIMT' },
     { value: 'WRAPA' },
@@ -64,48 +66,122 @@ export class TimeDistanceComponent implements OnInit {
 
         if (response.timeDistance.date !== undefined) {
           this.dateLineSelected = true;
-          this.timeDistancePoints = response.timeDistance.timeDistancePoints
+          this.plannedTimeDistancePoints = response.timeDistance.plannedTimeDistancePoints
+          this.actualTimeDistancePoints = response.timeDistance.actualTimeDistancePoints
 
           let series = []
           let data = []
-          let currentServiceId = this.timeDistancePoints[0].serviceId
+          let serviceId;
+          let points;
           let min = Number(moment(this.date).add(1, 'days').format('X'));
           let max = Number(moment(this.date).format('X'));
-          for (let i = 0; i < this.timeDistancePoints.length; i++) {
-            let thisDateTime = Number(moment(this.timeDistancePoints[i].dateTime).format('X'))
+          // add planned points
+          for (let i = 0; i < this.plannedTimeDistancePoints.length; i++) {
+            serviceId = this.plannedTimeDistancePoints[i].serviceId
+            points = this.plannedTimeDistancePoints[i].fixPoints
+
+            let mindateTime = Number(moment(points[0].dateTime).format('X'))
             // adjust min and max where necessary
-            if (thisDateTime < min) {
-              min = thisDateTime
+            if (mindateTime < min) {
+              min = mindateTime
             }
-            if (thisDateTime > max) {
-              max = thisDateTime
+            let maxDateTime = Number(moment(points[points.length - 1].dateTime).format('X'))
+            if (maxDateTime > max) {
+              max = maxDateTime
             }
-            if (currentServiceId == this.timeDistancePoints[i].serviceId) {
-              // add timing point
+            // push all planned service lines
+            data = []
+            for (let p = 0; p < points.length; p++) {
               data.push({
-                name: this.timeDistancePoints[i].location + ' ' + this.timeDistancePoints[i].type + ' ' + moment.utc(this.timeDistancePoints[i].dateTime).format('HH:mm:ss'),
-                value: [thisDateTime, this.timeDistancePoints[i].locationMeterage],
+                name: points[p].location + ' ' + moment.utc(points[p].dateTime).format('HH:mm:ss'),
+                value: [Number(moment(points[p].dateTime).format('X')), points[p].locationMeterage],
               })
+            }
+            series.push({
+              name: serviceId+'-PLAN',
+              type: 'line',
+              data: data,
+              // label: {
+              //   show: true,
+              //   position: 'top',
+              //   formatter: '{a}',
+              //   color: '#97c475',
+              // },
+              lineStyle: {
+                color: '#97c475',
+                opacity: 0.2,
+              },
+              itemStyle: {
+                color: '#97c475',
+                opacity: 0,
+              },
+            })
+            // push label
+            let rotate;
+            let position;
+            if (points[0].serviceId % 2 == 0) {
+              rotate = 80
+              position = [-15,0]
             } else {
-              // close series and add timing point to new data
-              series.push({
-                name: currentServiceId,
-                type: 'line',
-                data: data,
-                lineStyle: {
-                  color: '#FFFFFF'
-                },
-                itemStyle: {
-                  color: '#FFFFFF'
-                },
-              })
-              currentServiceId = this.timeDistancePoints[i].serviceId
-              data = []
+              rotate = -80
+              position = [15,0]
+            }
+            series.push({
+              name: serviceId,
+              type: 'line',
+              data: [{
+                name: points[0].location + ' ' + moment.utc(points[0].dateTime).format('HH:mm:ss'),
+                value: [Number(moment(points[0].dateTime).format('X')), points[0].locationMeterage],
+              }],
+              label: {
+                show: true,
+                position: position,
+                rotate: rotate,
+                formatter: '{a}',
+                color: '#97c475',
+              },
+              lineStyle: {
+                opacity: 0,
+              },
+              itemStyle: {
+                color: '#97c475',
+                opacity: 0.2,
+              },
+            })
+          }
+          for (let i = 0; i < this.actualTimeDistancePoints.length; i++) {
+            serviceId = this.actualTimeDistancePoints[i].serviceId
+            points = this.actualTimeDistancePoints[i].fixPoints
+
+            let mindateTime = Number(moment(points[0].dateTime).format('X'))
+            // adjust min and max where necessary
+            if (mindateTime < min) {
+              min = mindateTime
+            }
+            let maxDateTime = Number(moment(points[points.length - 1].dateTime).format('X'))
+            if (maxDateTime > max) {
+              max = maxDateTime
+            }
+            data = []
+            for (let p = 0; p < points.length; p++) {
               data.push({
-                name: this.timeDistancePoints[i].location + ' ' + this.timeDistancePoints[i].type + ' ' + moment.utc(this.timeDistancePoints[i].dateTime).format('HH:mm:ss'),
-                value: [thisDateTime, this.timeDistancePoints[i].locationMeterage],
+                name: points[p].location + ' ' + moment.utc(points[p].dateTime).format('HH:mm:ss'),
+                value: [Number(moment(points[p].dateTime).format('X')), points[p].locationMeterage],
               })
             }
+            series.push({
+              name: serviceId,
+              type: 'line',
+              data: data,
+              lineStyle: {
+                color: '#be5046',
+                opacity: 1,
+              },
+              itemStyle: {
+                color: '#be5046',
+                opacity: 0,
+              },
+            })
           }
           this.updateTimeDistanceChart = {
             xAxis: {
@@ -113,9 +189,6 @@ export class TimeDistanceComponent implements OnInit {
               max: max,
             },
             dataZoom: [{
-              startValue: min,
-              endValue: max,
-              maxValueSpan: 86400,
             },
             {
               startValue: min,
@@ -165,30 +238,18 @@ export class TimeDistanceComponent implements OnInit {
       dataZoom: [
         {
           type: 'slider',
-          show: false,
-          realtime: true,
-          filterMode: 'weakFilter',
-          showDataShadow: false,
-          top: 750,
-          height: 10,
-          xAxisIndex: [0],
-          borderColor: 'transparent',
-          backgroundColor: '#e2e2e2',
-          handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
-          handleSize: 20,
-          handleStyle: {
-            shadowBlur: 6,
-            shadowOffsetX: 1,
-            shadowOffsetY: 2,
-            shadowColor: '#aaa'
+          yAxisIndex: 0,
+          filterMode: 'none',
+          start: 0,
+          end: 100,
+          textStyle: {
+            color: '#ffffff',
           },
-          maxValueSpan: 86400,
-          // labelFormatter: ''
         },
         {
           type: 'inside',
           xAxisIndex: [0],
-          filterMode: 'weakFilter',
+          filterMode: 'none',
           zoomOnMouseWheel: true,
           moveOnMouseMove: true,
           maxValueSpan: 86400,

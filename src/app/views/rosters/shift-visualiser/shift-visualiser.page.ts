@@ -23,6 +23,10 @@ export class ShiftVisualiser implements OnInit {
   daySelect = new FormGroup({
     date: new FormControl()
   })
+  filterResults = new FormGroup({
+    staffType: new FormControl(),
+    location: new FormControl()
+  })
 
   constructor(
     private service: RosterService,
@@ -45,7 +49,7 @@ export class ShiftVisualiser implements OnInit {
           + 'From: ' + moment(params.value[1]).format('HH:mm') + " <br/> "
           + 'To: ' + moment(params.value[2]).format('HH:mm') + " <br/> "
           + params.value[3] / 1000 / 60 + " min <br/> "
-      }
+      },
     },
     dataZoom: [
       {
@@ -56,9 +60,9 @@ export class ShiftVisualiser implements OnInit {
         width: 20,
         handleSize: 0,
         rangeMode: 'value',
-        maxValueSpan: 20,
+        maxValueSpan: 30,
         startValue: 0,
-        endValue: 20,
+        endValue: 30,
         showDetail: false,
       },
       {
@@ -67,38 +71,39 @@ export class ShiftVisualiser implements OnInit {
         filterMode: 'weakFilter',
         zoomOnMouseWheel: false,
         moveOnMouseMove: true,
-        moveOnMouseWheel: true,
+        moveOnMouseWheel: false,
       },
       {
         type: 'slider',
         show: true,
         filterMode: 'weakFilter',
         showDataShadow: false,
-        top: 750,
-        height: 10,
+        top: '95%',
+        height: 20,
         xAxisIndex: [0],
-        borderColor: 'transparent',
-        backgroundColor: '#e2e2e2',
-        handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
-        handleSize: 20,
-        handleStyle: {
-          shadowBlur: 6,
-          shadowOffsetX: 1,
-          shadowOffsetY: 2,
-          shadowColor: '#aaa'
-        },
+        // borderColor: 'transparent',
+        // backgroundColor: '#e2e2e2',
+        // handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
+        // handleSize: 20,
+        // handleStyle: {
+        //   shadowBlur: 6,
+        //   shadowOffsetX: 1,
+        //   shadowOffsetY: 2,
+        //   shadowColor: '#aaa'
+        // },
         labelFormatter: ''
       },
       {
         type: 'inside',
         xAxisIndex: [0],
         filterMode: 'weakFilter',
-        zoomOnMouseWheel: false,
-        moveOnMouseMove: true,
+        zoomOnMouseWheel: true,
+        moveOnMouseMove: false,
       },
     ],
     grid: {
-      height: 680
+      height: '85%',//680,
+      right: 35,
     },
     xAxis: {
       min: this.startTime,
@@ -255,6 +260,7 @@ export class ShiftVisualiser implements OnInit {
       let thisTextColor = api.style().textFill
       let thisTextAlign = 'center'
       let thisTextPosition = 'inside'
+      let thisFontSize = 12
       if (api.style().fill == '#ffffff'
        || api.style().fill == '#ffff00'){
         thisTextColor = '#000000'
@@ -263,19 +269,26 @@ export class ShiftVisualiser implements OnInit {
         thisTextColor = '#FF0000'
       }
       if (api.value(4) == 'SON'){
-        thisTextAlign = 'right'
-        thisTextPosition = 'left'
-        thisTextValue = moment(api.value(1)).format('HH:mm')+' Sign-on'
+        // thisTextAlign = 'right'
+        // thisTextPosition = 'left'
+        thisFontSize = 8
+        thisTextValue = 'SON'
       }
       if (api.value(4) == 'SOF'){
-        thisTextAlign = 'left'
-        thisTextPosition = 'right'
-        thisTextValue = 'Sign-off '+moment(api.value(1)).format('HH:mm')
+        // thisTextAlign = 'left'
+        // thisTextPosition = 'right'
+        thisFontSize = 8
+        thisTextValue = 'SOF'
+      }
+      // if less than 5 minute duty, do not show any label
+      if ((api.value(3) / 1000 / 60) < 14) {
+        thisTextValue = ''
       }
     return rectShape && {
       type: 'rect',
       shape: rectShape,
       style: api.style({
+        fontSize: thisFontSize,
         text: thisTextValue,
         textFill: thisTextColor,
         textAlign: thisTextAlign,

@@ -13,6 +13,27 @@
       </div>
     </form>
   </mat-card>
+  <mat-card style="padding:10px;" fxFlex="50">
+    <div class="card-title-text">Filter Results</div>
+    <form [formGroup]="filterResults">
+      <div fxLayout="row wrap">
+        <mat-form-field>
+          <mat-select placeholder="staffType" (selectionChange)="filter($event)">
+            <mat-option *ngFor="let staffType of staffTypeList" [value]="staffType.value">
+              {{staffType.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="location" (selectionChange)="filter($event)">
+            <mat-option *ngFor="let location of locationList" [value]="location.value">
+              {{location.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-card>
 </div>
 <div fxLayout="row">
   <mat-card style="padding:10px;" fxFlex="100" style="height: 80vh; flex-grow: 1;">

@@ -37,7 +37,8 @@ export class TimeDistanceResponse {
   public timeDistance?: {
     date?: string;
     line?: string;
-    timeDistancePoints?: Array<object>;
+    plannedTimeDistancePoints?: Array<object>;
+    actualTimeDistancePoints?: Array<object>;
   }
   constructor() { }
   fromJSON(json) {
