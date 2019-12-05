@@ -25,9 +25,12 @@
 }
 
 .toolbar-avatar.md, .toolbar-avatar.md > img {
-  width: 48px !important;
-  height: 48px;
+  width: 60px !important;
+  height: 60px;
+  width: 100% !important;
+  height: 100%;
   object-fit: cover;
+  border-radius: 0;
 }
 
   .pilot-dark #timingPointTable .datatable-body-cell{

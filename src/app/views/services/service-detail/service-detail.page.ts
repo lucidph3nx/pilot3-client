@@ -95,7 +95,7 @@ export class ServiceDetailComponent implements OnInit {
           this.serviceHeading = serviceId + ' on ' + dateString;
           this.crew = response.serviceDetail.crew
           for (let i=0; i < this.crew.length; i++) {
-            this.crew[i].photoURL = 'http://'+environment.apiURL+':4000/api/'+ this.crew[i].photoURL
+            this.crew[i].photoURL = 'http://'+environment.apiURL+':4000/api/staff/'+ this.crew[i].photoURL + "&height=200"
           }
           this.consist = response.serviceDetail.consist
           this.reliabilityFailure = response.serviceDetail.reliabilityFailure

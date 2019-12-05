@@ -11,7 +11,7 @@
                     <form [formGroup]="serviceSelect" (ngSubmit)="updateData()">
                         <div fxLayout="row wrap">
                             <div fxFlex="100" fxFlex.gt-xs="50">
-                                <mat-form-field>
+                                <mat-form-field style="width:90%">
                                     <input matInput name="date" formControlName="date" placeholder="Date"
                                         [matDatepicker]="appDatepicker">
                                     <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
@@ -19,7 +19,7 @@
                                 <mat-datepicker #appDatepicker></mat-datepicker>
                             </div>
                             <div fxFlex="100" fxFlex.gt-xs="50">
-                                <mat-form-field>
+                                <mat-form-field style="width:90%">
                                     <input matInput name="serviceId" formControlName="serviceId"
                                         placeholder="serviceId">
                                 </mat-form-field>
@@ -65,6 +65,20 @@
                 </mat-card-content>
             </mat-card>
             <div fxLayout="row wrap">
+                    <div *ngFor="let member of crew" fxFlex="100" fxFlex.gt-sm="50">
+                        <mat-card style="padding:0px">
+                            <div fxFlex="40">
+                                    <a href="" class="toolbar-avatar md mr-1"><img [src]="member.photoURL" alt=""></a>
+                            </div>
+                            <div fxFlex="60" style="padding:10px">
+                                {{member.staffName}}<br>
+                                {{member.staffId}}<br>
+                                {{member.shiftId}}
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            <!-- <div fxLayout="row wrap">
                 <div *ngFor="let member of crew" fxFlex="100" fxFlex.gt-sm="50">
                     <mat-card class="user-card p-0">
                         <mat-card-title class="mat-bg-primary">
@@ -76,7 +90,6 @@
                             <mat-divider></mat-divider>
                         </mat-card-title>
                         <mat-card-content>
-                            <!-- user detail lines-->
                             <div class="user-details">
                                 <p>
                                     <mat-icon class="text-muted">perm_identity</mat-icon>{{member.shiftType}}
@@ -88,7 +101,7 @@
                         </mat-card-content>
                     </mat-card>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 

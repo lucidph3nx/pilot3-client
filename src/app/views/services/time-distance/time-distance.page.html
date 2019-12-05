@@ -6,7 +6,7 @@
             <form [formGroup]="timeDistanceSelect" (ngSubmit)="updateData()">
                 <div fxLayout="row">
                     <div fxFlex="100" fxFlex.gt-xs="50">
-                        <mat-form-field>
+                        <mat-form-field style="width:90%">
                             <input matInput name="date" formControlName="date" placeholder="Date"
                                 [matDatepicker]="appDatepicker">
                             <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
@@ -14,7 +14,7 @@
                         <mat-datepicker #appDatepicker></mat-datepicker>
                     </div>
                     <div fxFlex="100" fxFlex.gt-xs="50">
-                        <mat-form-field>
+                        <mat-form-field style="width:90%">
                             <mat-select name="lineId" formControlName="lineId" placeholder="Line">
                                 <mat-option *ngFor="let line of lineList" [value]="line.value">
                                     {{line.value}}
