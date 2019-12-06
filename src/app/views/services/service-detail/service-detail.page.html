@@ -65,83 +65,61 @@
                 </mat-card-content>
             </mat-card>
             <div fxLayout="row wrap">
-                    <div *ngFor="let member of crew" fxFlex="100" fxFlex.gt-sm="50">
-                        <mat-card style="padding:0px">
-                            <div fxFlex="40">
-                                    <a href="" class="toolbar-avatar md mr-1"><img [src]="member.photoURL" alt=""></a>
-                            </div>
-                            <div fxFlex="60" style="padding:10px">
-                                {{member.staffName}}<br>
-                                {{member.staffId}}<br>
-                                {{member.shiftId}}
-                            </div>
-                        </mat-card>
-                    </div>
-                </div>
-            <!-- <div fxLayout="row wrap">
                 <div *ngFor="let member of crew" fxFlex="100" fxFlex.gt-sm="50">
-                    <mat-card class="user-card p-0">
-                        <mat-card-title class="mat-bg-primary">
-                            <div class="card-title-text">
-                                <a href="" class="toolbar-avatar md mr-1"><img [src]="member.photoURL" alt=""></a>
-                                <span>{{member.staffName}}</span>
-                                <span fxFlex></span>
-                            </div>
-                            <mat-divider></mat-divider>
-                        </mat-card-title>
-                        <mat-card-content>
-                            <div class="user-details">
-                                <p>
-                                    <mat-icon class="text-muted">perm_identity</mat-icon>{{member.shiftType}}
-                                </p>
-                                <p>
-                                    <mat-icon class="text-muted">work</mat-icon>Shift: {{member.shiftId}}
-                                </p>
-                            </div>
-                        </mat-card-content>
+                    <mat-card style="padding:0px">
+                        <div fxFlex="40">
+                            <a href="" class="toolbar-avatar md mr-1"><img [src]="member.photoURL" alt=""></a>
+                        </div>
+                        <div fxFlex="60" style="padding:10px">
+                            {{member.staffName}}<br>
+                            {{member.staffId}}<br>
+                            {{member.shiftId}}
+                        </div>
                     </mat-card>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 
     <!-- Middle Column -->
     <div *ngIf="serviceSelected" fxFlex="35" fxFlex.lt-md="100">
-        <div *ngIf="reliabilityFailure">
-            <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
-                <mat-icon>warning</mat-icon>
-                <span style="width: 20px"></span>
-                <div>
-                    <span class="text-18 font-weight-bold text-red">Reliability Failure</span>
-                </div>
-            </mat-card>
-        </div>
-        <div *ngIf="!reliabilityFailure">
-            <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
-                <mat-icon>done</mat-icon>
-                <span style="width: 20px"></span>
-                <div>
-                    <span class="text-18 font-weight-bold text-green">Reliable</span>
-                </div>
-            </mat-card>
-        </div>
-        <div *ngIf="punctualityFailure">
-            <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
-                <mat-icon>warning</mat-icon>
-                <span style="width: 20px"></span>
-                <div>
-                    <span class="text-18 font-weight-bold text-red">Punctuality Failure</span>
-                </div>
-            </mat-card>
-        </div>
-        <div *ngIf="!punctualityFailure">
-            <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
-                <mat-icon>done</mat-icon>
-                <span style="width: 20px"></span>
-                <div>
-                    <span class="text-18 font-weight-bold text-green">On Time</span>
-                </div>
-            </mat-card>
+        <div fxLayout="row">
+            <div *ngIf="reliabilityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>warning</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-red">Reliability Failure</span>
+                    </div>
+                </mat-card>
+            </div>
+            <div *ngIf="!reliabilityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>done</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-green">Reliable</span>
+                    </div>
+                </mat-card>
+            </div>
+            <div *ngIf="punctualityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>warning</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-red">Punctuality Failure</span>
+                    </div>
+                </mat-card>
+            </div>
+            <div *ngIf="!punctualityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>done</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-green">On Time</span>
+                    </div>
+                </mat-card>
+            </div>
         </div>
         <div *ngIf="punctualityFailure">
             <mat-card id="delayBreakdownChart">
@@ -200,7 +178,8 @@
                 <div class="card-title-text">Delay Across Journey</div>
             </mat-card-title>
             <mat-card-content>
-                <div echarts [options]="distanceDelayChart" [merge]="updateDistanceDelayChart" [autoResize]="true" style="height: 40vh">
+                <div echarts [options]="distanceDelayChart" [merge]="updateDistanceDelayChart" [autoResize]="true"
+                    style="height: 40vh">
                 </div>
             </mat-card-content>
         </mat-card>
@@ -208,8 +187,7 @@
             <h3>Timing Points</h3>
         </mat-card>
         <div id="timingPointTable" class="mat-box-shadow margin-333">
-            <ngx-datatable class="material"
-                [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+            <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
                 [rowHeight]="40" [rows]="timingPoints" [scrollbarV]="true" [sorts]="[{prop: 'sequence', dir: 'asc'}]"
                 style="height: 40vh">
                 <ngx-datatable-column name="Location" prop="location" [cellClass]="getFailureClass">
