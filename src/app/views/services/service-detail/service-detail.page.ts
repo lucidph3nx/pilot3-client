@@ -157,6 +157,8 @@ export class ServiceDetailComponent implements OnInit {
               value: [this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate],
             })
           }
+          //reset chart
+          this.initialiseCharts()
           //push the primary series
           series.push({
             data: dataPrimary,
@@ -165,128 +167,16 @@ export class ServiceDetailComponent implements OnInit {
           //push the aditional series that highlight impact of delay
           if (this.punctualityFailure) {
             for (let i = 0; i < this.timingPoints.length; i++) {
-              if (this.timingPoints[i].activityType == 'Origin' && this.timingPoints[i].impactSeconds !== 0) {
-                let data = [
-                  [this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate - this.timingPoints[i].impactSeconds],
-                  [this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate],
-                  [this.timingPoints[this.timingPoints.length - 1].locationMeterage, this.timingPoints[i].secondsLate],
-                  [this.timingPoints[this.timingPoints.length - 1].locationMeterage, this.timingPoints[i].secondsLate - this.timingPoints[i].impactSeconds],
-                ]
-                series.push({
-                  data: data,
-                  type: 'custom',
-                  renderItem: function (params, api) {
-                    if (params.context.rendered) {
-                      return;
-                    }
-                    params.context.rendered = true;
-                    var points = [];
-                    for (var i = 0; i < data.length; i++) {
-                      points.push(api.coord(data[i]));
-                    }
-                    return {
-                      type: 'polygon',
-                      shape: {
-                        points: echarts.graphic.clipPointsByRect(points, {
-                          x: params.coordSys.x,
-                          y: params.coordSys.y,
-                          width: params.coordSys.width,
-                          height: params.coordSys.height
-                        })
-                      },
-                      style: api.style({
-                        fill: chartColours.AtOrigin,
-                        opacity: 0.4,
-                      })
-                    };
-                  },
-                })
-              }
-              if (this.timingPoints[i].activityType == 'Departs' && this.timingPoints[i].impactSeconds !== 0) {
-                let data = [
-                  [this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate - this.timingPoints[i].impactSeconds],
-                  [this.timingPoints[i].locationMeterage, this.timingPoints[i].secondsLate],
-                  [this.timingPoints[this.timingPoints.length - 1].locationMeterage, this.timingPoints[i].secondsLate],
-                  [this.timingPoints[this.timingPoints.length - 1].locationMeterage, this.timingPoints[i].secondsLate - this.timingPoints[i].impactSeconds],
-                ]
-                series.push({
-                  data: data,
-                  type: 'custom',
-                  renderItem: function (params, api) {
-                    if (params.context.rendered) {
-                      return;
-                    }
-                    params.context.rendered = true;
-                    var points = [];
-                    for (var i = 0; i < data.length; i++) {
-                      points.push(api.coord(data[i]));
-                    }
-                    return {
-                      type: 'polygon',
-                      shape: {
-                        points: echarts.graphic.clipPointsByRect(points, {
-                          x: params.coordSys.x,
-                          y: params.coordSys.y,
-                          width: params.coordSys.width,
-                          height: params.coordSys.height
-                        })
-                      },
-                      style: api.style({
-                        fill: chartColours.AtStations,
-                        opacity: 0.4,
-                      })
-                    };
-                  },
-                })
-              }
-              if ((this.timingPoints[i].activityType == 'Arrives' || this.timingPoints[i].activityType == 'Terminates')
-                && this.timingPoints[i].impactSeconds !== 0) {
-                let lowY = this.timingPoints[i - 1].secondsLate
-
-                let highY = this.timingPoints[i - 1].secondsLate + this.timingPoints[i].impactSeconds
-
-                let slope = (this.timingPoints[i].secondsLate - this.timingPoints[i-1].secondsLate )
-                    / (this.timingPoints[i].locationMeterage - this.timingPoints[i-1].locationMeterage)
-                let yIntercept = this.timingPoints[i].secondsLate - slope * this.timingPoints[i-1].locationMeterage
-                let xIntercept = (lowY - yIntercept) / slope
-                let lineIntercept = (this.timingPoints[i].secondsLate - yIntercept) / slope
-
-                // I have no fucking idea what i'm doing
-                let data = [
-                  [this.timingPoints[i - 1].locationMeterage, lowY], // X
-                  [this.timingPoints[i].locationMeterage, highY], // Y
-                  [this.timingPoints[this.timingPoints.length - 1].locationMeterage, highY],
-                  [this.timingPoints[this.timingPoints.length - 1].locationMeterage, lowY],
-                ];
-                series.push({
-                  data: data,
-                  type: 'custom',
-                  renderItem: function (params, api) {
-                    if (params.context.rendered) {
-                      return;
-                    }
-                    params.context.rendered = true;
-                    var points = [];
-                    for (var i = 0; i < data.length; i++) {
-                      points.push(api.coord(data[i]));
-                    }
-                    return {
-                      type: 'polygon',
-                      shape: {
-                        points: echarts.graphic.clipPointsByRect(points, {
-                          x: params.coordSys.x,
-                          y: params.coordSys.y,
-                          width: params.coordSys.width,
-                          height: params.coordSys.height
-                        })
-                      },
-                      style: api.style({
-                        fill: chartColours.BetweenStations,
-                        opacity: 0.4,
-                      })
-                    };
-                  },
-                })
+              if (this.timingPoints[i].impactSeconds !== 0){
+                if (this.timingPoints[i].activityType == 'Origin') {
+                  series.push(this.drawDelayShape(i, this.timingPoints, chartColours.AtOrigin))
+                }
+                if (this.timingPoints[i].activityType == 'Departs') {
+                  series.push(this.drawDelayShape(i, this.timingPoints, chartColours.AtStations))
+                }
+                if (this.timingPoints[i].activityType == 'Arrives' || this.timingPoints[i].activityType == 'Terminates') {
+                    series.push(this.drawDelayShape(i, this.timingPoints, chartColours.BetweenStations))
+                }
               }
             }
           }
@@ -325,6 +215,9 @@ export class ServiceDetailComponent implements OnInit {
       date: new FormControl('', [Validators.required]),
       serviceId: new FormControl('', [Validators.required]),
     })
+    this.initialiseCharts()
+  }
+  initialiseCharts(){
     this.delayBreakdownChart = {
       color: [
         this.chartColours.AtOrigin,
@@ -428,5 +321,81 @@ export class ServiceDetailComponent implements OnInit {
     formattedString = (minutes.toString()).padStart(2, '0') + ':'
       + (seconds.toString()).padStart(2, '0')
     return formattedString;
+  }
+
+  drawDelayShape(impactedIndex, timingPoints, colour) {
+    let data = definePoints(impactedIndex, timingPoints)
+    return {
+      data: data,
+      type: 'custom',
+      renderItem: function (params, api) {
+        if (params.context.rendered) {
+          return;
+        }
+        params.context.rendered = true;
+        var points = [];
+        for (var i = 0; i < data.length; i++) {
+          points.push(api.coord(data[i]));
+        }
+        return {
+          type: 'polygon',
+          shape: {
+            points: echarts.graphic.clipPointsByRect(points, {
+              x: params.coordSys.x,
+              y: params.coordSys.y,
+              width: params.coordSys.width,
+              height: params.coordSys.height
+            })
+          },
+          style: api.style({
+            fill: colour,
+            opacity: 0.4,
+          })
+        };
+      },
+    }
+
+    function definePoints(impactedIndex, timingPoints) {
+      //determine the location of greatest punctuality failure
+      let failurePoint = undefined
+      for (let i = 0; i < timingPoints.length; i++) {
+        if (timingPoints[i].punctualityFailure) {
+          if (failurePoint == undefined || timingPoints[i].secondsLate > failurePoint.secondsLate)
+            failurePoint = timingPoints[i]
+        }
+      }
+      if (impactedIndex == 0) {
+        //console.log(timingPoints[impactedIndex].secondsLate - timingPoints[impactedIndex].impactSeconds)
+        return [
+          [timingPoints[impactedIndex].locationMeterage, 0],
+          [timingPoints[impactedIndex].locationMeterage, timingPoints[impactedIndex].impactSeconds],
+          [failurePoint.locationMeterage, timingPoints[impactedIndex].impactSeconds],
+          [failurePoint.locationMeterage, 0],
+        ]
+      }
+      let lowY = timingPoints[impactedIndex - 1].secondsLate
+      let lowX = timingPoints[impactedIndex - 1].locationMeterage
+      let slope = (timingPoints[impactedIndex].secondsLate - timingPoints[impactedIndex - 1].secondsLate)
+        / (timingPoints[impactedIndex].locationMeterage - timingPoints[impactedIndex - 1].locationMeterage)
+      let yIntercept = timingPoints[impactedIndex].secondsLate - (slope * timingPoints[impactedIndex].locationMeterage)
+      if (lowY < 0) {
+        lowY = 0
+        lowX = (lowY - yIntercept) / slope;
+      }
+      let highY = lowY + timingPoints[impactedIndex].impactSeconds
+      let highX
+      if (timingPoints[impactedIndex - 1].locationMeterage == timingPoints[impactedIndex].locationMeterage) {
+        highX = lowX
+      } else {
+        highX = (highY - yIntercept) / slope;
+      }
+
+      return [
+        [lowX, lowY], // X
+        [highX, highY], // Y
+        [failurePoint.locationMeterage, highY],
+        [failurePoint.locationMeterage, lowY],
+      ];
+    }
   }
 }
