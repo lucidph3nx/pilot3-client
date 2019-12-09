@@ -27,6 +27,9 @@ export class ShiftVisualiser implements OnInit {
     staffType: new FormControl(),
     location: new FormControl()
   })
+  searchResults = new FormGroup({
+    searchall: new FormControl()
+  })
 
   constructor(
     private service: RosterService,
@@ -35,6 +38,29 @@ export class ShiftVisualiser implements OnInit {
   selectedDate = moment();
   selectedDateString = this.selectedDate.format('YYYY-MM-DD');
 
+  staffTypeList = [
+    { value: 'ALL' },
+    { value: 'LE' },
+    { value: 'TM' },
+    { value: 'PO' },
+    { value: 'RCTXO' },
+    { value: 'PL' },
+    { value: 'SA' }
+  ];
+  locationList = [
+    { value: 'ALL' },
+    { value: 'MAST' },
+    { value: 'PK' },
+    { value: 'UH' },
+    { value: 'WG' },
+  ];
+  currentFilters = {
+    staffType: 'ALL',
+    location: 'ALL',
+    searchall: '',
+  }
+  currentRoster = []
+  filteredRoster = []
   // variables for graph
   startTime = Number(moment(this.selectedDate.format('YYYY-MM-DD')).format('x'))
   shiftVisData = []
@@ -81,16 +107,6 @@ export class ShiftVisualiser implements OnInit {
         top: '95%',
         height: 20,
         xAxisIndex: [0],
-        // borderColor: 'transparent',
-        // backgroundColor: '#e2e2e2',
-        // handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7v-1.2h6.6z M13.3,22H6.7v-1.2h6.6z M13.3,19.6H6.7v-1.2h6.6z', // jshint ignore:line
-        // handleSize: 20,
-        // handleStyle: {
-        //   shadowBlur: 6,
-        //   shadowOffsetX: 1,
-        //   shadowOffsetY: 2,
-        //   shadowColor: '#aaa'
-        // },
         labelFormatter: ''
       },
       {
@@ -104,6 +120,7 @@ export class ShiftVisualiser implements OnInit {
     grid: {
       height: '85%',//680,
       right: 35,
+      width: '85%'
     },
     xAxis: {
       min: this.startTime,
@@ -131,7 +148,7 @@ export class ShiftVisualiser implements OnInit {
       data: this.shiftNames,
       axisLabel: {
         color: '#FFFF',
-        rotate: 35,
+        //rotate: 35,
       },
       splitLine: {
         show: true,
@@ -164,13 +181,30 @@ export class ShiftVisualiser implements OnInit {
       fontWeight: 'bold',
     }
   }
-
+  // applies filters based on userform
+  filter($event) {
+    if ($event.source.placeholder == 'staffType') {
+      this.currentFilters.staffType = $event.value
+    }
+    if ($event.source.placeholder == 'location') {
+      this.currentFilters.location = $event.value
+    }
+    this.renderData(this.currentRoster, this.currentFilters)
+  }
+  // applies search based on userform
+  search($event) {
+    if (this.searchResults.value.duty !== '') {
+      this.currentFilters.searchall = this.searchResults.value.searchall
+    }
+    this.renderData(this.currentRoster, this.currentFilters)
+  }
   ngOnInit() {
     this.selectedDate = moment();
     this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
     this.service.getRosterDutiesVisualiser(this.selectedDate)
       .subscribe((response) => {
-        this.renderData(response.roster);
+        this.currentRoster = response.roster
+        this.renderData(this.currentRoster, this.currentFilters);
       });
   }
 
@@ -179,20 +213,58 @@ export class ShiftVisualiser implements OnInit {
     this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
     this.service.getRosterDutiesVisualiser(this.selectedDate)
     .subscribe((response) => {
-      this.renderData(response.roster);
+      this.currentRoster = response.roster
+      this.renderData(this.currentRoster, this.currentFilters);
     });
   }
 
-  renderData(roster) {
+  renderData(roster, filters) {
+    this.filteredRoster = roster
+    if (filters.staffType !== 'ALL') {
+      this.filteredRoster = this.filteredRoster.filter(shift => shift.shiftType === filters.staffType)
+    }
+    if (filters.location !== 'ALL') {
+      this.filteredRoster = this.filteredRoster.filter(shift => shift.shiftLocation === filters.location)
+    }
+    // search function, goes through all duty labels, staff names and numbers
+    if (filters.searchall != '') {
+      let include
+      let searchedRoster = [];
+      for (let shift = 0; shift < this.filteredRoster.length; shift++) {
+        include = false
+        if (this.filteredRoster[shift].staffId.includes(filters.searchall)) {
+          include = true
+        }
+        if (this.filteredRoster[shift].shiftId.toUpperCase().includes(filters.searchall.toUpperCase())) {
+          include = true
+        }
+        if (this.filteredRoster[shift].staffName.toUpperCase().includes(filters.searchall.toUpperCase())) {
+          include = true
+        }
+        for (let duty = 0; duty < this.filteredRoster[shift].rosterDuties.length; duty++) {
+          if (this.filteredRoster[shift].rosterDuties[duty].name.toUpperCase().includes(filters.searchall.toUpperCase())) {
+            include = true
+          }
+        }
+        if (include){
+          searchedRoster.push(this.filteredRoster[shift])
+        }
+      }
+      this.filteredRoster = searchedRoster
+    }
     this.shiftVisData = []
     this.shiftNames = []
-    let minTime = Number(moment.utc(roster[0].rosterDuties[0].endTime).format('x'))
-    let maxTime = Number(moment.utc(roster[0].rosterDuties[0].endTime).format('x'))
-    
-    for (let i = 0; i < roster.length; i++) {
-      this.shiftNames.push(roster[i].staffName+' - '+roster[i].shiftId)
-      for (let d = 0; d < roster[i].rosterDuties.length; d++) {
-        const rosterDuty = roster[i].rosterDuties[d];
+    let minTime = 0
+    let maxTime = 1
+    if(this.filteredRoster.length !== 0){
+      minTime = Number(moment.utc(this.filteredRoster[0].rosterDuties[0].endTime).format('x'))
+      maxTime = Number(moment.utc(this.filteredRoster[0].rosterDuties[0].endTime).format('x'))
+    }
+
+    for (let i = 0; i < this.filteredRoster.length; i++) {
+      this.shiftNames.push(this.filteredRoster[i].staffName+' - '+this.filteredRoster[i].shiftId)
+      for (let d = 0; d < this.filteredRoster[i].rosterDuties.length; d++) {
+        const rosterDuty = this.filteredRoster[i].rosterDuties[d];
         const startTime = Number(moment(rosterDuty.startTime.substring(0,19)).format('x'))
         const endTime = Number(moment(rosterDuty.endTime.substring(0,19)).format('x'))
         const duration = Number(endTime - startTime)
@@ -218,9 +290,21 @@ export class ShiftVisualiser implements OnInit {
         });
       }
     }
+    let maxValue
+    if(this.filteredRoster.length == 1){
+      maxValue = 0
+    } else {
+      maxValue = 30
+    }
     this.updateShiftVisOptions = {
       dataZoom: [
-        {},{},{
+        {
+          endValue: maxValue,
+          maxValueSpan: maxValue,
+        },{
+          endValue: maxValue,
+          maxValueSpan: maxValue,
+        },{
           startValue: minTime,
           endValue: maxTime,
         },{

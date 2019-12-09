@@ -85,13 +85,13 @@ export class NavigationService {
       icon: 'person',
       state: 'rosters/shift-detail',
     },
-    // {
-    //   name: 'Shift Visualiser',
-    //   type: 'link',
-    //   tooltip: 'shift visualiser',
-    //   icon: 'clear_all',
-    //   state: 'rosters/shift-visualiser',
-    // },
+    {
+      name: 'Shift Visualiser',
+      type: 'link',
+      tooltip: 'shift visualiser',
+      icon: 'clear_all',
+      state: 'rosters/shift-visualiser',
+    },
     // {
     //   name: 'Staff Holistic',
     //   type: 'link',
