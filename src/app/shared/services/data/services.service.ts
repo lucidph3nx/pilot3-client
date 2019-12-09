@@ -72,6 +72,7 @@ export class ServiceDetailResponse {
     };
     timingPoints?: Array<object>;
     crew?: Array<object>;
+    TSRList?: Array<object>;
   };
   constructor() { }
   fromJSON(json) {

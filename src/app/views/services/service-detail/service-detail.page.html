@@ -78,6 +78,22 @@
                     </mat-card>
                 </div>
             </div>
+            <mat-card style="padding:10px; text-align:center">
+                <h3>TSR's (Theoretical Impact)</h3>
+            </mat-card>
+            <div id="timingPointTable" class="mat-box-shadow margin-333">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                    [rowHeight]="40" [rows]="TSRList" [scrollbarV]="true" [sorts]="[{prop: 'distanceFrom', dir: 'asc'}]"
+                    style="height: 40vh">
+                    <ngx-datatable-column name="From" prop="distanceFrom" [cellClass]="getFailureClass">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="To" prop="distanceTo"></ngx-datatable-column>
+                    <!-- <ngx-datatable-column name="H40Area" prop="H40Area"></ngx-datatable-column> -->
+                    <ngx-datatable-column name="Non-Stop" prop="NSSeconds" [cellClass]="getFailureClass">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="All-Stop" prop="ASSeconds"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
         </div>
     </div>
 

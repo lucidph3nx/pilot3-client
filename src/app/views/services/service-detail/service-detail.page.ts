@@ -10,6 +10,7 @@ import 'core-js/es7/string';
 import { environment } from '../../../../environments/environment';
 import { columnsTotalWidth } from '@swimlane/ngx-datatable/release/utils';
 import * as echarts from 'echarts';
+import { ThemingFormFieldComponent } from 'assets/examples/material/theming-form-field/theming-form-field.component';
 
 @Component({
   selector: 'service-detail',
@@ -44,6 +45,7 @@ export class ServiceDetailComponent implements OnInit {
   serviceHeading = '';
   timingPoints = [];
   crew = [];
+  TSRList = [];
   consist = [];
   reliabilityFailure = false;
   punctualityFailure = false;
@@ -110,7 +112,8 @@ export class ServiceDetailComponent implements OnInit {
           this.reliabilityFailure = response.serviceDetail.reliabilityFailure
           this.punctualityFailure = response.serviceDetail.punctualityFailure
           this.timingPoints = response.serviceDetail.timingPoints;
-
+          this.TSRList = response.serviceDetail.TSRList
+          console.log(this.TSRList)
           if (this.punctualityFailure) {
             this.delayOverall = response.serviceDetail.delayOverall;
             this.delayBreakdownSeconds.origin = response.serviceDetail.delayBreakdown.origin
@@ -176,6 +179,36 @@ export class ServiceDetailComponent implements OnInit {
                 }
                 if (this.timingPoints[i].activityType == 'Arrives' || this.timingPoints[i].activityType == 'Terminates') {
                     series.push(this.drawDelayShape(i, this.timingPoints, chartColours.BetweenStations))
+                    // if (this.timingPoints[i].TSRDelaySec > 0) {
+                    //   for (let sr = 0; sr < this.TSRList.length; sr++){
+                    //     let thisTSR = this.TSRList[sr]
+                    //     let startsInRange 
+                    //     let endsInRange
+                    //     // if (this.timingPoints[i].direction == 'D') {
+                    //     //   startsInRange = (thisTSR.distanceFrom < this.timingPoints[i].locationMeterage
+                    //     //     && !(thisTSR.distanceFrom < this.timingPoints[i-1].locationMeterage))
+                    //     //   endsInRange = (thisTSR.distanceTo < this.timingPoints[i].locationMeterage
+                    //     //     && !(thisTSR.distanceTo < this.timingPoints[i-1].locationMeterage))
+                    //     // } else {
+                    //       startsInRange = (thisTSR.distanceFrom > this.timingPoints[i-1].locationMeterage
+                    //         && !(thisTSR.distanceFrom > this.timingPoints[i].locationMeterage))
+                    //       endsInRange = (thisTSR.distanceTo > this.timingPoints[i-1].locationMeterage
+                    //         && !(thisTSR.distanceTo > this.timingPoints[i].locationMeterage))
+                    //     // }
+                    //     console.log(this.timingPoints[i].location + ' ' + this.timingPoints[i-1].locationMeterage +'-'+ this.timingPoints[i].locationMeterage)
+                    //     console.log(thisTSR)
+                    //     console.log(startsInRange)
+                    //     console.log(endsInRange)
+                    //     if (startsInRange || endsInRange) {
+                    //       // series.push(this.drawDelayShape(i, this.timingPoints, chartColours.TSR))
+                    //       // console.log(this.timingPoints[i].location + ' ' + this.timingPoints[i-1].locationMeterage +'-'+ this.timingPoints[i].locationMeterage)
+                    //       // console.log(thisTSR)
+                    //       // console.log(startsInRange)
+                    //       // console.log(endsInRange)
+                    //       series.push(this.drawTSRShape(i, this.timingPoints, thisTSR, chartColours.TSR))
+                    //     }
+                    //   }
+                    // }
                 }
               }
             }
@@ -324,6 +357,7 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   drawDelayShape(impactedIndex, timingPoints, colour) {
+
     let data = definePoints(impactedIndex, timingPoints)
     return {
       data: data,
@@ -354,7 +388,6 @@ export class ServiceDetailComponent implements OnInit {
         };
       },
     }
-
     function definePoints(impactedIndex, timingPoints) {
       //determine the location of greatest punctuality failure
       let failurePoint = undefined
@@ -390,6 +423,74 @@ export class ServiceDetailComponent implements OnInit {
         highX = (highY - yIntercept) / slope;
       }
 
+      return [
+        [lowX, lowY], // X
+        [highX, highY], // Y
+        [failurePoint.locationMeterage, highY],
+        [failurePoint.locationMeterage, lowY],
+      ];
+    }
+  }
+  drawTSRShape(impactedIndex, timingPoints, thisTSR, colour) {
+    let data = definePoints(impactedIndex, timingPoints, thisTSR)
+    return {
+      data: data,
+      type: 'custom',
+      renderItem: function (params, api) {
+        if (params.context.rendered) {
+          return;
+        }
+        params.context.rendered = true;
+        var points = [];
+        for (var i = 0; i < data.length; i++) {
+          points.push(api.coord(data[i]));
+        }
+        return {
+          type: 'polygon',
+          shape: {
+            points: echarts.graphic.clipPointsByRect(points, {
+              x: params.coordSys.x,
+              y: params.coordSys.y,
+              width: params.coordSys.width,
+              height: params.coordSys.height
+            })
+          },
+          style: api.style({
+            fill: colour,
+            opacity: 0.4,
+          })
+        };
+      },
+    }
+    function definePoints(impactedIndex, timingPoints, thisTSR) {
+      //determine the location of greatest punctuality failure
+      let failurePoint = undefined
+      for (let i = 0; i < timingPoints.length; i++) {
+        if (timingPoints[i].punctualityFailure) {
+          if (failurePoint == undefined || timingPoints[i].secondsLate > failurePoint.secondsLate)
+            failurePoint = timingPoints[i]
+        }
+      }
+      // here should be the TSR point definiton code
+      let slope = (timingPoints[impactedIndex].secondsLate - timingPoints[impactedIndex - 1].secondsLate)
+          / (timingPoints[impactedIndex].locationMeterage - timingPoints[impactedIndex - 1].locationMeterage)
+      let yIntercept = timingPoints[impactedIndex].secondsLate - (slope * timingPoints[impactedIndex].locationMeterage)
+
+      let lowX = thisTSR.distanceFrom
+      let lowY = (slope * lowX) + yIntercept
+
+      let highY = lowY + timingPoints[impactedIndex].TSRDelaySec
+      let highX = (highY - yIntercept) / slope;
+
+      // let highX = thisTSR.distanceTo
+      // let highY = (slope * highX) + yIntercept
+
+      // return [
+      //   [thisTSR.distanceFrom, 0],
+      //   [thisTSR.distanceTo, 0],
+      //   [thisTSR.distanceTo, lowY],
+      //   [thisTSR.distanceFrom, highY],
+      // ];
       return [
         [lowX, lowY], // X
         [highX, highY], // Y
