@@ -66,7 +66,9 @@ export class ShiftVisualiser implements OnInit {
   shiftVisData = []
   shiftNames = []
   updateShiftVisOptions;
-  shiftVisOptions = {
+  shiftVisOptions;
+  initChart(){
+    this.shiftVisOptions = {
     animation: false,
     tooltip: {
       formatter: function (params) {
@@ -180,7 +182,8 @@ export class ShiftVisualiser implements OnInit {
       color: '#FFF',
       fontWeight: 'bold',
     }
-  }
+    }
+}
   // applies filters based on userform
   filter($event) {
     if ($event.source.placeholder == 'staffType') {
@@ -189,18 +192,21 @@ export class ShiftVisualiser implements OnInit {
     if ($event.source.placeholder == 'location') {
       this.currentFilters.location = $event.value
     }
+    this.initChart()
     this.renderData(this.currentRoster, this.currentFilters)
   }
   // applies search based on userform
   search($event) {
-    if (this.searchResults.value.duty !== '') {
+    if (this.searchResults.value.searchall !== null) {
       this.currentFilters.searchall = this.searchResults.value.searchall
-    }
-    this.renderData(this.currentRoster, this.currentFilters)
+      this.initChart()
+      this.renderData(this.currentRoster, this.currentFilters)
+    }  
   }
   ngOnInit() {
     this.selectedDate = moment();
     this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
+    this.initChart()
     this.service.getRosterDutiesVisualiser(this.selectedDate)
       .subscribe((response) => {
         this.currentRoster = response.roster
@@ -227,7 +233,7 @@ export class ShiftVisualiser implements OnInit {
       this.filteredRoster = this.filteredRoster.filter(shift => shift.shiftLocation === filters.location)
     }
     // search function, goes through all duty labels, staff names and numbers
-    if (filters.searchall != '') {
+    if (filters.searchall !== '') {
       let include
       let searchedRoster = [];
       for (let shift = 0; shift < this.filteredRoster.length; shift++) {
@@ -320,8 +326,6 @@ export class ShiftVisualiser implements OnInit {
       }]
     }
   }
-
-
 
   renderDuty(params, api) {
     var categoryIndex = api.value(0);
