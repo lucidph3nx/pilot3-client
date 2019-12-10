@@ -75,6 +75,11 @@ export class RosterStatusTableComponent implements OnInit {
         this.uncoveredShifts = response.uncoveredShifts
         this.updateTables(this.currentFilters)
       });
+    this.service.getAvailableStaff(this.daySelect.value.date)
+    .subscribe((response) => {
+      this.availableStaff = response.availableStaff
+      this.updateTables(this.currentFilters)
+    });
   }
 
   showDayRoster(event) {
