@@ -7,116 +7,126 @@ import 'rxjs/add/operator/switchMap';
 import { environment } from '../../../../environments/environment';
 
 export class currentRosterResponse {
-    public Time?: string;
-    public currentRosterDuties?: Array<object>;
-    constructor() {}
-    fromJSON(json) {
-      for (var propName in json)
-         this[propName] = json[propName];
-      return this;
-    }
+  public Time?: string;
+  public currentRosterDuties?: Array<object>;
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
   }
+}
 
-  export class currentRosterStatusResponse {
-    public Time?: string;
-    public currentRosterDayStatus?: Array<object>;
-    constructor() {}
-    fromJSON(json) {
-      for (var propName in json)
-         this[propName] = json[propName];
-      return this;
-    }
+export class currentRosterStatusResponse {
+  public Time?: string;
+  public currentRosterDayStatus?: Array<object>;
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
   }
+}
 
-  export class uncoveredShiftsResponse {
-    public Time?: string;
-    public uncoveredShifts?: Array<object>;
-    constructor() {}
-    fromJSON(json) {
-      for (var propName in json)
-         this[propName] = json[propName];
-      return this;
-    }
+export class uncoveredShiftsResponse {
+  public Time?: string;
+  public uncoveredShifts?: Array<object>;
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
   }
+}
 
-  export class availableStaffResponse {
-    public Time?: string;
-    public availableStaff?: Array<object>;
-    constructor() {}
-    fromJSON(json) {
-      for (var propName in json)
-         this[propName] = json[propName];
-      return this;
-    }
+export class availableStaffResponse {
+  public Time?: string;
+  public availableStaff?: Array<object>;
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
   }
+}
 
-  export class holisticYearResponse {
-    public reportTime?: string;
-    public staffId?: string;
-    public year?: string;
-    public sickToLeaveRatio?: number;
-    public holisticYearData?: Array<object>;
-    public dayCodes?: Array<object>;
-    constructor() {}
-    fromJSON(json) {
-      for (var propName in json)
-         this[propName] = json[propName];
-      return this;
-    }
+export class holisticYearResponse {
+  public reportTime?: string;
+  public staffId?: string;
+  public year?: string;
+  public sickToLeaveRatio?: number;
+  public holisticYearData?: Array<object>;
+  public dayCodes?: Array<object>;
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
   }
+}
 
-  //rosterResponse
-  export class rosterResponse {
-    public time?: string;
-    public roster?: Array<object>;
-    constructor() {}
-    fromJSON(json) {
-      for (var propName in json)
-         this[propName] = json[propName];
-      return this;
-    }
+//rosterResponse
+export class rosterResponse {
+  public time?: string;
+  public roster?: Array<object>;
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
   }
+}
 
 @Injectable()
 export class RosterService {
 
-    constructor(private http: HttpClient) {}
-  
-    getCurrentRoster = () => {
-        return Observable
-        .timer(0,10000)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentRoster')
-        .map((response: Response) => new currentRosterResponse().fromJSON(response)))
-    }
+  constructor(private http: HttpClient) { }
 
-    getCurrentRosterStatus = (date) => {
-        return Observable
-        .timer(0)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/rosterDayStatus?date='+date.format('YYYYMMDD'))
+  getCurrentRoster = () => {
+    return Observable
+      .timer(0, 10000)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/currentRoster')
+        .map((response: Response) => new currentRosterResponse().fromJSON(response)))
+  }
+
+  getCurrentRosterStatus = (date) => {
+    return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/rosterDayStatus?date=' + date.format('YYYYMMDD'))
         .map((response: Response) => new currentRosterStatusResponse().fromJSON(response)))
-    }
-    getUncoveredShifts = (date) => {
-        return Observable
-        .timer(0)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/roster/uncoveredShifts?date='+date.format('YYYYMMDD'))
+  }
+  getUncoveredShifts = (date) => {
+    return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/uncoveredShifts?date=' + date.format('YYYYMMDD'))
         .map((response: Response) => new uncoveredShiftsResponse().fromJSON(response)))
-    }
-    getAvailableStaff = (date) => {
-      return Observable
-      .timer(0)
-      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/roster/availableStaff?date='+date.format('YYYYMMDD'))
-      .map((response: Response) => new availableStaffResponse().fromJSON(response)))
   }
-    getHolisticYear = (year, staffId) => {
-      return Observable
+  getAvailableStaff = (date) => {
+    return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/holisticYear?year='+year+'&staffId='+staffId)
-      .map((response: Response) => new holisticYearResponse().fromJSON(response)))
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/availableStaff?date=' + date.format('YYYYMMDD'))
+        .map((response: Response) => new availableStaffResponse().fromJSON(response)))
   }
-    getRosterDutiesVisualiser = (date) => {
-      return Observable
+  getHolisticYear = (year, staffId) => {
+    return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/roster/rosterDuties?date='+date.format('YYYYMMDD')+'&colours=true')
-      .map((response: Response) => new rosterResponse().fromJSON(response)))
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/holisticYear?year=' + year + '&staffId=' + staffId)
+        .map((response: Response) => new holisticYearResponse().fromJSON(response)))
+  }
+  getRosterDutiesVisualiser = (date) => {
+    return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/rosterDuties?date=' + date.format('YYYYMMDD') + '&colours=true')
+        .map((response: Response) => new rosterResponse().fromJSON(response)))
+  }
+  getStaffRosterVisualiser = (dateFrom, dateTo, staffId) => {
+    return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/staffRoster?'
+        + 'dateFrom=' + dateFrom.format('YYYYMMDD')
+          + '&dateTo=' + dateTo.format('YYYYMMDD')
+          + '&staffId=' + staffId
+          + '&colours=true')
+          .map((response: Response) => new rosterResponse().fromJSON(response)))
   }
 }

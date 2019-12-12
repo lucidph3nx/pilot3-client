@@ -40,7 +40,6 @@ export class StaffHolistic implements OnInit {
     calendarMode: new FormControl()
   })
 
-
   constructor(
     private service: RosterService,
     private route: ActivatedRoute,

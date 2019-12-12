@@ -4,75 +4,56 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { RosterService } from '../../../shared/services/data/roster.service';
+import { StaffService } from '../../../shared/services/data/staff.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import * as echarts from 'echarts';
 import { eachDay } from 'date-fns';
 
 @Component({
-  selector: 'shift-visualiser',
-  templateUrl: './shift-visualiser.page.html',
-  styleUrls: ['./shift-visualiser.page.css'],
-  providers: [RosterService,
+  selector: 'staff-visualiser',
+  templateUrl: './staff-visualiser.page.html',
+  styleUrls: ['./staff-visualiser.page.css'],
+  providers: [RosterService,StaffService,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
 })
-export class ShiftVisualiser implements OnInit {
-  daySelect = new FormGroup({
-    date: new FormControl()
+export class StaffVisualiser implements OnInit {
+  detailSelect = new FormGroup({
+    dateFrom: new FormControl(),
+    dateTo: new FormControl(),
+    staffId: new FormControl()
   })
-  filterResults = new FormGroup({
-    staffType: new FormControl(),
-    location: new FormControl()
-  })
-  searchResults = new FormGroup({
-    searchall: new FormControl()
-  })
-
   constructor(
-    private service: RosterService,
+    private rosterService: RosterService,
+    private staffservice: StaffService,
     private route: ActivatedRoute
   ) { }
-  selectedDate = moment();
-  selectedDateString = this.selectedDate.format('YYYY-MM-DD');
-
-  staffTypeList = [
-    { value: 'ALL' },
-    { value: 'LE' },
-    { value: 'TM' },
-    { value: 'PO' },
-    { value: 'RCTXO' },
-    { value: 'PL' },
-    { value: 'SA' }
-  ];
-  locationList = [
-    { value: 'ALL' },
-    { value: 'MAST' },
-    { value: 'PK' },
-    { value: 'UH' },
-    { value: 'WG' },
-  ];
-  currentFilters = {
-    staffType: 'ALL',
-    location: 'ALL',
-    searchall: '',
-  }
+  selectedDateFrom;
+  selectedDateFromString;
+  selectedDateTo;
+  selectedDateToString;
+  staffSelected = false;
+  selectedStaffId;
   currentRoster = []
-  filteredRoster = []
+  staffDetails;
+  staffPhoto;
   // variables for graph
-  startTime = Number(moment(this.selectedDate.format('YYYY-MM-DD')).format('x'))
-  shiftVisData = []
-  shiftNames = []
-  updateShiftVisOptions;
-  shiftVisOptions;
+  startTime;
+  endTime;
+  staffVisData = []
+  dateLabel = []
+  updateStaffVisOptions;
+  staffVisOptions;
   initChart(){
-    this.shiftVisOptions = {
+    this.staffVisOptions = {
     animation: false,
     tooltip: {
       formatter: function (params) {
         return params.marker + params.name + " <br/> "
+          + params.value[5] + " <br/> "
           + params.value[4] + " <br/> "
           + 'From: ' + moment(params.value[1]).format('HH:mm') + " <br/> "
           + 'To: ' + moment(params.value[2]).format('HH:mm') + " <br/> "
@@ -122,11 +103,11 @@ export class ShiftVisualiser implements OnInit {
     grid: {
       height: '85%',//680,
       right: 35,
-      width: '85%'
+      width: '90%'
     },
     xAxis: {
-      min: this.startTime,
-      scale: true,
+      //min: this.startTime,
+      //scale: true,
       axisLabel: {
         formatter: function (val) {
           return moment(val).format('HH:mm');
@@ -147,7 +128,7 @@ export class ShiftVisualiser implements OnInit {
       },
     },
     yAxis: {
-      data: this.shiftNames,
+      data: this.dateLabel,
       axisLabel: {
         color: '#FFFF',
         //rotate: 35,
@@ -176,7 +157,7 @@ export class ShiftVisualiser implements OnInit {
         x: [1, 2],
         y: 0
       },
-      data: this.shiftVisData
+      data: this.staffVisData
     }],
     textStyle: {
       color: '#FFF',
@@ -184,111 +165,81 @@ export class ShiftVisualiser implements OnInit {
     }
     }
 }
-  // applies filters based on userform
-  filter($event) {
-    if ($event.source.placeholder == 'staffType') {
-      this.currentFilters.staffType = $event.value
-    }
-    if ($event.source.placeholder == 'location') {
-      this.currentFilters.location = $event.value
-    }
-    this.initChart()
-    this.renderData(this.currentRoster, this.currentFilters)
-  }
-  // applies search based on userform
-  search($event) {
-    if (this.searchResults.value.searchall !== null) {
-      this.currentFilters.searchall = this.searchResults.value.searchall
-      this.initChart()
-      this.renderData(this.currentRoster, this.currentFilters)
-    }  
-  }
+
   ngOnInit() {
-    this.selectedDate = moment();
-    this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
     this.initChart()
-    this.service.getRosterDutiesVisualiser(this.selectedDate)
-      .subscribe((response) => {
-        this.currentRoster = response.roster
-        this.renderData(this.currentRoster, this.currentFilters);
-      });
   }
 
   loadData() {
-    this.selectedDate = moment(this.daySelect.value.date);
-    this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
-    this.service.getRosterDutiesVisualiser(this.selectedDate)
+    this.selectedDateFrom = moment(this.detailSelect.value.dateFrom);
+    this.selectedDateFromString = this.selectedDateFrom.format('YYYY-MM-DD');
+    this.selectedDateTo = moment(this.detailSelect.value.dateTo);
+    this.selectedDateFromString = this.selectedDateTo.format('YYYY-MM-DD');
+    this.selectedStaffId = this.detailSelect.value.staffId
+
+    this.rosterService.getStaffRosterVisualiser(this.selectedDateFrom, this.selectedDateTo, this.selectedStaffId)
     .subscribe((response) => {
-      this.currentRoster = response.roster
-      this.renderData(this.currentRoster, this.currentFilters);
+      this.currentRoster = response.roster.reverse()
+      this.renderData(this.currentRoster);
+    });
+    this.staffservice.getStaffDetail(this.selectedStaffId)
+    .subscribe((response) => {
+      this.staffSelected = true
+      this.staffDetails = response.staffDetails
+      this.staffPhoto = 'http://' + environment.apiURL + ':4000/api/staff/' + response.staffDetails.photoURL + "&height=200&width=200"
     });
   }
 
-  renderData(roster, filters) {
-    this.filteredRoster = roster
-    if (filters.staffType !== 'ALL') {
-      this.filteredRoster = this.filteredRoster.filter(shift => shift.shiftType === filters.staffType)
-    }
-    if (filters.location !== 'ALL') {
-      this.filteredRoster = this.filteredRoster.filter(shift => shift.shiftLocation === filters.location)
-    }
-    // search function, goes through all duty labels, staff names and numbers
-    if (filters.searchall !== '') {
-      let include
-      let searchedRoster = [];
-      for (let shift = 0; shift < this.filteredRoster.length; shift++) {
-        include = false
-        if (this.filteredRoster[shift].staffId.includes(filters.searchall)) {
-          include = true
-        }
-        if (this.filteredRoster[shift].shiftId.toUpperCase().includes(filters.searchall.toUpperCase())) {
-          include = true
-        }
-        if (this.filteredRoster[shift].staffName.toUpperCase().includes(filters.searchall.toUpperCase())) {
-          include = true
-        }
-        for (let duty = 0; duty < this.filteredRoster[shift].rosterDuties.length; duty++) {
-          if (this.filteredRoster[shift].rosterDuties[duty].name.toUpperCase().includes(filters.searchall.toUpperCase())) {
-            include = true
-          }
-        }
-        if (include){
-          searchedRoster.push(this.filteredRoster[shift])
-        }
-      }
-      this.filteredRoster = searchedRoster
-    }
-    this.shiftVisData = []
-    this.shiftNames = []
-    let minTime = 0
-    let maxTime = 1
-    if(this.filteredRoster.length !== 0) {
-      minTime = Number(moment.utc(this.filteredRoster[0].rosterDuties[0].endTime).format('x'))
-      maxTime = Number(moment.utc(this.filteredRoster[0].rosterDuties[0].endTime).format('x'))
-    }
+  renderData(roster) {
+    this.staffVisData = []
+    this.dateLabel = []
+    // hack date serves to pretend all dates are the same for graphing purposes
+    let hackDate = moment('1970-01-02')
+    let minTime = Number(moment.utc(hackDate.add(1, 'day')).format('x'))
+    let maxTime = Number(moment.utc(hackDate.add(-1, 'day')).format('x'))
 
-    for (let i = 0; i < this.filteredRoster.length; i++) {
-      this.shiftNames.push(this.filteredRoster[i].staffName+' - '+this.filteredRoster[i].shiftId)
-      for (let d = 0; d < this.filteredRoster[i].rosterDuties.length; d++) {
-        const rosterDuty = this.filteredRoster[i].rosterDuties[d];
-        const startTime = Number(moment(rosterDuty.startTime.substring(0,19)).format('x'))
-        const endTime = Number(moment(rosterDuty.endTime.substring(0,19)).format('x'))
+    for (let i = 0; i < this.currentRoster.length; i++) {
+      this.dateLabel.push(this.currentRoster[i].shift + ' - '+ moment(this.currentRoster[i].date).format('DD/MM/YYYY'))
+      for (let d = 0; d < this.currentRoster[i].rosterDuties.length; d++) {
+        const rosterDuty = this.currentRoster[i].rosterDuties[d];
+        let startNextDay = !(moment(this.currentRoster[i].date).isSame(moment(rosterDuty.startTime),'day'))
+        let endNextDay = !(moment(this.currentRoster[i].date).isSame(moment(rosterDuty.endTime),'day'))
+        hackDate = moment('1970-01-02')
+        hackDate = hackDate.hour(rosterDuty.dutyStartTimeString.substring(0,2)).minute(rosterDuty.dutyStartTimeString.substring(3,5))
+        if (startNextDay){
+          hackDate = hackDate.add(1, 'day')
+        }
+        const startTime = Number(hackDate.format('x'))
+        hackDate = moment('1970-01-02')
+        hackDate = hackDate.hour(rosterDuty.dutyEndTimeString.substring(0,2)).minute(rosterDuty.dutyEndTimeString.substring(3,5))
+        if (endNextDay){
+          hackDate = hackDate.add(1, 'day')
+        }
+        const endTime = Number(hackDate.format('x'))
         const duration = Number(endTime - startTime)
+        const fifteenMinutes = 900000 // in miliseconds
         if (endTime > maxTime){
-          maxTime = endTime
+          maxTime = endTime + fifteenMinutes
         }
         if (startTime < minTime){
-          minTime = startTime
+          minTime = startTime - fifteenMinutes
         }
-        this.shiftVisData.push({
+        // console.log(rosterDuty.dutyName)
+        // console.log(rosterDuty.dutyStartTimeString)
+        // console.log(startNextDay)
+        // console.log(rosterDuty.dutyEndTimeString)
+        // console.log(endNextDay)
+        // console.log('min='+minTime)
+        // console.log('max='+maxTime)
+        this.staffVisData.push({
           name: rosterDuty.name,
           value: [
             i,
             startTime,
             endTime,
             duration,
-            rosterDuty.type,
-            rosterDuty.name,
+            rosterDuty.dutyType,
+            rosterDuty.dutyName,
           ],
           itemStyle: {
             color: rosterDuty.colourCode,
@@ -297,12 +248,12 @@ export class ShiftVisualiser implements OnInit {
       }
     }
     let maxValue = 30
-    if(this.filteredRoster.length == 1){
+    if(this.currentRoster.length == 1){
       maxValue = 0
     } else {
       maxValue = 30
     }
-    this.updateShiftVisOptions = {
+    this.updateStaffVisOptions = {
       dataZoom: [
         {
           endValue: maxValue,
@@ -318,11 +269,14 @@ export class ShiftVisualiser implements OnInit {
           endValue: maxTime,
         },
       ],
+      xAxis: {
+        min: minTime,
+      },
       yAxis: {
-        data: this.shiftNames
+        data: this.dateLabel
       },
       series: [{
-        data: this.shiftVisData,
+        data: this.staffVisData,
       }]
     }
   }

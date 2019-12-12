@@ -92,6 +92,13 @@ export class NavigationService {
       icon: 'clear_all',
       state: 'rosters/shift-visualiser',
     },
+    {
+      name: 'Staff Visualiser',
+      type: 'link',
+      tooltip: 'staff visualiser',
+      icon: 'clear_all',
+      state: 'rosters/staff-visualiser',
+    },
     // {
     //   name: 'Staff Holistic',
     //   type: 'link',
