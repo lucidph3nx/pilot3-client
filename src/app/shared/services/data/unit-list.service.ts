@@ -36,13 +36,13 @@ export class UnitListService {
     getUnitList = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentUnitList')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentUnitList')
         .map((response: Response) => new unitListResponse().fromJSON(response)))
     }
     getCarList = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentCarList')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentCarList')
         .map((response: Response) => new carListResponse().fromJSON(response)))
     }
 

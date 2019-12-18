@@ -24,14 +24,14 @@ export class TrainPerformanceService {
     // getCurrentPeakPerformance = () => {
     //     return Observable
     //     .timer(0,10000)
-    //     .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/currentPeakPerformance')
+    //     .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/currentPeak')
     //     .map((response: Response) => response.json))
     // }
 
     getTrainPerformance = () => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/trainPerformance')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/day')
         .map((response: Response) => new trainPerformanceResponse().fromJSON(response)))
     }
 

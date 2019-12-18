@@ -207,7 +207,7 @@ export class ShiftVisualiser implements OnInit {
     this.selectedDate = moment();
     this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
     this.initChart()
-    this.service.getRosterDutiesVisualiser(this.selectedDate)
+    this.service.getRosterDuties(this.selectedDate, true)
       .subscribe((response) => {
         this.currentRoster = response.roster
         this.renderData(this.currentRoster, this.currentFilters);
@@ -217,7 +217,7 @@ export class ShiftVisualiser implements OnInit {
   loadData() {
     this.selectedDate = moment(this.daySelect.value.date);
     this.selectedDateString = this.selectedDate.format('YYYY-MM-DD');
-    this.service.getRosterDutiesVisualiser(this.selectedDate)
+    this.service.getRosterDuties(this.selectedDate, true)
     .subscribe((response) => {
       this.currentRoster = response.roster
       this.renderData(this.currentRoster, this.currentFilters);
@@ -372,6 +372,7 @@ export class ShiftVisualiser implements OnInit {
       if ((api.value(3) / 1000 / 60) < 14) {
         thisTextValue = ''
       }
+      //console.log(rectShape)
     return rectShape && {
       type: 'rect',
       shape: rectShape,
@@ -384,5 +385,65 @@ export class ShiftVisualiser implements OnInit {
       })
     };
   }
+  // drawCurrentTimeShape(time, api) {
+  //   let categoryIndex = api.maxValue()
+  //   let data = [
+  //     [lowX, lowY], // X
+  //     [highX, highY], // Y
+  //     [failurePoint.locationMeterage, highY],
+  //     [failurePoint.locationMeterage, lowY],
+  //   ]
+  //   var rectShape = echarts.graphic.clipRectByRect({
+  //     x: start[0],
+  //     y: start[1] - height / 2,
+  //     width: end[0] - start[0],
+  //     height: height
+  //   }, {
+  //       x: params.coordSys.x,
+  //       y: params.coordSys.y,
+  //       width: params.coordSys.width,
+  //       height: params.coordSys.height
+  //     });
+  //   return rectShape && {
+  //     type: 'rect',
+  //     shape: rectShape,
+  //     style: api.style({
+  //       fontSize: thisFontSize,
+  //       text: thisTextValue,
+  //       textFill: thisTextColor,
+  //       textAlign: thisTextAlign,
+  //       textPosition: thisTextPosition,
+  //     })
+  //   };
+  //   return {
+  //     data: data,
+  //     type: 'custom',
+  //     renderItem: function (params, api) {
+  //       if (params.context.rendered) {
+  //         return;
+  //       }
+  //       params.context.rendered = true;
+  //       var points = [];
+  //       for (var i = 0; i < data.length; i++) {
+  //         points.push(api.coord(data[i]));
+  //       }
+  //       return {
+  //         type: 'polygon',
+  //         shape: {
+  //           points: echarts.graphic.clipPointsByRect(points, {
+  //             x: params.coordSys.x,
+  //             y: params.coordSys.y,
+  //             width: params.coordSys.width,
+  //             height: params.coordSys.height
+  //           })
+  //         },
+  //         style: api.style({
+  //           fill: '#ff0000',
+  //           opacity: 0.4,
+  //         })
+  //       };
+  //     },
+  //   }
+  // }
 }
 

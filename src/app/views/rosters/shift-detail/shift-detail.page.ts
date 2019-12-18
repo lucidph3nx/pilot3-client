@@ -27,7 +27,8 @@ export class ShiftDetailPage implements OnInit {
     private route: ActivatedRoute
   ) { }
   currentRoster = []
-  selectedShift = []
+  selectedShift;
+  selectedRosterDuties = []
   selectedShiftName = ''
   selectedShiftType  = ''
   
@@ -37,9 +38,9 @@ export class ShiftDetailPage implements OnInit {
   sub;
 
   ngOnInit() {
-    this.service.getCurrentRoster()
+    this.service.getRosterDuties(moment(), false)
     .subscribe((response) => {
-      this.currentRoster = response.currentRosterDuties
+      this.currentRoster = response.roster
       this.sub=this.route.params.subscribe(params => {
         if (params['shiftId'] !== undefined && this.shiftSelect.controls.shiftId.value == null){
           this.shiftSelect.controls.shiftId.setValue(params['shiftId'])
@@ -50,14 +51,16 @@ export class ShiftDetailPage implements OnInit {
           this.loadData('staffId')
         }
         });
-    });
+    })
   }
 
   loadData(from){
     if (from == 'staffId'){
       this.selectedShift = this.currentRoster.filter(area => area.staffId === this.staffSelect.controls.staffId.value.padStart(3, '0'))
+      this.selectedRosterDuties = this.selectedShift[0].rosterDuties;
     } else if (from == 'shiftId'){
       this.selectedShift = this.currentRoster.filter(area => area.shiftId === this.shiftSelect.controls.shiftId.value)
+      this.selectedRosterDuties = this.selectedShift[0].rosterDuties;
     }
     if (this.selectedShift.length === 0 ){
       this.selectedShiftName = ''

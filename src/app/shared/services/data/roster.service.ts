@@ -68,7 +68,15 @@ export class holisticYearResponse {
 //rosterResponse
 export class rosterResponse {
   public time?: string;
-  public roster?: Array<object>;
+  public roster?: Array<{
+    shiftId?: string,
+    shiftType?: string,
+    shiftLocation?: string,
+    staffId?: string,
+    staffName?: string,
+    shiftCovered?: boolean,
+    rosterDuties?: Array<object>;
+  }>;
   constructor() { }
   fromJSON(json) {
     for (var propName in json)
@@ -92,7 +100,7 @@ export class RosterService {
   getCurrentRosterStatus = (date) => {
     return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/rosterDayStatus?date=' + date.format('YYYYMMDD'))
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/dayStatus?date=' + date.format('YYYYMMDD'))
         .map((response: Response) => new currentRosterStatusResponse().fromJSON(response)))
   }
   getUncoveredShifts = (date) => {
@@ -110,13 +118,13 @@ export class RosterService {
   getHolisticYear = (year, staffId) => {
     return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/holisticYear?year=' + year + '&staffId=' + staffId)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/staff/holisticYear?year=' + year + '&staffId=' + staffId)
         .map((response: Response) => new holisticYearResponse().fromJSON(response)))
   }
-  getRosterDutiesVisualiser = (date) => {
+  getRosterDuties = (date, colours) => {
     return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/rosterDuties?date=' + date.format('YYYYMMDD') + '&colours=true')
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/rosterDuties?date=' + date.format('YYYYMMDD') + '&colours='+colours)
         .map((response: Response) => new rosterResponse().fromJSON(response)))
   }
   getStaffRosterVisualiser = (dateFrom, dateTo, staffId) => {
