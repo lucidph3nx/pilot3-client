@@ -1,5 +1,25 @@
+<div fxLayout="row">
+    <mat-card style="padding:10px;" fxFlex="100">
+        <div class="card-title-text">Display Report For</div>
+        <form [formGroup]="reportSelect">
+            <div fxLayout="row wrap">
+                <!-- <mat-form-field> -->
+                    <mat-radio-group formControlName="reportOptions"
+                                    name="reportOptions"
+                                    role="radiogroup"
+                                    (change)="selectReport($event)">
+                        <mat-radio-button *ngFor="let option of reportOptionList"
+                            [value]="option.value">
+                            {{option.value}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                <!-- </mat-form-field> -->
+            </div>
+        </form>
+    </mat-card>
+</div>
 <mat-card-content>
-        <h2>Train Performance for {{todayDate}}</h2>
+        <h2>Train Performance for {{reportLabel}}</h2>
     <div fxLayout="row" fxLayout.lt-md="column">
         <div fxFlex="33" fxFlex.lt-md="100">
             <mat-card class="train-performance-card">

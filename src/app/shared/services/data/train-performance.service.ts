@@ -28,10 +28,10 @@ export class TrainPerformanceService {
     //     .map((response: Response) => response.json))
     // }
 
-    getTrainPerformance = () => {
+    getTrainPerformance = (dateFrom, dateTo) => {
         return Observable
         .timer(0,10000)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/day')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/day?dateFrom='+dateFrom.format("YYYYMMDD") +'&dateTo='+dateTo.format("YYYYMMDD"))
         .map((response: Response) => new trainPerformanceResponse().fromJSON(response)))
     }
 
