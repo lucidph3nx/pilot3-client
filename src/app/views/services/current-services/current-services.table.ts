@@ -103,7 +103,6 @@ export class CurrentServicesTableComponent implements OnInit {
     .subscribe((response) => {
       this.currentServices = response.currentServices
       this.updateTable()
-
     });
     setInterval(() => {
       for(let service of this.currentServices) {

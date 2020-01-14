@@ -28,6 +28,7 @@ export class TrainPerformanceComponent implements OnInit {
 
   reportOptionList = [
     { value: 'Today' },
+    { value: 'Yesterday' },
     { value: 'Week To Date' },
     { value: 'Month To Date' },
   ]
@@ -75,6 +76,11 @@ export class TrainPerformanceComponent implements OnInit {
         dateTo = moment()
         this.reportLabel = moment().format("DD/MM/YYYY")
         break;
+        case 'Yesterday':
+          dateFrom = moment().subtract(1, "days")
+          dateTo = moment().subtract(1, "days")
+          this.reportLabel = moment().subtract(1, "days").format("DD/MM/YYYY")
+          break;
       case 'Week To Date':
         dateFrom = moment().startOf('week')
         dateTo = moment()
