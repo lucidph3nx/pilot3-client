@@ -56,6 +56,11 @@ export const rootRouterConfig: Routes = [
         data: { title: 'Pilot Status', breadcrumb: 'Pilot Status'}
       },
       {
+        path: 'occurence-log', 
+        loadChildren: () => import('./views/occurrence-log/occurrence-log.module').then(m => m.OccurrenceLogModule), 
+        data: { title: 'Occurrence Log', breadcrumb: 'Occurrence Log'}
+      },
+      {
         path: 'others', 
         loadChildren: () => import('./views/others/others.module').then(m => m.OthersModule), 
         data: { title: 'Others', breadcrumb: 'OTHERS'}
