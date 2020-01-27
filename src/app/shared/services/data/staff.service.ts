@@ -28,6 +28,18 @@ export class staffDetailsResponse {
   }
 }
 
+export class staffListResponse {
+  public Time?: string;
+  public list?: Array<object>;
+  
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
+  }
+}
+
 @Injectable()
 export class StaffService {
 
@@ -38,5 +50,11 @@ export class StaffService {
       .timer(0)
       .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/staff/details?staffId=' + staffId)
         .map((response: Response) => new staffDetailsResponse().fromJSON(response)))
+  }
+  getStaffList = () => {
+    return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/staff/list')
+        .map((response: Response) => new staffListResponse().fromJSON(response)))
   }
 }
