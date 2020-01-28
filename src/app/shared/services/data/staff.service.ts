@@ -30,7 +30,7 @@ export class staffDetailsResponse {
 
 export class staffListResponse {
   public Time?: string;
-  public list?: Array<object>;
+  public list?: Array<string>;
   
   constructor() { }
   fromJSON(json) {

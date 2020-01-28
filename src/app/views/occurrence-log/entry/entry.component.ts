@@ -14,14 +14,14 @@ export class EntryComponent implements OnInit {
   constructor(
     private staffservice: StaffService
   ) { }
-  staffList = []
-  myControl = new FormControl();
-
-  options: string[] = ['One', 'Two', 'Three'];
+  staffList: string[] = []
+  occurenceEntry = new FormControl();
+  occurenceCurrentText: string
+  tags: string[] = []
   filteredOptions: Observable<string[]>;
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges
+    this.filteredOptions = this.occurenceEntry.valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
@@ -30,12 +30,26 @@ export class EntryComponent implements OnInit {
     .subscribe((response) => {
       this.staffList = response.list
     });
+
+  }
+
+  optionSelected(e) {
+
+    console.log(e)
+    //this.occurenceEntry.setValue(this.occurenceCurrentText + e.option.value)
+
   }
 
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+    // this.occurenceCurrentText = value
+    let filterValue = value.toLowerCase();
+    if (filterValue.includes('@')){
+      filterValue = filterValue.substring(filterValue.indexOf('@')+1,filterValue.length)
+      return this.staffList.filter(option => option.toLowerCase().includes(filterValue));
+    } else {
+      return [];
+    }
 
-    return this.staffList.filter(option => option.toLowerCase().includes(filterValue));
   }
 }
 
