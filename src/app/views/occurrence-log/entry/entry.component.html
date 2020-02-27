@@ -1,12 +1,38 @@
 <p> placeholder for occurrence entry </p>
 <mat-card>
-  <form class="example-form">
+  <form class="example-form" [formGroup]="occurenceLogEntry">
     <mat-form-field style="width:100%">
-      <input type="text" placeholder="Enter new occurrence" aria-label="Number" matInput [formControl]="occurenceEntry"
-        [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
+      <input type="text" placeholder="Enter new occurrence" aria-label="Number" matInput formControlName="textEntry"
+        [matAutocomplete]="auto1">
+      <mat-autocomplete #auto1="matAutocomplete" (opened)="saveProgress()" (optionSelected)="optionSelected($event)">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field style="width:100%">
+      <mat-chip-list #chipList aria-label="Fruit selection">
+        <mat-chip
+          *ngFor="let fruit of fruits"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(fruit)">
+          {{fruit}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="New fruit..."
+          #tagInput
+          formControlName="tags"
+          [matAutocomplete]="auto2"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+          {{fruit}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

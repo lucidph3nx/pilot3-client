@@ -56,6 +56,7 @@ export class holisticYearResponse {
   public year?: string;
   public sickToLeaveRatio?: number;
   public holisticYearData?: Array<object>;
+  public holisticYearCounters?: Array<object>;
   public dayCodes?: Array<object>;
   constructor() { }
   fromJSON(json) {
