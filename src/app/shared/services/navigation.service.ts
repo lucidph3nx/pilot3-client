@@ -51,6 +51,13 @@ export class NavigationService {
       state: 'train-performance/train-performance',
     },
     {
+      name: 'NIS List',
+      type: 'link',
+      tooltip: 'NIS List',
+      icon: 'subway',
+      state: 'services/not-in-service',
+    },
+    {
       name: 'Matangi Tracking',
       type: 'link',
       tooltip: 'matangi tracking',
@@ -92,13 +99,13 @@ export class NavigationService {
       icon: 'clear_all',
       state: 'rosters/shift-visualiser',
     },
-    {
-      name: 'Staff Visualiser',
-      type: 'link',
-      tooltip: 'staff visualiser',
-      icon: 'clear_all',
-      state: 'rosters/staff-visualiser',
-    },
+    // {
+    //   name: 'Staff Visualiser',
+    //   type: 'link',
+    //   tooltip: 'staff visualiser',
+    //   icon: 'clear_all',
+    //   state: 'rosters/staff-visualiser',
+    // },
     {
       name: 'Staff Holistic',
       type: 'link',

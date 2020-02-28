@@ -27,6 +27,17 @@ export class unitListResponse {
       return this;
     }
   }
+  export class NISListResponse {
+    public Time?: string;
+    public currentNISList?: Array<object>;
+    public matangiNISCount?: number;
+    constructor() {}
+    fromJSON(json) {
+      for (var propName in json)
+         this[propName] = json[propName];
+      return this;
+    }
+  }
 
 @Injectable()
 export class UnitListService {
@@ -45,5 +56,10 @@ export class UnitListService {
         .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentCarList')
         .map((response: Response) => new carListResponse().fromJSON(response)))
     }
-
+    getCurrentNISList = () => {
+      return Observable
+      .timer(0,60000)
+      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentNISList')
+      .map((response: Response) => new NISListResponse().fromJSON(response)))
+  }
 }

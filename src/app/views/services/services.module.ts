@@ -31,6 +31,7 @@ import { ServicesRoutes } from "./services.routing";
 import { serviceViewComponent } from "./current-services/service-view/service-view.component"
 import { ServiceDetailComponent } from './service-detail/service-detail.page';
 import { TimeDistanceComponent } from './time-distance/time-distance.page';
+import { NotInServiceTableComponent } from './not-in-service/not-in-service.table';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { TimeDistanceComponent } from './time-distance/time-distance.page';
     serviceViewComponent,
     ServiceDetailComponent,
     TimeDistanceComponent,
+    NotInServiceTableComponent,
   ],
   entryComponents: [serviceViewComponent]
 })

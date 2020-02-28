@@ -1,0 +1,40 @@
+<div fxLayout="row" fxLayout.lt-md="column">
+  <div fxFlex="33.33" fxFlex.lt-md="100">
+    <mat-card style="padding:10px; text-align:center">
+      <h1 style="font-size: xx-large;">{{this.matangiSLA}}</h1>
+      <h3>Matangi Available</h3>
+    </mat-card>
+  </div>
+  <div fxFlex="33.33" fxFlex.lt-md="100">
+    <mat-card style="padding:10px; text-align:center">
+      <h1 style="font-size: xx-large;">{{this.matangiRestrictedCount}}</h1>
+      <h3>Matangi Restricted</h3>
+    </mat-card>
+  </div>
+  <div fxFlex="33.33" fxFlex.lt-md="100">
+    <mat-card style="padding:10px; text-align:center">
+      <h3>List Updated</h3>
+      <h1 style="font-size: xx-large;">{{this.timeUpdated}}</h1>
+    </mat-card>
+  </div>
+</div>
+  <div id="variancetable" class="mat-box-shadow margin-333">
+    <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0" [rowHeight]="40"
+      [scrollbarV]="false" [rows]="tableNIS" [sorts]="[{prop: 'unit', dir: 'desc'}]">
+      <ngx-datatable-column name="Work Order" prop="workOrderId" maxWidth=150></ngx-datatable-column>
+      <ngx-datatable-column name="Unit" prop="unit" maxWidth=150></ngx-datatable-column>
+      <ngx-datatable-column name="Detail" prop="detail" maxWidth=500></ngx-datatable-column>
+      <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+      <ngx-datatable-column name="Date Reported" prop="reportedDate" maxWidth=250></ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+  <div id="variancetable" class="mat-box-shadow margin-333">
+    <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0" [rowHeight]="40"
+      [scrollbarV]="false" [rows]="tableRestricted" [sorts]="[{prop: 'unit', dir: 'desc'}]">
+      <ngx-datatable-column name="Work Order" prop="workOrderId" maxWidth=150></ngx-datatable-column>
+      <ngx-datatable-column name="Unit" prop="unit" maxWidth=150></ngx-datatable-column>
+      <ngx-datatable-column name="Detail" prop="detail" maxWidth=500></ngx-datatable-column>
+      <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+      <ngx-datatable-column name="Date Reported" prop="reportedDate" maxWidth=250></ngx-datatable-column>
+    </ngx-datatable>
+  </div>
