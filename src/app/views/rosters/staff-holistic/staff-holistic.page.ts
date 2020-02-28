@@ -145,10 +145,6 @@ export class StaffHolistic implements OnInit {
         this.holisticYearCounters = response.holisticYearCounters
         this.sickToLeaveRatio = response.sickToLeaveRatio
         this.dayCodeMap = response.dayCodes
-        //this.holisticYear = response.year
-        // this.holisticYearSelect.controls.year
-        //this.holisticYearSelect.setValue({year: this.holisticYear})
-
         this.updateHolisticCalData()
       });
     this.selectedDateFrom = moment(this.rosterSelect.value.dateFrom);

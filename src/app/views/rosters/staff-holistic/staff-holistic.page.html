@@ -24,7 +24,7 @@
   </mat-card>
 </div>
 <div fxLayout="row">
-  <mat-card id="rosterChart" fxFlex="90">
+  <mat-card id="rosterChart" fxFlex="90" style="height: 90%">
     <mat-card-title class="">
       <div class="card-title-text">Year Calendar</div>
     </mat-card-title>
@@ -45,7 +45,7 @@
       </mat-form-field>
     </form>
     <!-- <div style="height: 250%; flex-grow: 1;"> -->
-      <div echarts [options]="holisticCal" [merge]="updateHolisticCal" [autoResize]="true" style="height: 250%"></div>
+      <div echarts [options]="holisticCal" [merge]="updateHolisticCal" [autoResize]="true"></div>
     <!-- </div> -->
   </mat-card>
   <mat-card id="rosterChart" fxFlex="10">
