@@ -31,7 +31,7 @@ export class NotInServiceTableComponent implements OnInit {
 
   updateTable(){
     this.NISList.forEach(unit => {
-      unit.reportedDate = moment(unit.reportedDate).format('DD/MM/YYYY HH:mm:ss')
+      unit.reportedDate = moment(unit.reportedDate).format('YYYY-MM-DD HH:mm:ss')
     });
     this.tableNIS = this.NISList.filter(unit => unit.NIS === true);
     this.tableRestricted = this.NISList.filter(unit => unit.NIS === false);
