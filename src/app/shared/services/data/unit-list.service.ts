@@ -39,27 +39,45 @@ export class unitListResponse {
     }
   }
 
+  export class HistoricNISResponse {
+    public Time?: string;
+    public requestedDay?: string;
+    public graphNISData?: Array<object>;
+    public dayNISList?: Array<object>;
+    constructor() {}
+    fromJSON(json) {
+      for (var propName in json)
+         this[propName] = json[propName];
+      return this;
+    }
+  }
+
 @Injectable()
 export class UnitListService {
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) {}
-  
-    getUnitList = () => {
-        return Observable
-        .timer(0,10000)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentUnitList')
-        .map((response: Response) => new unitListResponse().fromJSON(response)))
-    }
-    getCarList = () => {
-        return Observable
-        .timer(0,10000)
-        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentCarList')
-        .map((response: Response) => new carListResponse().fromJSON(response)))
-    }
-    getCurrentNISList = () => {
+  getUnitList = () => {
       return Observable
-      .timer(0,60000)
-      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentNISList')
-      .map((response: Response) => new NISListResponse().fromJSON(response)))
+      .timer(0,10000)
+      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentUnitList')
+      .map((response: Response) => new unitListResponse().fromJSON(response)))
+  }
+  getCarList = () => {
+      return Observable
+      .timer(0,10000)
+      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentCarList')
+      .map((response: Response) => new carListResponse().fromJSON(response)))
+  }
+  getCurrentNISList = () => {
+    return Observable
+    .timer(0,60000)
+    .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentNISList')
+    .map((response: Response) => new NISListResponse().fromJSON(response)))
+  }
+  getHistoricNIS = (date) => {
+    return Observable
+    .timer(0)
+    .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/historicNIS?date='+date.format("YYYYMMDD"))
+    .map((response: Response) => new HistoricNISResponse().fromJSON(response)))
   }
 }

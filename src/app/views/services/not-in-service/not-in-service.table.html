@@ -1,40 +1,96 @@
-<div fxLayout="row" fxLayout.lt-md="column">
-  <div fxFlex="33.33" fxFlex.lt-md="100">
-    <mat-card style="padding:10px; text-align:center">
-      <h1 style="font-size: xx-large;">{{this.matangiSLA}}</h1>
-      <h3>Matangi Available</h3>
+<mat-tab-group>
+  <mat-tab label="LIVE">
+    <mat-card-content>
+      <div fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlex="33.33" fxFlex.lt-md="100">
+          <mat-card style="padding:10px; text-align:center">
+            <h1 style="font-size: xx-large;">{{this.matangiSLA}}</h1>
+            <h3>Matangi Available</h3>
+          </mat-card>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-md="100">
+          <mat-card style="padding:10px; text-align:center">
+            <h1 style="font-size: xx-large;">{{this.matangiRestrictedCount}}</h1>
+            <h3>Matangi Restricted</h3>
+          </mat-card>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-md="100">
+          <mat-card style="padding:10px; text-align:center">
+            <h3>List Updated</h3>
+            <h1 style="font-size: xx-large;">{{this.timeUpdated}}</h1>
+          </mat-card>
+        </div>
+      </div>
+      <div id="variancetable" class="mat-box-shadow margin-333">
+        <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0" [rowHeight]="40"
+          [scrollbarV]="false" [rows]="tableNIS" [sorts]="[{prop: 'unit', dir: 'desc'}]">
+          <ngx-datatable-column name="Work Order" prop="workOrderId" maxWidth=150></ngx-datatable-column>
+          <ngx-datatable-column name="Unit" prop="unit" maxWidth=150></ngx-datatable-column>
+          <ngx-datatable-column name="Detail" prop="detail" maxWidth=500></ngx-datatable-column>
+          <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+          <ngx-datatable-column name="Date Reported" prop="reportedDate" maxWidth=250></ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+      <div id="variancetable" class="mat-box-shadow margin-333">
+        <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0" [rowHeight]="40"
+          [scrollbarV]="false" [rows]="tableRestricted" [sorts]="[{prop: 'unit', dir: 'desc'}]">
+          <ngx-datatable-column name="Work Order" prop="workOrderId" maxWidth=150></ngx-datatable-column>
+          <ngx-datatable-column name="Unit" prop="unit" maxWidth=150></ngx-datatable-column>
+          <ngx-datatable-column name="Detail" prop="detail" maxWidth=500></ngx-datatable-column>
+          <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+          <ngx-datatable-column name="Date Reported" prop="reportedDate" maxWidth=250></ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </mat-card-content>
+  </mat-tab>
+  <mat-tab label="HISTORICAL">
+    <mat-card-content>
+              <!-- Date Lookup -->
+              <mat-card style="padding:10px">
+                <mat-card-title>
+                    <div class="card-title-text">Date Lookup</div>
+                </mat-card-title>
+                <mat-card-content>
+                    <div fxLayout="row" fxLayout.lt-md="column">
+                        <form [formGroup]="dateSelect" (ngSubmit)="updateNISHistoricData()">
+                            <div fxLayout="row wrap">
+                                <div fxFlex="100" fxFlex.gt-xs="50">
+                                    <mat-form-field style="width:90%">
+                                        <input matInput name="date" formControlName="date" placeholder="Date"
+                                            [matDatepicker]="appDatepicker">
+                                        <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+                                    </mat-form-field>
+                                    <mat-datepicker #appDatepicker></mat-datepicker>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-xs="50">
+                                    <button mat-raised-button color="primary" style="max-height: 40px;"
+                                        [disabled]="dateSelect.invalid" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+      <mat-card>
+        <mat-card-title class="">
+            <div class="card-title-text">Matangi Available by time of day</div>
+        </mat-card-title>
+        <mat-card-content>
+            <div echarts [options]="graphNIS" [merge]="updateGraphNIS" [autoResize]="true">
+            </div>
+        </mat-card-content>
     </mat-card>
-  </div>
-  <div fxFlex="33.33" fxFlex.lt-md="100">
-    <mat-card style="padding:10px; text-align:center">
-      <h1 style="font-size: xx-large;">{{this.matangiRestrictedCount}}</h1>
-      <h3>Matangi Restricted</h3>
-    </mat-card>
-  </div>
-  <div fxFlex="33.33" fxFlex.lt-md="100">
-    <mat-card style="padding:10px; text-align:center">
-      <h3>List Updated</h3>
-      <h1 style="font-size: xx-large;">{{this.timeUpdated}}</h1>
-    </mat-card>
-  </div>
-</div>
-  <div id="variancetable" class="mat-box-shadow margin-333">
-    <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0" [rowHeight]="40"
-      [scrollbarV]="false" [rows]="tableNIS" [sorts]="[{prop: 'unit', dir: 'desc'}]">
-      <ngx-datatable-column name="Work Order" prop="workOrderId" maxWidth=150></ngx-datatable-column>
-      <ngx-datatable-column name="Unit" prop="unit" maxWidth=150></ngx-datatable-column>
-      <ngx-datatable-column name="Detail" prop="detail" maxWidth=500></ngx-datatable-column>
-      <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
-      <ngx-datatable-column name="Date Reported" prop="reportedDate" maxWidth=250></ngx-datatable-column>
-    </ngx-datatable>
-  </div>
-  <div id="variancetable" class="mat-box-shadow margin-333">
-    <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0" [rowHeight]="40"
-      [scrollbarV]="false" [rows]="tableRestricted" [sorts]="[{prop: 'unit', dir: 'desc'}]">
-      <ngx-datatable-column name="Work Order" prop="workOrderId" maxWidth=150></ngx-datatable-column>
-      <ngx-datatable-column name="Unit" prop="unit" maxWidth=150></ngx-datatable-column>
-      <ngx-datatable-column name="Detail" prop="detail" maxWidth=500></ngx-datatable-column>
-      <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
-      <ngx-datatable-column name="Date Reported" prop="reportedDate" maxWidth=250></ngx-datatable-column>
-    </ngx-datatable>
-  </div>
+    <div id="variancetable" class="mat-box-shadow margin-333">
+      <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0" [rowHeight]="40"
+        [scrollbarV]="false" [rows]="historicNISList" [sorts]="[{prop: 'unit', dir: 'desc'}]">
+        <ngx-datatable-column name="Work Order" prop="workOrderId" maxWidth=150></ngx-datatable-column>
+        <ngx-datatable-column name="Unit" prop="unit" maxWidth=150></ngx-datatable-column>
+        <ngx-datatable-column name="Detail" prop="detail" maxWidth=200></ngx-datatable-column>
+        <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+        <ngx-datatable-column name="Date Reported" prop="reportedDate" maxWidth=250></ngx-datatable-column>
+        <ngx-datatable-column name="Date Resolved" prop="updatedDate" maxWidth=250></ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+    </mat-card-content>
+  </mat-tab>
+</mat-tab-group>

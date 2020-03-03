@@ -231,6 +231,7 @@ export class ServiceDetailComponent implements OnInit {
         }
       });
   }
+
   ngOnInit() {
     // get date & serviceId from route params
     this.routeParamsSubscription = this.route.params.subscribe(params => {
