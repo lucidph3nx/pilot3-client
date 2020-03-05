@@ -114,6 +114,13 @@ export class NavigationService {
       state: 'rosters/staff-holistic',
     },
     {
+      name: 'Leave Availability',
+      type: 'link',
+      tooltip: 'available-leave',
+      icon: 'hotel',
+      state: 'rosters/available-leave',
+    },
+    {
       name: 'Resource Visboard',
       type: 'link',
       tooltip: 'Resource Visboard',

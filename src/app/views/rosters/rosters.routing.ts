@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { RosterStatusTableComponent } from './roster-status/roster-status.table';
+import { AvailableLeaveTableComponent } from './available-leave/available-leave.table';
 import { ShiftDetailPage } from './shift-detail/shift-detail.page';
 import { StaffHolistic } from './staff-holistic/staff-holistic.page';
 import { ShiftVisualiser } from './shift-visualiser/shift-visualiser.page';
@@ -29,6 +30,10 @@ export const RostersRoutes: Routes = [
       path: 'staff-holistic',
       component: StaffHolistic,
       data: { title: 'Staff Holistic', breadcrumb: 'Staff Holistic' }
+    }, {
+      path: 'available-leave',
+      component: AvailableLeaveTableComponent,
+      data: { title: 'Available Leave', breadcrumb: 'Available Leave' }
     }]
   }
 ];

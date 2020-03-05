@@ -86,6 +86,24 @@ export class rosterResponse {
   }
 }
 
+export class availableLeaveResponse {
+  public Time?: string;
+  public availableLeave?: Array<{
+    date?: string,
+    staffType?: string,
+    location?: string,
+    limit?: number,
+    leaveCount?: number,
+    availableLeave?: number,
+  }>;
+  constructor() { }
+  fromJSON(json) {
+    for (var propName in json)
+      this[propName] = json[propName];
+    return this;
+  }
+}
+
 @Injectable()
 export class RosterService {
 
@@ -127,6 +145,15 @@ export class RosterService {
       .timer(0)
       .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/rosterDuties?date=' + date.format('YYYYMMDD') + '&colours='+colours)
         .map((response: Response) => new rosterResponse().fromJSON(response)))
+  }
+  getAvailableLeave = (dateFrom, dateTo, staffType, location) => {
+    return Observable
+      .timer(0)
+      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/roster/availableLeave?dateFrom=' + dateFrom.format('YYYYMMDD')
+                                                                                                     + '&dateTo=' + dateTo.format('YYYYMMDD')
+                                                                                                     + '&staffType=' + staffType
+                                                                                                     + '&location=' + location)
+        .map((response: Response) => new availableLeaveResponse().fromJSON(response)))
   }
   getStaffRosterVisualiser = (dateFrom, dateTo, staffId) => {
     return Observable

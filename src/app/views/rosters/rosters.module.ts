@@ -18,7 +18,8 @@ import {
   MatProgressBarModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatSelectModule
+  MatSelectModule,
+  MatButtonToggleModule,
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -29,6 +30,7 @@ import { SharedModule } from './../../shared/shared.module';
 
 
 import { RosterStatusTableComponent } from './roster-status/roster-status.table';
+import { AvailableLeaveTableComponent } from './available-leave/available-leave.table';
 import { ShiftDetailPage } from './shift-detail/shift-detail.page';
 import { StaffHolistic } from './staff-holistic/staff-holistic.page';
 import { ShiftVisualiser } from './shift-visualiser/shift-visualiser.page';
@@ -64,10 +66,12 @@ import { RostersRoutes } from "./rosters.routing";
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatButtonToggleModule,
     RouterModule.forChild(RostersRoutes)
   ],
   declarations: [
     RosterStatusTableComponent,
+    AvailableLeaveTableComponent,
     ShiftDetailPage,
     StaffHolistic,
     ShiftVisualiser,
