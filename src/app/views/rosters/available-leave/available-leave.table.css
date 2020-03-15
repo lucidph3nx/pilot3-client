@@ -1,0 +1,9 @@
+.leave-available{
+  background-color:#566e43 !important;
+  margin: 1px !important;
+}
+
+.leave-unavailable{
+  background-color:#be5046 !important;
+  margin: 1px !important;
+}
