@@ -51,6 +51,11 @@ export const rootRouterConfig: Routes = [
         data: { title: 'RTI', breadcrumb: 'RTI'}
       },
       {
+        path: 'pilot-status', 
+        loadChildren: () => import('./views/pilot-status/pilot-status.module').then(m => m.PilotStatusModule), 
+        data: { title: 'Pilot Status', breadcrumb: 'Pilot Status'}
+      },
+      {
         path: 'others', 
         loadChildren: () => import('./views/others/others.module').then(m => m.OthersModule), 
         data: { title: 'Others', breadcrumb: 'OTHERS'}
