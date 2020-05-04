@@ -1,0 +1,40 @@
+<!-- Date & Line Lookup -->
+<mat-card style="padding:10px">
+    <div class="card-title-text">Select Date and Line</div>
+    <mat-card-content>
+        <div fxLayout="row" fxLayout.lt-md="column">
+            <form [formGroup]="timeDistanceSelect" (ngSubmit)="updateData()">
+                <div fxLayout="row">
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+                        <mat-form-field style="width:90%">
+                            <input matInput name="date" formControlName="date" placeholder="Date"
+                                [matDatepicker]="appDatepicker">
+                            <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-datepicker #appDatepicker></mat-datepicker>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+                        <mat-form-field style="width:90%">
+                            <mat-select name="lineId" formControlName="lineId" placeholder="Line">
+                                <mat-option *ngFor="let line of lineList" [value]="line.value">
+                                    {{line.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50">
+                        <button mat-raised-button color="primary" style="max-height: 40px;"
+                            [disabled]="timeDistanceSelect.invalid" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>
+<div *ngIf="dateLineSelected">
+    <mat-card style="height: 80vh; flex-grow: 1;">
+        <mat-card-content>
+            <div echarts [options]="timeDistanceChart" [merge]="updateTimeDistanceChart" [autoResize]="true" class="timeDistanceChart"></div>
+        </mat-card-content>
+    </mat-card>
+</div>

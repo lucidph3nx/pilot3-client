@@ -25,7 +25,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     private themeService: ThemeService,
     private layout: LayoutService,
     private renderer: Renderer2
-  ) { }
+  ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        (<any>window).ga('set', 'page', event.urlAfterRedirects);
+        (<any>window).ga('send', 'pageview');
+      }
+    });
+  }
 
   ngOnInit() {
     this.changePageTitle();

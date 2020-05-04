@@ -5,7 +5,7 @@ import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-mome
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { RosterService } from '../../../shared/services/data/roster.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'shift-detail',
@@ -27,7 +27,8 @@ export class ShiftDetailPage implements OnInit {
     private route: ActivatedRoute
   ) { }
   currentRoster = []
-  selectedShift = []
+  selectedShift;
+  selectedRosterDuties = []
   selectedShiftName = ''
   selectedShiftType  = ''
   
@@ -37,9 +38,9 @@ export class ShiftDetailPage implements OnInit {
   sub;
 
   ngOnInit() {
-    this.service.getCurrentRoster()
+    this.service.getRosterDuties(moment(), false)
     .subscribe((response) => {
-      this.currentRoster = response.currentRosterDuties
+      this.currentRoster = response.roster
       this.sub=this.route.params.subscribe(params => {
         if (params['shiftId'] !== undefined && this.shiftSelect.controls.shiftId.value == null){
           this.shiftSelect.controls.shiftId.setValue(params['shiftId'])
@@ -50,14 +51,16 @@ export class ShiftDetailPage implements OnInit {
           this.loadData('staffId')
         }
         });
-    });
+    })
   }
 
   loadData(from){
     if (from == 'staffId'){
       this.selectedShift = this.currentRoster.filter(area => area.staffId === this.staffSelect.controls.staffId.value.padStart(3, '0'))
+      this.selectedRosterDuties = this.selectedShift[0].rosterDuties;
     } else if (from == 'shiftId'){
       this.selectedShift = this.currentRoster.filter(area => area.shiftId === this.shiftSelect.controls.shiftId.value)
+      this.selectedRosterDuties = this.selectedShift[0].rosterDuties;
     }
     if (this.selectedShift.length === 0 ){
       this.selectedShiftName = ''
@@ -71,7 +74,7 @@ export class ShiftDetailPage implements OnInit {
       this.selectedStaffName = this.selectedShift[0].staffName
       this.shiftSelect.controls.shiftId.setValue(this.selectedShift[0].shiftId)
       this.selectedStaffId = this.selectedShift[0].staffId
-      this.selectedStaffPhoto = 'http://localhost:4000/api/staffImage?staffId='+this.selectedStaffId.padStart(3, '0')
+      this.selectedStaffPhoto = 'http://'+environment.apiURL+':4000/api/staff/image?staffId='+this.selectedStaffId.padStart(3, '0')+'&height=400'
     }
   }
 }

@@ -3,13 +3,13 @@ import { ThemeService } from '../../services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment-timezone';
-import { CurrentServicesService } from '../../../shared/services/data/current-services.service';
+import { ServicesService } from '../../services/data/services.service';
 
 @Component({
   selector: 'app-header-side',
   templateUrl: './header-side.template.html',
   styleUrls: ['./header-side.template.css'],
-  providers: [CurrentServicesService],
+  providers: [ServicesService],
 })
 export class HeaderSideComponent implements OnInit {
   @Input() notificPanel;
@@ -35,7 +35,7 @@ export class HeaderSideComponent implements OnInit {
     private layout: LayoutService,
     public translate: TranslateService,
     private renderer: Renderer2,
-    private service: CurrentServicesService,
+    private service: ServicesService,
     
   ) {}
   ngOnInit() {

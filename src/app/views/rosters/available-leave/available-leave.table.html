@@ -1,0 +1,58 @@
+<div fxLayout="row" style="height:135px;">
+    <mat-card style="padding:10px;">
+        <div class="card-title-text">Leave Availability Lookup</div>
+        <div fxLayout="row">
+            <form [formGroup]="leaveSelect" (ngSubmit)="onSubmit()">
+                <div fxFlex="100" fxFlex.gt-xs="33">
+                    <mat-form-field style="width:90%">
+                        <input matInput name="dateFrom" formControlName="dateFrom" placeholder="Date From"
+                            [matDatepicker]="appDatepickerFrom">
+                        <mat-datepicker-toggle matSuffix [for]="appDatepickerFrom"></mat-datepicker-toggle>
+                    </mat-form-field>
+                    <mat-datepicker #appDatepickerFrom></mat-datepicker>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33">
+                    <mat-form-field style="width:90%">
+                        <input matInput name="dateTo" formControlName="dateTo" placeholder="Date To"
+                            [matDatepicker]="appDatepickerTo">
+                        <mat-datepicker-toggle matSuffix [for]="appDatepickerTo"></mat-datepicker-toggle>
+                    </mat-form-field>
+                    <mat-datepicker #appDatepickerTo></mat-datepicker>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33">
+                    <mat-form-field style="width:90%">
+                        <mat-select placeholder="staffType" formControlName="staffType">
+                            <mat-option *ngFor="let staffType of staffTypeList" [value]="staffType.value">
+                                {{staffType.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33">
+                    <mat-form-field style="width:90%">
+                        <mat-select placeholder="location" formControlName="location">
+                            <mat-option *ngFor="let location of locationList" [value]="location.value">
+                                {{location.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33">
+                    <button mat-raised-button color="primary" style="max-height: 40px;" [disabled]="leaveSelect.invalid"
+                        type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </mat-card>
+</div>
+<div fxLayout="row">
+    <mat-card *ngIf="availableLeave.length > 0" style="padding:10px;">
+        <div class="card-title-text">Availabile Leave Dates</div>
+        <div *ngFor="let date of availableLeave" fxLayout="row">
+            <!-- <mat-card>{{date.dateString}}</mat-card> -->
+            <button mat-flat-button>{{date.dateString}}</button>
+            <button mat-flat-button class="leave-unavailable" *ngFor="let i of [].constructor(date.leaveCount)">0</button>
+            <button mat-flat-button class="leave-available" *ngFor="let i of [].constructor(date.availableLeave)">1</button>
+        </div>
+    </mat-card>
+</div>

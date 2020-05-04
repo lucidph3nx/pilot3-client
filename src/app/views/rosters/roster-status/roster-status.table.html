@@ -62,24 +62,22 @@
         </div>
     </div>
     <div fxLayout="row" fxLayout.sm="column">
-        <div fxFlex="66.66">
+        <div fxFlex="40">
             <mat-card style="padding:10px; text-align:center">
-                <mat-card-title>Overall Counters</mat-card-title>
+                <mat-card-title>Available Staff</mat-card-title>
             </mat-card>
-            <mat-card>
-                <div echarts [options]="overallCountersChart" [merge]="updateOverallCountersChart" [autoResize]="true">
-                </div>
-            </mat-card>
-            <!-- <div id="variancetable" class="mat-box-shadow margin-333">
+            <div id="variancetable" class="mat-box-shadow margin-333">
                 <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
-                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredRosterDayStatus"
-                    [sorts]="[{prop: 'staffType', dir: 'asc'}]">
-                    <ngx-datatable-column name="staffType" prop="staffType"></ngx-datatable-column>
+                    [rowHeight]="40" [scrollbarV]="false" [rows]="filteredAvailableStaff"
+                    [sorts]="[{prop: 'rosterGrid', dir: 'desc'}]" (activate)="showDayRoster($event)">
+                    <ngx-datatable-column name="Roster" prop="rosterGrid"></ngx-datatable-column>
+                    <ngx-datatable-column name="Staff Type" prop="staffType"></ngx-datatable-column>
                     <ngx-datatable-column name="Location" prop="location"></ngx-datatable-column>
-                    <ngx-datatable-column name="Counter" prop="counterType"></ngx-datatable-column>
-                    <ngx-datatable-column name="Count" prop="count"></ngx-datatable-column>
+                    <ngx-datatable-column name="Availability" prop="availabilityType"></ngx-datatable-column>
+                    <ngx-datatable-column name="StaffId" prop="staffId"></ngx-datatable-column>
+                    <ngx-datatable-column name="Name" minWidth=250 prop="staffName"></ngx-datatable-column>
                 </ngx-datatable>
-            </div> -->
+            </div>
         </div>
         <div fxFlex="33.33">
             <mat-card style="padding:10px; text-align:center">

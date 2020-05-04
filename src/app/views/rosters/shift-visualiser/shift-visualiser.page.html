@@ -1,0 +1,60 @@
+<div fxLayout="row">
+  <mat-card style="padding:10px;" fxFlex="15">
+    <div class="card-title-text">Date Lookup</div>
+    <form [formGroup]="daySelect" (ngSubmit)="loadData()">
+      <div fxLayout="row wrap">
+        <mat-form-field style="width:40%">
+          <input matInput name="date" formControlName="date" placeholder="Date" [matDatepicker]="appDatepicker">
+          <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+        </mat-form-field>
+        <mat-datepicker #appDatepicker></mat-datepicker>
+        <button mat-raised-button color="primary" style="max-height: 40px;" [disabled]="daySelect.invalid"
+          type="submit">Search</button>
+      </div>
+    </form>
+  </mat-card>
+  <mat-card style="padding:10px;" fxFlex="20">
+    <div class="card-title-text">Filter Results</div>
+    <form [formGroup]="filterResults">
+      <div fxLayout="row wrap">
+        <mat-form-field style="width:40%">
+          <mat-select placeholder="staffType" (selectionChange)="filter($event)">
+            <mat-option *ngFor="let staffType of staffTypeList" [value]="staffType.value">
+              {{staffType.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field style="width:40%">
+          <mat-select placeholder="location" (selectionChange)="filter($event)">
+            <mat-option *ngFor="let location of locationList" [value]="location.value">
+              {{location.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-card>
+  <mat-card style="padding:10px" fxFlex="25">
+      <div class="card-title-text">Search</div>
+    <mat-card-content>
+      <div fxLayout="row" fxLayout.lt-md="column">
+        <form [formGroup]="searchResults" (ngSubmit)="search($event)">
+          <div fxLayout="row wrap">
+            <mat-form-field>
+              <input matInput name="searchall" formControlName="searchall" placeholder="">
+            </mat-form-field>
+            <button mat-raised-button color="primary" style="max-height: 40px;" [disabled]="searchResults.invalid" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div fxLayout="row">
+  <mat-card style="padding:10px;" fxFlex="100" style="height: 80vh; flex-grow: 1;">
+    <mat-card-content>
+      <div echarts [options]="shiftVisOptions" [merge]="updateShiftVisOptions" [autoResize]="true"
+        class="shiftVisChart"></div>
+    </mat-card-content>
+  </mat-card>
+</div>

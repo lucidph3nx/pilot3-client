@@ -1,0 +1,223 @@
+<div fxLayout="row" fxLayout.lt-md="column">
+    <!-- First Column -->
+    <div fxFlex="25" fxFlex.lt-md="100">
+        <!-- Service Lookup -->
+        <mat-card style="padding:10px">
+            <mat-card-title>
+                <div class="card-title-text">Service Lookup</div>
+            </mat-card-title>
+            <mat-card-content>
+                <div fxLayout="row" fxLayout.lt-md="column">
+                    <form [formGroup]="serviceSelect" (ngSubmit)="updateData()">
+                        <div fxLayout="row wrap">
+                            <div fxFlex="100" fxFlex.gt-xs="50">
+                                <mat-form-field style="width:90%">
+                                    <input matInput name="date" formControlName="date" placeholder="Date"
+                                        [matDatepicker]="appDatepicker">
+                                    <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+                                </mat-form-field>
+                                <mat-datepicker #appDatepicker></mat-datepicker>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50">
+                                <mat-form-field style="width:90%">
+                                    <input matInput name="serviceId" formControlName="serviceId"
+                                        placeholder="serviceId">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50">
+                                <button mat-raised-button color="primary" style="max-height: 40px;"
+                                    [disabled]="serviceSelect.invalid" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div *ngIf="serviceSelected">
+            <div *ngIf="serviceDetail.peak">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>access_alarm</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-red">Peak Service</span>
+                    </div>
+                </mat-card>
+            </div>
+            <div *ngIf="!serviceDetail.peak">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>snooze</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-green">Off-Peak Service</span>
+                    </div>
+                </mat-card>
+            </div>
+            <mat-card style="padding:10px; text-align:center">
+                <mat-card-title>
+                    <h2>Consist (north to south)</h2>
+                </mat-card-title>
+                <mat-card-content>
+                    <div fxLayout="row">
+                        <div *ngFor="let unit of consist" fxFlex="50" fxFlex.gt-sm="25">
+                            <button mat-stroked-button [disableRipple]="true">{{unit}}</button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <div fxLayout="row wrap">
+                <div *ngFor="let member of crew" fxFlex="100" fxFlex.gt-sm="50">
+                    <mat-card style="padding:0px">
+                        <div fxFlex="40">
+                            <a href="" class="toolbar-avatar md mr-1"><img [src]="member.photoURL" alt=""></a>
+                        </div>
+                        <div fxFlex="60" style="padding:10px">
+                            {{member.staffName}}<br>
+                            {{member.staffId}}<br>
+                            {{member.shiftId}}
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+            <mat-card style="padding:10px; text-align:center">
+                <h3>TSR's (Theoretical Impact)</h3>
+            </mat-card>
+            <div id="timingPointTable" class="mat-box-shadow margin-333">
+                <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                    [rowHeight]="40" [rows]="TSRList" [scrollbarV]="true" [sorts]="[{prop: 'distanceFrom', dir: 'asc'}]"
+                    style="height: 40vh">
+                    <ngx-datatable-column name="From" prop="distanceFrom" [cellClass]="getFailureClass">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="To" prop="distanceTo"></ngx-datatable-column>
+                    <!-- <ngx-datatable-column name="H40Area" prop="H40Area"></ngx-datatable-column> -->
+                    <ngx-datatable-column name="Non-Stop" prop="NSSeconds" [cellClass]="getFailureClass">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="All-Stop" prop="ASSeconds"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+    </div>
+
+    <!-- Middle Column -->
+    <div *ngIf="serviceSelected" fxFlex="30" fxFlex.lt-md="100">
+        <div fxLayout="row">
+            <div *ngIf="reliabilityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>warning</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-red">Reliability Failure</span>
+                    </div>
+                </mat-card>
+            </div>
+            <div *ngIf="!reliabilityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>done</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-green">Reliable</span>
+                    </div>
+                </mat-card>
+            </div>
+            <div *ngIf="punctualityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>warning</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-red">Punctuality Failure</span>
+                    </div>
+                </mat-card>
+            </div>
+            <div *ngIf="!punctualityFailure" fxFlex="50" fxFlex.lt-md="100">
+                <mat-card class="rounded-circle" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-icon>done</mat-icon>
+                    <span style="width: 20px"></span>
+                    <div>
+                        <span class="text-18 font-weight-bold text-green">On Time</span>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+        <div *ngIf="punctualityFailure">
+            <mat-card id="delayBreakdownChart">
+                <mat-card-title class="">
+                    <div class="card-title-text">Delay Breakdown</div>
+                </mat-card-title>
+                <mat-card-content>
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                            <div class="text-center pt-1 pb-1 border-right-light">
+                                <mat-icon class="text-blue">trip_origin</mat-icon>
+                                <h3 class="m-0">{{delayBreakdownPercent.origin}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.origin}}</small><br>
+                                <small class="m-0 text-muted">Origin</small>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                            <div class="text-center pt-1 pb-1 border-right-light">
+                                <mat-icon class="text-blue">timelapse</mat-icon>
+                                <h3 class="m-0">{{delayBreakdownPercent.TSR}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.TSR}}</small><br>
+                                <small class="m-0 text-muted">TSR</small>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                            <div class="text-center pt-1 pb-1 border-right-light">
+                                <mat-icon class="text-blue">train</mat-icon>
+                                <h3 class="m-0">{{delayBreakdownPercent.betweenStations}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.betweenStations}}</small><br>
+                                <small class="m-0 text-muted">Between Stations</small>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+                            <div class="text-center pt-1 pb-1">
+                                <mat-icon class="text-blue">location_on</mat-icon>
+                                <h3 class="m-0">{{delayBreakdownPercent.atStations}}%</h3>
+                                <small class="m-0">{{delayBreakdownFriendly.atStations}}</small><br>
+                                <small class="m-0 text-muted">At Stations</small>
+                            </div>
+                        </div>
+                        <div fxFlex="100">
+                            <div echarts [options]="delayBreakdownChart" [merge]="updateDelayBreakdownChart"
+                                [autoResize]="true">
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <!-- End Column -->
+    <div *ngIf="serviceSelected" fxFlex="45" fxFlex.lt-md="100">
+
+        <mat-card>
+            <mat-card-title class="">
+                <div class="card-title-text">Delay Across Journey</div>
+            </mat-card-title>
+            <mat-card-content>
+                <div echarts [options]="distanceDelayChart" [merge]="updateDistanceDelayChart" [autoResize]="true"
+                    style="height: 40vh">
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card style="padding:10px; text-align:center">
+            <h3>Timing Points</h3>
+        </mat-card>
+        <div id="timingPointTable" class="mat-box-shadow margin-333">
+            <ngx-datatable class="material" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="0"
+                [rowHeight]="40" [rows]="timingPoints" [scrollbarV]="true" [sorts]="[{prop: 'sequence', dir: 'asc'}]"
+                style="height: 40vh">
+                <ngx-datatable-column name="Location" prop="location" [cellClass]="getFailureClass">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="activity" prop="activityType"></ngx-datatable-column>
+                <ngx-datatable-column name="Planned Time" prop="plannedTime"></ngx-datatable-column>
+                <ngx-datatable-column name="Actual Time" prop="actualTime" [cellClass]="getFailureClass">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="TSR Sec" prop="TSRDelaySec"></ngx-datatable-column>
+                <!-- <ngx-datatable-column name="Delay Sec" prop="delaySec"></ngx-datatable-column> -->
+                <!-- <ngx-datatable-column name="timingSource" prop="timingSource"></ngx-datatable-column> -->
+                <ngx-datatable-column name="Impact Seconds" prop="impactSeconds"></ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+
+</div>

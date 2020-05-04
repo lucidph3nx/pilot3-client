@@ -34,7 +34,14 @@ export class NavigationService {
       type: 'link',
       tooltip: 'current services',
       icon: 'dashboard',
-      state: 'current-services/variance',
+      state: 'services/variance',
+    },
+    {
+      name: 'Service Detail',
+      type: 'link',
+      tooltip: 'service detail',
+      icon: 'shutter_speed',
+      state: 'services/detail',
     },
     {
       name: 'Train Performance',
@@ -44,11 +51,25 @@ export class NavigationService {
       state: 'train-performance/train-performance',
     },
     {
+      name: 'NIS List',
+      type: 'link',
+      tooltip: 'NIS List',
+      icon: 'subway',
+      state: 'services/not-in-service',
+    },
+    {
       name: 'Matangi Tracking',
       type: 'link',
       tooltip: 'matangi tracking',
       icon: 'subway',
-      state: 'current-services/matangi-units',
+      state: 'services/matangi-units',
+    },
+    {
+      name: 'Time Distance Graph',
+      type: 'link',
+      tooltip: 'time-distance',
+      icon: 'show_chart',
+      state: 'services/time-distance',
     },
     {
       name: 'RTI Boards',
@@ -71,13 +92,34 @@ export class NavigationService {
       icon: 'person',
       state: 'rosters/shift-detail',
     },
+    {
+      name: 'Shift Visualiser',
+      type: 'link',
+      tooltip: 'shift visualiser',
+      icon: 'clear_all',
+      state: 'rosters/shift-visualiser',
+    },
     // {
-    //   name: 'Staff Holistic',
+    //   name: 'Staff Visualiser',
     //   type: 'link',
-    //   tooltip: 'staff-holistic',
-    //   icon: 'accessibility',
-    //   state: 'rosters/staff-holistic',
+    //   tooltip: 'staff visualiser',
+    //   icon: 'clear_all',
+    //   state: 'rosters/staff-visualiser',
     // },
+    {
+      name: 'Staff Holistic',
+      type: 'link',
+      tooltip: 'staff-holistic',
+      icon: 'accessibility',
+      state: 'rosters/staff-holistic',
+    },
+    {
+      name: 'Leave Availability',
+      type: 'link',
+      tooltip: 'available-leave',
+      icon: 'hotel',
+      state: 'rosters/available-leave',
+    },
     {
       name: 'Resource Visboard',
       type: 'link',
@@ -86,12 +128,19 @@ export class NavigationService {
       state: 'resource-visboard/resource-visboard',
     },
     {
-      name: "Blank",
+      name: "Pilot Status",
       type: "link",
-      tooltip: "Blank",
-      icon: "blur_on",
-      state: "others/blank"
+      tooltip: "Pilot Status",
+      icon: "cloud",
+      state: "pilot-status/status-page"
     },
+    // {
+    //   name: "Blank",
+    //   type: "link",
+    //   tooltip: "Blank",
+    //   icon: "blur_on",
+    //   state: "others/blank"
+    // },
   ];
 
   // Icon menu TITLE at the very top of navigation.

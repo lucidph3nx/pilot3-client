@@ -40,12 +40,12 @@
                         [footerHeight]="0"
                         [rowHeight]="50"
                         [scrollbarV]="false"
-                        [rows]="selectedShift"
-                        [sorts]="[{prop: 'dutyStartTime', dir: 'asc'}]">
-                        <ngx-datatable-column name="Duty" prop="dutyName" maxWidth=150></ngx-datatable-column>
-                        <ngx-datatable-column name="Duty Type" prop="dutyType" maxWidth=90></ngx-datatable-column>
-                        <ngx-datatable-column name="Start" prop="dutyStartTimeString" maxWidth=90></ngx-datatable-column>
-                        <ngx-datatable-column name="End" prop="dutyEndTimeString" maxWidth=90></ngx-datatable-column>
+                        [rows]="selectedRosterDuties"
+                        [sorts]="[{prop: 'startTime', dir: 'asc'}]">
+                        <ngx-datatable-column name="Duty" prop="name" maxWidth=150></ngx-datatable-column>
+                        <ngx-datatable-column name="Duty Type" prop="type" maxWidth=90></ngx-datatable-column>
+                        <ngx-datatable-column name="Start" prop="startTimeString" maxWidth=90></ngx-datatable-column>
+                        <ngx-datatable-column name="End" prop="endTimeString" maxWidth=90></ngx-datatable-column>
                         </ngx-datatable>
                     </div>
                 </mat-card-content>

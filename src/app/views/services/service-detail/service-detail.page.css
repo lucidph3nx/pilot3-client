@@ -1,0 +1,115 @@
+/* .pilot-dark .mat-dialog-container {
+  background: #1e2129;
+} */
+
+#timingPointTable .datatable-header-cell{
+  text-align: center;
+  line-height: 1.325;
+  font-size: 1rem;
+  font-weight: 400;
+  padding-top: 0.4rem;
+  padding-right: 0.9rem;
+  padding-bottom: 0.4rem;
+  padding-left: 0.9rem;
+  }
+#timingPointTable .datatable-body-cell{
+  text-align: center;
+  line-height: 1.325;
+  font-size: 1rem;
+  font-weight: 400;
+  padding-top: 0.4rem;
+  padding-right: 0.9rem;
+  padding-bottom: 0.4rem;
+  padding-left: 0.9rem;
+  vertical-align: middle;
+}
+
+.toolbar-avatar.md, .toolbar-avatar.md > img {
+  width: 60px !important;
+  height: 60px;
+  width: 100% !important;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+  .pilot-dark #timingPointTable .datatable-body-cell{
+    border-top: 1px solid white;
+  }
+  .pilot-light #timingPointTable .datatable-body-cell{
+    border-top: 1px solid black;
+  }
+
+  #timingPointTable .ngx-datatable .variance-early {
+    color: white;
+    background-color: #3BB9FF;
+  }
+  #timingPointTable .ngx-datatable .variance-okay {
+    color: #97c475 !important;
+  }
+  #timingPointTable .ngx-datatable .variance-late {
+    color: white;
+    background-color: #ef802f;
+  }
+  #timingPointTable .ngx-datatable .variance-verylate {
+    color: white;
+    background-color: #be5046;
+  }
+
+  #variancetable .ngx-datatable .status-early {
+    color: white;
+    background-color: #3BB9FF;
+  }
+  .pilot-dark #variancetable .ngx-datatable .status-okay {
+    color: #97c475 !important;
+  }
+  .pilot-light #variancetable .ngx-datatable .status-okay {
+    color: #566e43 !important;
+  }
+  #variancetable .ngx-datatable .status-late {
+    color: white;
+    background-color: #ef802f;
+  }
+  #variancetable .ngx-datatable .status-verylate {
+    color: white;
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .status-delayrisk {
+    color: white;
+    background-color: #be5046;
+  }
+  .pilot-dark #variancetable .ngx-datatable .currentstation {
+    color: #f0cf7e;
+  }
+  .pilot-light #variancetable .ngx-datatable .currentstation {
+    color: #a88d48;
+  }
+  .pilot-dark #variancetable .ngx-datatable .status-awaitingdeparture {
+    color: #97c475;
+  }
+  .pilot-light #variancetable .ngx-datatable .status-awaitingdeparture {
+    color: #566e43;
+  }
+  #variancetable .ngx-datatable .status-linkingissue {
+    color: white;
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .status-intunnel {
+    color: #c578dd;
+  }
+  #variancetable .ngx-datatable .status-storageroad {
+    color: #f0cf7e;
+  }
+  #variancetable .ngx-datatable .status-nolink {
+    color: white;
+    background-color: #be5046;
+  }
+  #variancetable .ngx-datatable .status-arriving {
+    color: #f0cf7e;
+  }
+  #variancetable .ngx-datatable .status-stoppedbetweenstations {
+    color: #f0cf7e;
+  }
+  #variancetable .ngx-datatable .status-prevdelayed {
+    color: #f0cf7e;
+  }

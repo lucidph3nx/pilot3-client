@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import { environment } from '../../../../environments/environment';
 
 export class headCountDataResponse {
     public Time?: string;
@@ -53,25 +54,25 @@ export class ResourceVisboardDataService {
     getHeadCountData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardHeadcount')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/visboardHeadcount')
         .map((response: Response) => new headCountDataResponse().fromJSON(response)))
     }
     getAnnualLeaveData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardAnnualLeave')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/visboardAnnualLeave')
         .map((response: Response) => new annualLeaveDataResponse().fromJSON(response)))
     }
     getSicknessData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardSickness')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/visboardSickness')
         .map((response: Response) => new sicknessDataResponse().fromJSON(response)))
     }
     getAltDutiesData = () => {
         return Observable
         .timer(0)
-        .switchMap(() => this.http.get('http://localhost:4000/api/visboardAltDuties')
+        .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/performance/visboardAltDuties')
         .map((response: Response) => new altDutiesDataResponse().fromJSON(response)))
     }
 }

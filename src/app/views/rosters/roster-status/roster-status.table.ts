@@ -75,6 +75,11 @@ export class RosterStatusTableComponent implements OnInit {
         this.uncoveredShifts = response.uncoveredShifts
         this.updateTables(this.currentFilters)
       });
+    this.service.getAvailableStaff(this.daySelect.value.date)
+    .subscribe((response) => {
+      this.availableStaff = response.availableStaff
+      this.updateTables(this.currentFilters)
+    });
   }
 
   showDayRoster(event) {
@@ -90,6 +95,8 @@ export class RosterStatusTableComponent implements OnInit {
   filteredRosterDayStatus = []
   uncoveredShifts = []
   filteredUncoveredShifts = []
+  availableStaff = []
+  filteredAvailableStaff = []
 
   unavailabilityBreakdown = {
     sickLeave: 0,
@@ -123,8 +130,6 @@ export class RosterStatusTableComponent implements OnInit {
   rosterGroupsChart: any;
   updateRosterGroupsChart: any;
 
-  overallCountersChart: any;
-  updateOverallCountersChart: any;
   countersData: any;
 
   ngOnInit() {
@@ -279,68 +284,8 @@ export class RosterStatusTableComponent implements OnInit {
         '#808080',
         '#ff8080',
       ],
-      series: []
+      series: [],
     };
-    this.overallCountersChart = {
-      tooltip: {
-        trigger: 'item',
-        triggerOn: 'mousemove'
-      },
-      series: [
-        {
-          type: 'sankey',
-          data: [],
-          links: [],
-          focusNodeAdjacency: true,
-          levels: [{
-            depth: 0,
-            itemStyle: {
-              color: '#fbb4ae'
-            },
-            lineStyle: {
-              color: 'source',
-              opacity: 0.6
-            }
-          }, {
-            depth: 1,
-            itemStyle: {
-              color: '#b3cde3'
-            },
-            lineStyle: {
-              color: 'source',
-              opacity: 0.6
-            }
-          }, {
-            depth: 2,
-            itemStyle: {
-              color: '#ccebc5'
-            },
-            lineStyle: {
-              color: 'source',
-              opacity: 0.6
-            }
-          }, {
-            depth: 3,
-            itemStyle: {
-              color: '#decbe4'
-            },
-            lineStyle: {
-              color: 'source',
-              opacity: 0.6
-            }
-          }],
-          label: {
-            color: '#fff',
-          },
-          lineStyle: {
-            normal: {
-              color: "#fff",
-              curveness: 0.5
-            }
-          }
-        }
-      ]
-    }
     this.currentFilters = {
       staffType: 'ALL',
       location: 'ALL',
@@ -355,6 +300,11 @@ export class RosterStatusTableComponent implements OnInit {
         this.uncoveredShifts = response.uncoveredShifts
         this.updateTables(this.currentFilters)
       });
+    this.service.getAvailableStaff(moment())
+    .subscribe((response) => {
+      this.availableStaff = response.availableStaff
+      this.updateTables(this.currentFilters)
+    });
 
     this.daySelect = new FormGroup({
       date: new FormControl('', [Validators.required])
@@ -368,16 +318,20 @@ export class RosterStatusTableComponent implements OnInit {
       if (currentFilters.staffType == 'ALL') {
         this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.location === currentFilters.location)
         this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.location === currentFilters.location)
+        this.filteredAvailableStaff = this.availableStaff.filter(area => area.location === currentFilters.location)
       } else if (currentFilters.location == 'ALL') {
         this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.staffType === currentFilters.staffType)
         this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.staffType === currentFilters.staffType)
+        this.filteredAvailableStaff = this.availableStaff.filter(area => area.staffType === currentFilters.staffType)
       } else {
         this.filteredRosterDayStatus = this.currentRosterDayStatus.filter(area => area.staffType === currentFilters.staffType && area.location === currentFilters.location)
         this.filteredUncoveredShifts = this.uncoveredShifts.filter(area => area.staffType === currentFilters.staffType && area.location === currentFilters.location)
+        this.filteredAvailableStaff = this.availableStaff.filter(area => area.staffType === currentFilters.staffType && area.location === currentFilters.location)
       }
     } else {
       this.filteredRosterDayStatus = this.currentRosterDayStatus
       this.filteredUncoveredShifts = this.uncoveredShifts
+      this.filteredAvailableStaff = this.availableStaff
     }
     // reset values
     this.rosterChart = {
@@ -521,14 +475,6 @@ export class RosterStatusTableComponent implements OnInit {
             { name: 'lieu Day', value: this.unavailabilityBreakdown.lieuDay },
             { name: 'Long Service', value: this.unavailabilityBreakdown.longServiceLeave },
           ]
-        },
-      ],
-    }
-    this.updateOverallCountersChart = {
-      series: [
-        {
-          data: this.countersData.nodes,
-          links: this.countersData.links,
         },
       ],
     }

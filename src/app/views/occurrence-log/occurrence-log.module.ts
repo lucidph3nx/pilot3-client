@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { 
   MatListModule,
   MatIconModule,
@@ -15,24 +15,27 @@ import {
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
-  MatProgressBarModule
+  MatAutocompleteModule,
+  MatProgressBarModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatSelectModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
-import { SharedModule } from './../../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
-import { CurrentServicesTableComponent } from './current-services/current-services.table';
-import { MatangiUnitsTableComponent } from './matangi-units/matangi-units.table';
-import { CurrentServicesRoutes } from "./current-services.routing";
-import { serviceViewComponent } from "./current-services/service-view/service-view.component"
+import { EntryComponent } from './entry/entry.component';
+import { OccurenceLogRouting } from "./occurrence-log.routing";
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
@@ -45,19 +48,20 @@ import { serviceViewComponent } from "./current-services/service-view/service-vi
     MatRadioModule,
     MatTabsModule,
     MatInputModule,
+    MatAutocompleteModule,
     MatProgressBarModule,
     FlexLayoutModule,
     NgxDatatableModule,
     ChartsModule,
     FileUploadModule,
     SharedModule,
-    RouterModule.forChild(CurrentServicesRoutes)
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    RouterModule.forChild(OccurenceLogRouting)
   ],
   declarations: [
-    CurrentServicesTableComponent,
-    MatangiUnitsTableComponent,
-    serviceViewComponent
+    EntryComponent,
   ],
-  entryComponents: [serviceViewComponent]
 })
-export class CurrentServicesModule { }
+export class OccurrenceLogModule { }

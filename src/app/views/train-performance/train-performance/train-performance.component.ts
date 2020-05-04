@@ -16,13 +16,25 @@ import { eachDay } from 'date-fns';
 })
 export class TrainPerformanceComponent implements OnInit {
 
+  reportSelect = new FormGroup({
+    reportOptions: new FormControl('Today')
+  })
+
   constructor(
     private service: TrainPerformanceService,
     private route: ActivatedRoute
   ) { }
   private trainPerformanceSubscription;
+
+  reportOptionList = [
+    { value: 'Today' },
+    { value: 'Yesterday' },
+    { value: 'Week To Date' },
+    { value: 'Month To Date' },
+  ]
+
   trainPerformance = []
-  todayDate;
+  reportLabel;
   currentPeak;
   totalServiceCount = 0
   totalReliabilityFailure = 0
@@ -48,8 +60,47 @@ export class TrainPerformanceComponent implements OnInit {
   MEL = this.blankLinePerformance;
   WRL = this.blankLinePerformance;
 
+  selectReport(event){
+    this.subscribeReport()
+  }
+
   ngOnInit() {
-    this.trainPerformanceSubscription = this.service.getTrainPerformance()
+    this.subscribeReport()
+  }
+  subscribeReport(){
+    let dateFrom
+    let dateTo
+    switch (this.reportSelect.value.reportOptions) {
+      case 'Today':
+        dateFrom = moment()
+        dateTo = moment()
+        this.reportLabel = moment().format("DD/MM/YYYY")
+        break;
+        case 'Yesterday':
+          dateFrom = moment().subtract(1, "days")
+          dateTo = moment().subtract(1, "days")
+          this.reportLabel = moment().subtract(1, "days").format("DD/MM/YYYY")
+          break;
+      case 'Week To Date':
+        dateFrom = moment().startOf('week')
+        dateTo = moment()
+        this.reportLabel = 'week until '+moment().format("DD/MM/YYYY")
+        break;
+      case 'Month To Date':
+        dateFrom = moment().startOf('month')
+        dateTo = moment()
+        this.reportLabel = 'month until '+moment().format("DD/MM/YYYY")
+        break;
+      default:
+        dateFrom = moment()
+        dateTo = moment()
+        this.reportLabel = moment().format("DD/MM/YYYY")
+        break;
+    }
+    if (this.trainPerformanceSubscription){
+      this.trainPerformanceSubscription.unsubscribe();
+    }
+    this.trainPerformanceSubscription = this.service.getTrainPerformance(dateFrom, dateTo)
     .subscribe((response: any) => {
         // reset these variables to calculate from scratch
       this.totalServiceCount = 0
@@ -61,7 +112,7 @@ export class TrainPerformanceComponent implements OnInit {
       this.totalPunctualityPercent = 100
       // load in response
       this.trainPerformance = response.trainPerformance
-      this.todayDate = moment(this.trainPerformance[0].date).format("DD/MM/YYYY")
+      
       for (let lp = 0; lp < this.trainPerformance.length; lp++){
         this.totalServiceCount += this.trainPerformance[lp].totalServices
         this.totalReliabilityFailure += this.trainPerformance[lp].reliabilityFailure

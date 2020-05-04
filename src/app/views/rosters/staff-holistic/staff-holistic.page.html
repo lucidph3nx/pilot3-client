@@ -1,6 +1,6 @@
 <div fxLayout="row">
   <mat-card style="padding:10px;" fxFlex="25">
-    <div class="card-title-text">Staff Lookup</div>
+    <div class="card-title-text">Holistic Report</div>
     <form [formGroup]="staffSelect" (ngSubmit)="loadData()">
       <div fxLayout="row wrap">
         <mat-form-field>
@@ -10,24 +10,77 @@
       </div>
     </form>
   </mat-card>
-</div>
-<!-- <div fxLayout="row">
-  <mat-card style="padding:10px;" fxFlex="100">
-    <div class="card-title-text">Staff Detail</div>
-    <img mat-card-image src="{{ this.staffPhotoURL }}" />
-    <mat-card-content>
-      <h3>{{ this.staffId }}</h3>
-    </mat-card-content>
+  <mat-card *ngIf="staffSelected" class="staffCard">
+    <div fxFlex="30">
+      <a href="" class="toolbar-avatar md mr-1"><img [src]="staffPhoto" alt=""></a>
+    </div>
+    <div fxFlex="70" style="padding:10px">
+      {{staffDetails.staffName}}<br>
+      {{staffDetails.staffId}}<br>
+      {{staffDetails.currentRoster.rosterName}}<br>
+      {{staffDetails.phone1}}<br>
+      {{staffDetails.phone2}}<br>
+    </div>
   </mat-card>
-</div> -->
+</div>
 <div fxLayout="row">
-  <mat-card id="rosterChart" fxFlex="100">
+  <mat-card id="rosterChart" fxFlex="90" style="height: 90%">
     <mat-card-title class="">
-      <div class="card-title-text">Holistic year {{this.holisticYear}}</div>
-      <mat-divider></mat-divider>
+      <div class="card-title-text">Year Calendar</div>
     </mat-card-title>
-    <mat-card-content>
+    <form [formGroup]="holisticCalendarOptions">
+      <mat-form-field>
+        <mat-select formControlName="year" placeholder="Year" (selectionChange)="loadData()">
+          <mat-option *ngFor="let calYear of this.selectableYears" [value]='calYear'>
+            {{calYear}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="calendarMode" placeholder="calendar Mode" (selectionChange)="loadData()">
+          <mat-option *ngFor="let mode of this.calendarModes" [value]='mode'>
+            {{mode}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <!-- <div style="height: 250%; flex-grow: 1;"> -->
       <div echarts [options]="holisticCal" [merge]="updateHolisticCal" [autoResize]="true"></div>
+    <!-- </div> -->
+  </mat-card>
+  <mat-card id="rosterChart" fxFlex="10">
+    <mat-card-title>Counters</mat-card-title>
+    <mat-list>
+      <div *ngFor="let counter of this.holisticYearCounters">
+        <mat-list-item [ngStyle]="{'background-color':counter.colour, 'color':'black'}">{{counter.code}} - {{counter.count}}</mat-list-item>
+      </div>
+    </mat-list>
+  </mat-card>
+</div>
+<div fxLayout="row">
+  <mat-card style="padding:10px;" fxFlex="100">
+    <mat-card-title class="">
+      <div class="card-title-text">Fortnight Roster</div>
+    </mat-card-title>
+    <form [formGroup]="rosterSelect" (ngSubmit)="loadData()">
+      <div fxLayout="row wrap">
+        <mat-form-field style="width:150px">
+          <input matInput name="dateFrom" formControlName="dateFrom" placeholder="Date"
+            [matDatepicker]="appDatepickerFrom">
+          <mat-datepicker-toggle matSuffix [for]="appDatepickerFrom"></mat-datepicker-toggle>
+        </mat-form-field>
+        <mat-datepicker #appDatepickerFrom></mat-datepicker>
+        <mat-form-field style="width:150px">
+          <input matInput name="dateTo" formControlName="dateTo" placeholder="Date" [matDatepicker]="appDatepickerTo">
+          <mat-datepicker-toggle matSuffix [for]="appDatepickerTo"></mat-datepicker-toggle>
+        </mat-form-field>
+        <mat-datepicker #appDatepickerTo></mat-datepicker>
+        <button mat-raised-button color="primary" style="max-height: 40px;" type="submit">Search</button>
+      </div>
+    </form>
+    <mat-card-content>
+      <div echarts [options]="staffVisOptions" [merge]="updateStaffVisOptions" [autoResize]="true"
+        class="shiftVisChart"></div>
     </mat-card-content>
   </mat-card>
 </div>

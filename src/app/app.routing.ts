@@ -6,7 +6,7 @@ import { AuthGuard } from './shared/services/auth/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '', 
-    redirectTo: 'current-services/variance', 
+    redirectTo: 'services/variance', 
     pathMatch: 'full' 
   },
   {
@@ -26,8 +26,8 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'current-services', 
-        loadChildren: () => import('./views/current-services/current-services.module').then(m => m.CurrentServicesModule),
+        path: 'services', 
+        loadChildren: () => import('./views/services/services.module').then(m => m.ServicesModule),
         data: { title: 'Current Services', breadcrumb: 'CurrentServices'}
       },
       {
@@ -49,6 +49,16 @@ export const rootRouterConfig: Routes = [
         path: 'rti-boards', 
         loadChildren: () => import('./views/rti-boards/rti-boards.module').then(m => m.RtiBoardsModule),
         data: { title: 'RTI', breadcrumb: 'RTI'}
+      },
+      {
+        path: 'pilot-status', 
+        loadChildren: () => import('./views/pilot-status/pilot-status.module').then(m => m.PilotStatusModule), 
+        data: { title: 'Pilot Status', breadcrumb: 'Pilot Status'}
+      },
+      {
+        path: 'occurence-log', 
+        loadChildren: () => import('./views/occurrence-log/occurrence-log.module').then(m => m.OccurrenceLogModule), 
+        data: { title: 'Occurrence Log', breadcrumb: 'Occurrence Log'}
       },
       {
         path: 'others', 
