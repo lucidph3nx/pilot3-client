@@ -50,13 +50,13 @@ export class NavigationService {
       icon: 'view_module',
       state: 'train-performance/train-performance',
     },
-    // {
-    //   name: 'NIS List',
-    //   type: 'link',
-    //   tooltip: 'NIS List',
-    //   icon: 'subway',
-    //   state: 'services/not-in-service',
-    // },
+    {
+      name: 'NIS List',
+      type: 'link',
+      tooltip: 'NIS List',
+      icon: 'subway',
+      state: 'services/not-in-service',
+    },
     {
       name: 'Matangi Tracking',
       type: 'link',
