@@ -48,13 +48,13 @@ export class StaffService {
   getStaffDetail = (staffId) => {
     return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/staff/details?staffId=' + staffId)
+      .switchMap(() => this.http.get('http://' + environment.apiUrl + ':4000/api/staff/details?staffId=' + staffId)
         .map((response: Response) => new staffDetailsResponse().fromJSON(response)))
   }
   getStaffList = () => {
     return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/staff/list')
+      .switchMap(() => this.http.get('http://' + environment.apiUrl + ':4000/api/staff/list')
         .map((response: Response) => new staffListResponse().fromJSON(response)))
   }
 }

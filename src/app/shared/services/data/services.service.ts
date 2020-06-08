@@ -90,25 +90,25 @@ export class ServicesService {
   getCurrentServices = () => {
     return Observable
       .timer(0, 10000)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/services/current')
+      .switchMap(() => this.http.get('http://' + environment.apiUrl + ':4000/api/services/current')
         .map((response: Response) => new CurrentServicesResponse().fromJSON(response)))
   }
   getServiceDetail = (date, serviceId) => {
     return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/services/detail?date=' + date + '&serviceId=' + serviceId)
+      .switchMap(() => this.http.get('http://' + environment.apiUrl + ':4000/api/services/detail?date=' + date + '&serviceId=' + serviceId)
         .map((response: Response) => new ServiceDetailResponse().fromJSON(response)))
   }
   getCurrentServerStatus = () => {
     return Observable
       .timer(0, 10000)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/serverStatus/current')
+      .switchMap(() => this.http.get('http://' + environment.apiUrl + ':4000/api/serverStatus/current')
         .map((response: Response) => new CurrentServerStatusResponse().fromJSON(response)))
   }
   getTimeDistance = (date, lineId) => {
     return Observable
       .timer(0)
-      .switchMap(() => this.http.get('http://' + environment.apiURL + ':4000/api/services/timeDistance?date=' + date + '&line=' + lineId)
+      .switchMap(() => this.http.get('http://' + environment.apiUrl + ':4000/api/services/timeDistance?date=' + date + '&line=' + lineId)
         .map((response: Response) => new TimeDistanceResponse().fromJSON(response)))
   }
 

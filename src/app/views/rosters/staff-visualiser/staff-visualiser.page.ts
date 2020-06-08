@@ -186,7 +186,7 @@ export class StaffVisualiser implements OnInit {
     .subscribe((response) => {
       this.staffSelected = true
       this.staffDetails = response.staffDetails
-      this.staffPhoto = 'http://' + environment.apiURL + ':4000/api/staff/' + response.staffDetails.photoURL + "&height=200&width=200"
+      this.staffPhoto = 'http://' + environment.apiUrl + ':4000/api/staff/' + response.staffDetails.photoURL + "&height=200&width=200"
     });
   }
 

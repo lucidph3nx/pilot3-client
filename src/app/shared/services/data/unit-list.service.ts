@@ -59,25 +59,25 @@ export class UnitListService {
   getUnitList = () => {
       return Observable
       .timer(0,10000)
-      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentUnitList')
+      .switchMap(() => this.http.get('http://'+environment.apiUrl+':4000/api/fleet/currentUnitList')
       .map((response: Response) => new unitListResponse().fromJSON(response)))
   }
   getCarList = () => {
       return Observable
       .timer(0,10000)
-      .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentCarList')
+      .switchMap(() => this.http.get('http://'+environment.apiUrl+':4000/api/fleet/currentCarList')
       .map((response: Response) => new carListResponse().fromJSON(response)))
   }
   getCurrentNISList = () => {
     return Observable
     .timer(0,60000)
-    .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/currentNISList')
+    .switchMap(() => this.http.get('http://'+environment.apiUrl+':4000/api/fleet/currentNISList')
     .map((response: Response) => new NISListResponse().fromJSON(response)))
   }
   getHistoricNIS = (date) => {
     return Observable
     .timer(0)
-    .switchMap(() => this.http.get('http://'+environment.apiURL+':4000/api/fleet/historicNIS?date='+date.format("YYYYMMDD"))
+    .switchMap(() => this.http.get('http://'+environment.apiUrl+':4000/api/fleet/historicNIS?date='+date.format("YYYYMMDD"))
     .map((response: Response) => new HistoricNISResponse().fromJSON(response)))
   }
 }

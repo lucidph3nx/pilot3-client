@@ -135,7 +135,7 @@ export class StaffHolistic implements OnInit {
 
   loadData() {
     this.staffId = this.staffSelect.controls.staffId.value
-    //this.staffPhotoURL = 'http://'+environment.apiURL+':4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
+    //this.staffPhotoURL = 'http://'+environment.apiUrl+':4000/api/staffImage?staffId=' + this.staffId.padStart(3, '0')
 
     this.selectedHolisticYear = this.holisticCalendarOptions.value.year
     this.selectedCalendarMode = this.holisticCalendarOptions.value.calendarMode
@@ -162,7 +162,7 @@ export class StaffHolistic implements OnInit {
       .subscribe((response) => {
         this.staffSelected = true
         this.staffDetails = response.staffDetails
-        this.staffPhoto = 'http://' + environment.apiURL + ':4000/api/staff/' + response.staffDetails.photoURL + "&height=200&width=200"
+        this.staffPhoto = 'http://' + environment.apiUrl + ':4000/api/staff/' + response.staffDetails.photoURL + "&height=200&width=200"
       });
   }
 
